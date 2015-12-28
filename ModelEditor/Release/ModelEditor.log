@@ -1,0 +1,315 @@
+﻿生成启动时间为 2015/7/28 14:01:47。
+     1>项目“D:\VisualStudioWorkSpace\ModelEditor\ModelEditor\ModelEditor.vcxproj”在节点 2 上(Build 个目标)。
+     1>CustomBuild:
+         Moc'ing modeleditor.h...
+         Uic'ing modeleditor.ui...
+         Moc'ing d3dwidget.h...
+         Rcc'ing modeleditor.qrc...
+     1>RCC : warning : No resources in 'D:\VisualStudioWorkSpace\ModelEditor\ModelEditor\modeleditor.qrc'.
+         
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Release /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /nologo /W1 /WX- /O2 /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_NO_DEBUG /D NDEBUG /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt d3dwidget.cpp GeneratedFiles\Release\moc_d3dwidget.cpp GeneratedFiles\Release\moc_modeleditor.cpp main.cpp modeleditor.cpp
+         d3dwidget.cpp
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(925): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49817) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(926): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49826) : 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(927): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49836) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(928): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49845) : 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(615): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(616): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+         moc_d3dwidget.cpp
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(925): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49817) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(926): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49826) : 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(927): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49836) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(928): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49845) : 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(615): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(616): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+         moc_modeleditor.cpp
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(925): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49817) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(926): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49826) : 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(927): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49836) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(928): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49845) : 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(615): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(616): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+         main.cpp
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(925): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49817) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(926): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49826) : 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(927): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49836) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(928): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49845) : 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(615): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(616): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+         modeleditor.cpp
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(925): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49817) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(926): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49826) : 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(927): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49836) : 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+     1>C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include\d3d11.h(928): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49845) : 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(615): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+     1>c:\program files (x86)\microsoft directx sdk (february 2010)\include\d3d10.h(616): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+         正在生成代码...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Release /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /nologo /W1 /WX- /O2 /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_NO_DEBUG /D NDEBUG /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\qrc_modeleditor.cpp
+         qrc_modeleditor.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\VisualStudioWorkSpace\ModelEditor\Win32\Release\\ModelEditor.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.2.1\5.2.1\msvc2012\lib qtmain.lib Qt5Core.lib Qt5Gui.lib Qt5Widgets.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"D:\VisualStudioWorkSpace\ModelEditor\Win32\Release\ModelEditor.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\VisualStudioWorkSpace\ModelEditor\Win32\Release\ModelEditor.lib" /MACHINE:X86 /SAFESEH Release\d3dwidget.obj
+         Release\qrc_modeleditor.obj
+         Release\moc_d3dwidget.obj
+         Release\moc_modeleditor.obj
+         Release\main.obj
+         Release\modeleditor.obj
+     1>d3dwidget.obj : error LNK2019: 无法解析的外部符号 _D3D11CreateDevice@40，该符号在函数 "private: long __thiscall D3DWidget::InitDevice(void)" (?InitDevice@D3DWidget@@AAEJXZ) 中被引用
+     1>d3dwidget.obj : error LNK2019: 无法解析的外部符号 _D3DX11CompileFromFileW@44，该符号在函数 "private: long __thiscall D3DWidget::InitDevice(void)" (?InitDevice@D3DWidget@@AAEJXZ) 中被引用
+     1>d3dwidget.obj : error LNK2019: 无法解析的外部符号 _D3DX11CreateEffectFromMemory@20，该符号在函数 "private: long __thiscall D3DWidget::InitDevice(void)" (?InitDevice@D3DWidget@@AAEJXZ) 中被引用
+     1>D:\VisualStudioWorkSpace\ModelEditor\Win32\Release\\ModelEditor.exe : fatal error LNK1120: 3 个无法解析的外部命令
+     1>已完成生成项目“D:\VisualStudioWorkSpace\ModelEditor\ModelEditor\ModelEditor.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:09.29

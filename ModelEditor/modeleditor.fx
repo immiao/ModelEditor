@@ -1,0 +1,105 @@
+///////////////////////////////////////////////////////////////
+// Copyright(c) Kingsoft
+// 
+// FileName : modeleditor.fx
+// Creator  : Miao Kaixiang
+// Date     : 2015-7-30 15:00:00
+// Comment  : Shader File
+//
+///////////////////////////////////////////////////////////////
+
+//matrix WorldMatrix;
+//matrix ViewMatrix;
+//matrix ProjectionMatrix;
+matrix gWolrdViewProjMatrix;
+matrix gRoleWolrdViewProjMatrix;
+float4x4 gBoneTransforms[96];
+float g_fElapsedTime;
+// Vertex Shader
+//void VS(float4 Pos: POSITION,
+//	float4 Color: COLOR,
+//	out float4 oPos: SV_POSITION,
+//	out float4 oColor: COLOR)
+//{
+//    oPos = Pos;
+//	oColor = Color;
+//}
+struct VS_OUTPUT
+{
+    float4 Pos : SV_POSITION;
+    float4 Color : COLOR0;
+};
+
+VS_OUTPUT VS(float3 Pos : POSITION, float4 Color : COLOR)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+    //output.Pos = mul(Pos, WorldMatrix);
+    //output.Pos = mul(output.Pos, ViewMatrix);
+    //output.Pos = mul(output.Pos, ProjectionMatrix);
+	output.Pos = mul(float4(Pos, 1.0f), gWolrdViewProjMatrix);
+    output.Color = Color;
+    return output;
+}
+
+VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES, 
+					float Speed : SPEED) // speed代表角色移动速率(speed现在是废的，移动在CPU实现）
+{
+	VS_OUTPUT output = (VS_OUTPUT)0;
+
+	float weights[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+	weights[0] = Weight.x;
+	weights[1] = Weight.y;
+	weights[2] = Weight.z;
+	weights[3] = 1.0f - weights[0] - weights[1] - weights[2];
+
+	float3 posL = float3(0.0f, 0.0f, 0.0f);
+	for(int i = 0; i < 4; ++i)
+	{
+	    posL += weights[i]*mul(float4(Pos, 1.0f), gBoneTransforms[BoneIndices[i]]).xyz;
+	}
+	//posL.x += 100 * g_fElapsedTime;
+	//posL.y += Transition.y;
+	//posL.z += 100 * g_fElapsedTime;
+	//posL = Pos;
+	output.Pos = mul(float4(posL, 1.0f), gRoleWolrdViewProjMatrix);
+	output.Color = Color;
+
+	return output;
+}
+
+VS_OUTPUT TestSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES)
+{
+    VS_OUTPUT output = (VS_OUTPUT)0;
+    //output.Pos = mul(Pos, WorldMatrix);
+    //output.Pos = mul(output.Pos, ViewMatrix);
+    //output.Pos = mul(output.Pos, ProjectionMatrix);
+	output.Pos = mul(float4(Pos, 1.0f), gRoleWolrdViewProjMatrix);
+    output.Color = Color;
+    return output;
+}
+
+// Pixel Shader
+float4 PS(VS_OUTPUT input): SV_Target
+{
+    return input.Color;
+}
+
+technique11 Render
+{
+    pass P0
+    {
+        SetVertexShader(CompileShader(vs_5_0, VS()));
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_5_0, PS()));
+    }
+}
+
+technique11 SkinnedRender
+{
+    pass P0
+    {
+        SetVertexShader(CompileShader(vs_5_0, SkinnedVS()));
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_5_0, PS()));
+    }
+}
