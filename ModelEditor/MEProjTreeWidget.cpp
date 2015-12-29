@@ -45,11 +45,13 @@ HRESULT MEProjTreeWidget::Init(MEProjServer* pMEProjServer, const QString& qStrF
 	{
 		QStringList qStrListChildFileName(qStrChildFileName); // 只有一列的StringList
 		m_pQTreeWidgetItem = new MEProjTreeWidgetItem(qStrListChildFileName, qFileInfoList.at(nFileInfoListIndex).absoluteFilePath());
+		qDebug() << qFileInfoList.at(nFileInfoListIndex).absoluteFilePath();
 		//m_pQTreeWidgetItem = new QTreeWidgetItem(qStrListChildFileName);
 		
 		KE_PROCESS_ERROR(m_pQTreeWidgetItem);
 		m_pQTreeWidgetItem->setIcon(0, QIcon("Resources/File.png"));
 		m_pQRootTreeWidgetItem->addChild(m_pQTreeWidgetItem);
+		nFileInfoListIndex++;
 	}
 	
 	setHeaderLabels(QStringList(QString::fromLocal8Bit("解决方案管理器")));
