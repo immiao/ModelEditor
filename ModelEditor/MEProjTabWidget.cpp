@@ -9,6 +9,7 @@
 ///////////////////////////////////////////////////////////////
 
 #include "MEProjTabWidget.h"
+#include "MEProjCodeWidget.h"
 #include <QLabel>
 #include <QDebug>
 
@@ -25,8 +26,6 @@ HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidg
 	m_pMEProjServer = pMEProjServer;
 
 	addTab(pInitialWidget, qStrTabName);
-	QLabel *label = new QLabel("Hello Qt");
-	addTab(label, qStrTabName);
 	//addTab(pInitialWidget, qStrTabName);
 	setTabsClosable(true);
 
@@ -56,5 +55,17 @@ void MEProjTabWidget::RemoveTab(int index)
 
 void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetItem, int index)
 {
-	qDebug() << pMEProjTreeWidgetItem->GetAbsolutePath();
+	bool bFlag = false;
+	QString qStrPath = pMEProjTreeWidgetItem->GetAbsolutePath();
+	QFile *pqFile = new QFile(qStrPath);
+	QString qStrFileName = qStrPath.section('/',-1,-1);
+
+	bFlag = pqFile->open(QIODevice::ReadWrite | QIODevice::Text);	
+	if (bFlag)
+	{
+		QString qXmlData = QString(pqFile->readAll());
+		MEProjCodeWidget *pEditor = new MEProjCodeWidget;
+		pEditor->setPlainText(qXmlData);
+		addTab(pEditor, qStrFileName);
+	}
 }

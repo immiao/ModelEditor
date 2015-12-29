@@ -86,6 +86,18 @@
     <ClCompile Include="MEProjTreeWidgetItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MEProjCodeWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MEProjLineNumberArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MEProjCodeWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MEProjCodeWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modeleditor.h">
@@ -115,6 +127,9 @@
     <CustomBuild Include="MEProjTreeWidgetItem.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="MEProjCodeWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_modeleditor.h">
@@ -124,6 +139,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MEProjLineNumberArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
