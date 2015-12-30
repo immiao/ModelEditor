@@ -37,13 +37,19 @@ private:
 	std::list<TabInformation>	m_lpQWidget;
 	std::map<QString, bool>		m_mHash;
 	
+	QWidget*        m_pParent;	
+
 private slots:
 	void RemoveTab(int index);
+
 public:
 	MEProjTabWidget(QWidget* pParent = NULL);
 	void AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetItem, int index);
 	HRESULT Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName);
 	HRESULT UnInit();
+
+public slots:
+	void SaveCurrentFile();
 };
 
 #endif // MEPROJTABWIDGET_H
