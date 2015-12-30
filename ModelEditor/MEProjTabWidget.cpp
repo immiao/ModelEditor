@@ -76,4 +76,5 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 void MEProjTabWidget::SaveAllFile()
 {
 	qDebug()<<currentIndex()<<endl;
+	qDebug()<<"Test";
 }
