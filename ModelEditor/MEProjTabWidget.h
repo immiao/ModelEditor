@@ -20,6 +20,7 @@
 #include "MEProjServer.h"
 #include "MEProjTreeWidgetItem.h"
 #include "MEProjCodeWidget.h"
+#include <vector>
 
 struct TabInformation
 {
@@ -35,7 +36,7 @@ class MEProjTabWidget : public QTabWidget
 	
 private:
 	MEProjServer*				m_pMEProjServer;
-	std::list<TabInformation>	m_lpQWidget;
+	std::vector<TabInformation>	m_vTabInfo;
 	std::map<QString, bool>		m_mHash;
 	
 	QWidget*        m_pParent;	
