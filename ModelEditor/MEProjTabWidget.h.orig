@@ -20,7 +20,6 @@
 #include "MEProjServer.h"
 #include "MEProjTreeWidgetItem.h"
 #include "MEProjCodeWidget.h"
-#include <vector>
 
 struct TabInformation
 {
@@ -34,12 +33,16 @@ class MEProjTabWidget : public QTabWidget
 	Q_OBJECT
 	
 private:
+<<<<<<< HEAD
 	MEProjServer*				m_pMEProjServer;
-	std::vector<TabInformation>	m_vTabInfo;
+	std::list<TabInformation>	m_lpQWidget;
 	std::map<QString, bool>		m_mHash;
 	
+=======
+	MEProjServer*	m_pMEProjServer;
 	QWidget*        m_pParent;	
 
+>>>>>>> 35675d22be27329a99499dee145930809c7c3e0f
 private slots:
 	void RemoveTab(int index);
 
