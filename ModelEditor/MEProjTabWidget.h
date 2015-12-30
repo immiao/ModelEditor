@@ -14,9 +14,18 @@
 #include <QTabWidget>
 #include <D3DX11.h>
 #include <D3D11.h>
+#include <list>
+#include <map>
 #include "KEPublic2.h"
 #include "MEProjServer.h"
 #include "MEProjTreeWidgetItem.h"
+#include "MEProjCodeWidget.h"
+
+struct TabInformation
+{
+	MEProjCodeWidget*	pMEProjCodeWidget;
+	QString				qStrFileAbsolutePath;
+};
 
 class MEProjServer;
 class MEProjTabWidget : public QTabWidget
@@ -24,7 +33,10 @@ class MEProjTabWidget : public QTabWidget
 	Q_OBJECT
 	
 private:
-	MEProjServer*	m_pMEProjServer;
+	MEProjServer*				m_pMEProjServer;
+	std::list<TabInformation>	m_lpQWidget;
+	std::map<QString, bool>		m_mHash;
+	
 private slots:
 	void RemoveTab(int index);
 public:

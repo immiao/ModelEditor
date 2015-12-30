@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MEPROJLINENUMBERAREA_H
+#define MEPROJLINENUMBERAREA_H
+
 #include <QtWidgets/QMainWindow>
 #include "MEProjCodeWidget.h"
 
@@ -16,3 +18,4 @@ private:
 	MEProjCodeWidget *m_pCodeEditor;
 };
 
+#endif
