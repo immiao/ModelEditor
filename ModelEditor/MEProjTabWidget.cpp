@@ -15,7 +15,7 @@
 
 MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
-
+	m_pParent = pParent;
 }
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
@@ -30,6 +30,7 @@ HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidg
 	setTabsClosable(true);
 
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(RemoveTab(int)));
+	connect(m_pParent->ui.action_save, SIGNAL(triggered()), this, SLOT(SaveCurrentFile()));
 
 	hrResult = S_OK;
 Exit0:
@@ -59,7 +60,8 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 	QString qStrPath = pMEProjTreeWidgetItem->GetAbsolutePath();
 	QFile *pqFile = new QFile(qStrPath);
 	QString qStrFileName = qStrPath.section('/',-1,-1);
-
+	
+    // Read file if open successfully
 	bFlag = pqFile->open(QIODevice::ReadWrite | QIODevice::Text);	
 	if (bFlag)
 	{
@@ -67,5 +69,11 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		MEProjCodeWidget *pEditor = new MEProjCodeWidget;
 		pEditor->setPlainText(qXmlData);
 		addTab(pEditor, qStrFileName);
+		qDebug()<<"hhh";
 	}
+}
+
+void MEProjTabWidget::SaveCurrentFile()
+{
+	qDebug()<<currentIndex()<<endl;
 }

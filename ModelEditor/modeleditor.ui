@@ -41,6 +41,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_save"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="openObjFile">
@@ -61,6 +62,18 @@
   <action name="openMEProjFile">
    <property name="text">
     <string>打开.meproj文件</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="icon">
+    <iconset resource="modeleditor.qrc">
+     <normaloff>:/ModelEditor/Resources/Save.png</normaloff>:/ModelEditor/Resources/Save.png</iconset>
+   </property>
+   <property name="text">
+    <string>保存xml文件</string>
+   </property>
+   <property name="toolTip">
+    <string>save</string>
    </property>
   </action>
  </widget>

@@ -25,6 +25,7 @@ ModelEditor::ModelEditor(QWidget *pParent)
 		this, SLOT(openM3dFileTriggered()));
 	connect(ui.openMEProjFile, SIGNAL(triggered()),
 		this, SLOT(openMEProjFileTriggered()));
+
 }
 
 HRESULT ModelEditor::Init()
@@ -197,6 +198,8 @@ void ModelEditor::openMEProjFileTriggered()
 
 	}
 }
+
+
 
 HRESULT ModelEditor::RemoveWidget()
 {
