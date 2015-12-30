@@ -1,6 +1,9 @@
-#pragma once
-#include <QtWidgets/QPlainTextEdit>;
-#include <QtWidgets/QMainWindow>;
+#ifndef MEPROJCODEWIDGET_H
+#define MEPROJCODEWIDGET_H
+
+#include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QMainWindow>
+#include "KEPublic2.h"
 
 class MEProjCodeWidget : public QPlainTextEdit
 {
@@ -23,3 +26,4 @@ private:
 	QWidget *m_pQLineNumberArea;
 };
 
+#endif

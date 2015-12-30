@@ -2,6 +2,7 @@
 #include "MEProjLineNumberArea.h"
 #include <QPainter>
 #include <QTextBlock>
+#include <QDebug>
 
 MEProjCodeWidget::MEProjCodeWidget(QWidget *pqParent) : QPlainTextEdit(pqParent)
 {
@@ -103,4 +104,6 @@ void MEProjCodeWidget::LineNumberAreaPaintEvent(QPaintEvent *pqEvent)
 
 MEProjCodeWidget::~MEProjCodeWidget(void)
 {
+	SAFE_DELETE(m_pQLineNumberArea);
+	qDebug() << "Code Widget Delete";
 }

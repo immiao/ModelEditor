@@ -18,7 +18,8 @@ MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
 	m_pMEProjServer = NULL;
 	m_lpQWidget.clear();
-	m_mHash.clear()}
+	m_mHash.clear()
+}
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
 {
@@ -36,7 +37,7 @@ HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidg
 	setTabsClosable(true);
 
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(RemoveTab(int)));
-	//connect(m_pParent->ui.action_save, SIGNAL(triggered()), this, SLOT(SaveCurrentFile()));
+	connect(m_pParent->ui.action_save, SIGNAL(triggered()), this, SLOT(SaveCurrentFile()));
 
 	hrResult = S_OK;
 Exit0:
@@ -98,8 +99,7 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 	SAFE_DELETE(pQFile);
 }
 
-void MEProjTabWidget::SaveAllFile()
+void MEProjTabWidget::SaveCurrentFile()
 {
 	qDebug()<<currentIndex()<<endl;
-	qDebug()<<"Test";
 }

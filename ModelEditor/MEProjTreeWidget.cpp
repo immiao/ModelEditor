@@ -80,5 +80,5 @@ Exit0:
 void MEProjTreeWidget::NotifyServer(QTreeWidgetItem* pQTreeWidgetItem, int index)
 {
 	m_pMEProjServer->TreeNotifyTab(dynamic_cast<MEProjTreeWidgetItem*>(pQTreeWidgetItem), index);
-	qDebug() << "HERE";
+	qDebug() << "Item Double Clicked";
 }

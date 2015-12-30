@@ -16,9 +16,14 @@
 
 MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
+<<<<<<< HEAD
+	
+=======
 	m_pMEProjServer = NULL;
 	m_lpQWidget.clear();
-	m_mHash.clear()}
+	m_mHash.clear()
+>>>>>>> miao/master
+}
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
 {
