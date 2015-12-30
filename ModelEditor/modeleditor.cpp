@@ -113,11 +113,16 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	// 暂时用D3DWidget来初始化Tab1，2015/12/23
+	//m_pD3dWidget = new D3DWidget();
+	//KE_PROCESS_ERROR(m_pD3dWidget);
+	//hrRetCode = m_pD3dWidget->Init();
+	//KE_COM_PROCESS_ERROR(hrRetCode);
+	// 暂时用D3DWidget来初始化Tab1，2015/12/23
+
 	m_pD3dWidget = new D3DWidget();
 	KE_PROCESS_ERROR(m_pD3dWidget);
 	hrRetCode = m_pD3dWidget->Init();
 	KE_COM_PROCESS_ERROR(hrRetCode);
-	// 暂时用D3DWidget来初始化Tab1，2015/12/23
 
 	m_pMEProjTabWidget = new MEProjTabWidget();
 	KE_PROCESS_ERROR(m_pMEProjTabWidget);
