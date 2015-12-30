@@ -25,7 +25,6 @@ class MEProjTabWidget : public QTabWidget
 	
 private:
 	MEProjServer*	m_pMEProjServer;
-	QWidget*        m_pParent;	
 
 private slots:
 	void RemoveTab(int index);
@@ -37,7 +36,7 @@ public:
 	HRESULT UnInit();
 
 public slots:
-	void SaveCurrentFile();
+	void SaveAllFile();
 };
 
 #endif // MEPROJTABWIDGET_H
