@@ -25,6 +25,7 @@ struct TabInformation
 {
 	MEProjCodeWidget*	pMEProjCodeWidget;
 	QString				qStrFileAbsolutePath;
+	int                 nIndex;
 };
 
 class MEProjServer;
@@ -33,15 +34,11 @@ class MEProjTabWidget : public QTabWidget
 	Q_OBJECT
 	
 private:
-<<<<<<< HEAD
-	MEProjServer*	m_pMEProjServer;
-=======
 	MEProjServer*				m_pMEProjServer;
 	std::list<TabInformation>	m_lpQWidget;
 	std::map<QString, bool>		m_mHash;
 	
 	QWidget*        m_pParent;	
->>>>>>> miao/master
 
 private slots:
 	void RemoveTab(int index);
@@ -53,7 +50,7 @@ public:
 	HRESULT UnInit();
 
 public slots:
-	void SaveAllFile();
+	void SaveCurrentFile();
 };
 
 #endif // MEPROJTABWIDGET_H

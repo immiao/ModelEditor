@@ -47,7 +47,6 @@ private slots:
 	void openObjFileTriggered();
 	void openM3dFileTriggered();
 	void openMEProjFileTriggered();
-	void Test();
 };
 
 #endif // MODELEDITOR_H

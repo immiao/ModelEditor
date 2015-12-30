@@ -18,7 +18,8 @@ MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
 	m_pMEProjServer = NULL;
 	m_lpQWidget.clear();
-	m_mHash.clear()}
+	m_mHash.clear();
+}
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
 {
@@ -88,18 +89,22 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		TabInformation tabInformation;
 		tabInformation.pMEProjCodeWidget = pEditor;
 		tabInformation.qStrFileAbsolutePath = qStrPath;
+		tabInformation.nIndex = count();
+
 		m_lpQWidget.push_back(tabInformation);
 
 		pEditor->setPlainText(qStrXmlData);
-		addTab(pEditor, qStrFileName);
-		qDebug()<<"hhh";
-	}
 
+		addTab(pEditor, qStrFileName);
+		
+	}
+	
 	SAFE_DELETE(pQFile);
 }
 
-void MEProjTabWidget::SaveAllFile()
+void MEProjTabWidget::SaveCurrentFile()
 {
+	
 	qDebug()<<currentIndex()<<endl;
 	qDebug()<<"Test";
 }
