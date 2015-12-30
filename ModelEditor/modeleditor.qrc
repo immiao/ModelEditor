@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="ModelEditor">
-    </qresource>
+  <qresource prefix="ModelEditor">
+    <file>Resources/Save.png</file>
+  </qresource>
 </RCC>
