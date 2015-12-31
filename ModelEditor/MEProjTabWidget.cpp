@@ -87,12 +87,11 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		TabInformation tabInformation;
 		tabInformation.pMEProjCodeWidget = pEditor;
 		tabInformation.qStrFileAbsolutePath = qStrPath;
-tabInformation.nIndex = count();
-m_vTabInfo.push_back(tabInformation);
 
+		qDebug()<<tabInformation.qStrFileAbsolutePath;
+        m_vTabInfo.push_back(tabInformation);
 
 		pEditor->setPlainText(qStrXmlData);
-
 		addTab(pEditor, qStrFileName);
 		
 	}
@@ -102,7 +101,25 @@ m_vTabInfo.push_back(tabInformation);
 
 void MEProjTabWidget::SaveCurrentFile()
 {
-	
+	qDebug()<<"00000";
+	QFile *pQFile = new QFile(m_vTabInfo[currentIndex()].qStrFileAbsolutePath);			
+	QString qStrContent = m_vTabInfo[currentIndex()].pMEProjCodeWidget->toPlainText();
+	//qDebug()<<qStrContent;
+	std::string strTempContent = qStrContent.toStdString();  //将Qstring转换成string，在转成char*写入文件
+	qDebug()<<"22222";
+	const char* pcWriteContent = strTempContent.c_str();
+	bool bFlag = false;
+	qDebug()<<"33333";
+
+	bFlag = pQFile->open(QIODevice::WriteOnly | QIODevice::Text);
+	qDebug()<<"44444";
+	if (bFlag)
+	{
+		pQFile->write(pcWriteContent);
+	}
+	SAFE_DELETE(pQFile);
+	qDebug()<<"55555";
+
 	qDebug()<<currentIndex()<<endl;
 	qDebug()<<"Test";
 }

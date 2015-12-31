@@ -26,7 +26,6 @@ struct TabInformation
 {
 	MEProjCodeWidget*	pMEProjCodeWidget;
 	QString				qStrFileAbsolutePath;
-	int                 nIndex;
 };
 
 class MEProjServer;
