@@ -107,6 +107,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MEProjD3DWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MEProjRoleListWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MEProjRoleListWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MEProjRoleListWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modeleditor.h">
@@ -140,6 +149,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="MEProjD3DWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MEProjRoleListWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -104,6 +104,8 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 
 	m_pLayout = new QHBoxLayout;
 	KE_PROCESS_ERROR(m_pLayout);
+	m_pVBoxLayout = new QVBoxLayout;
+	KE_PROCESS_ERROR(m_pVBoxLayout);
 
 	m_pMEProjServer = new MEProjServer();
 	KE_PROCESS_ERROR(m_pMEProjServer);

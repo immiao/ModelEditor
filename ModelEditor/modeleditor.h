@@ -21,6 +21,7 @@
 #include "MEProjTabWidget.h"
 #include "MEProjServer.h"
 #include "MEProjD3DWidget.h"
+#include "MEProjRoleListWidget.h"
 
 class ModelEditor : public QMainWindow
 {
@@ -36,10 +37,12 @@ private:
 	Ui::ModelEditorClass	ui;
 	D3DWidget*				m_pD3dWidget;
 	MEProjD3DWidget*		m_pMEProjD3DWidget;
+	MEProjRoleListWidget*	m_pMEProjRoleListWidget;
 	MEProjTreeWidget*		m_pMEProjTreeWidget;
 	MEProjTabWidget*		m_pMEProjTabWidget;
 	MEProjServer*			m_pMEProjServer;
 	QHBoxLayout*			m_pLayout;
+	QVBoxLayout*			m_pVBoxLayout;
 	int						m_nState;	
 	HRESULT					InitBasicWidget();
 	HRESULT					InitMEProjWidget(const QString& qStrFileName);
