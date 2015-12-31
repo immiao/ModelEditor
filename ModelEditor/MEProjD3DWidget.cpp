@@ -965,17 +965,6 @@ void MEProjD3DWidget::UpdateBoneTransformMatrix()
 		m_fTime = 0.0f;
 }
 
-void AnimationClip::GetEndTime()
-{
-	fEndTime = 0.0f;
-	for (UINT i = 0; i < BoneAnimations.size(); i++)
-	{
-		float fFrameEndTime = BoneAnimations[i].Keyframes.back().TimePos;
-		if (fFrameEndTime > fEndTime)
-			fEndTime = fFrameEndTime;
-	}
-}
-
 void MEProjD3DWidget::SetReadFinish(bool bFlag)
 {
 	m_bReadFinish = bFlag;

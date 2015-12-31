@@ -20,6 +20,7 @@
 #include "MEProjTreeWidget.h"
 #include "MEProjTabWidget.h"
 #include "MEProjServer.h"
+#include "MEProjD3DWidget.h"
 
 class ModelEditor : public QMainWindow
 {
@@ -34,6 +35,7 @@ public:
 private:
 	Ui::ModelEditorClass	ui;
 	D3DWidget*				m_pD3dWidget;
+	MEProjD3DWidget*		m_pMEProjD3DWidget;
 	MEProjTreeWidget*		m_pMEProjTreeWidget;
 	MEProjTabWidget*		m_pMEProjTabWidget;
 	MEProjServer*			m_pMEProjServer;

@@ -30,36 +30,37 @@
 //#include <xnamath.h>
 #include "GeometryGenerator.h"
 #include <stdlib.h>
+#include "d3dwidget.h"
 
-struct Keyframe
-{
-    float TimePos;
-	XMFLOAT3 Translation;
-	XMFLOAT3 Scale;
-	XMFLOAT4 RotationQuat;
-};
-
-struct BoneAnimation
-{
-	//float GetStartTime()const;
-	//float GetEndTime()const;
-
- //   void Interpolate(float t, XMFLOAT4X4& M)const;
-
-	std::vector<Keyframe> Keyframes; 	
-
-};
-
-struct AnimationClip
-{
-	//float GetClipStartTime()const;
-	//float GetClipEndTime()const;
-
- //   void Interpolate(float t, std::vector<XMFLOAT4X4>& boneTransforms)const;
-	float fEndTime;
-    std::vector<BoneAnimation> BoneAnimations;
-	void GetEndTime();
-};
+//struct Keyframe
+//{
+//    float TimePos;
+//	XMFLOAT3 Translation;
+//	XMFLOAT3 Scale;
+//	XMFLOAT4 RotationQuat;
+//};
+//
+//struct BoneAnimation
+//{
+//	//float GetStartTime()const;
+//	//float GetEndTime()const;
+//
+// //   void Interpolate(float t, XMFLOAT4X4& M)const;
+//
+//	std::vector<Keyframe> Keyframes; 	
+//
+//};
+//
+//struct AnimationClip
+//{
+//	//float GetClipStartTime()const;
+//	//float GetClipEndTime()const;
+//
+// //   void Interpolate(float t, std::vector<XMFLOAT4X4>& boneTransforms)const;
+//	float fEndTime;
+//    std::vector<BoneAnimation> BoneAnimations;
+//	void GetEndTime();
+//};
 
 class TestQt;
 class MEProjD3DWidget : public QWidget

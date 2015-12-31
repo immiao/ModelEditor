@@ -18,6 +18,7 @@ ModelEditor::ModelEditor(QWidget *pParent)
 	ui.setupUi(this);
 	m_nState = -1; // -1代表尚未建立widget
 	m_pD3dWidget = NULL;
+	m_pMEProjD3DWidget = NULL;
 
 	connect(ui.openObjFile, SIGNAL(triggered()),
 		this, SLOT(openObjFileTriggered()));
@@ -53,9 +54,9 @@ HRESULT ModelEditor::UnInit()
 		SAFE_DELETE(m_pLayout);
 		break;
 	case 2:
-		hrRetCode = m_pD3dWidget->UnInit();
+		hrRetCode = m_pMEProjD3DWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
-		SAFE_DELETE(m_pD3dWidget);
+		SAFE_DELETE(m_pMEProjD3DWidget);
 
 		hrRetCode = m_pMEProjTreeWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
@@ -119,14 +120,14 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	//KE_COM_PROCESS_ERROR(hrRetCode);
 	// 暂时用D3DWidget来初始化Tab1，2015/12/23
 
-	m_pD3dWidget = new D3DWidget();
-	KE_PROCESS_ERROR(m_pD3dWidget);
-	hrRetCode = m_pD3dWidget->Init();
+	m_pMEProjD3DWidget = new MEProjD3DWidget();
+	KE_PROCESS_ERROR(m_pMEProjD3DWidget);
+	hrRetCode = m_pMEProjD3DWidget->Init();
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	m_pMEProjTabWidget = new MEProjTabWidget();
 	KE_PROCESS_ERROR(m_pMEProjTabWidget);
-	hrRetCode = m_pMEProjTabWidget->Init(m_pMEProjServer, m_pD3dWidget, QFileInfo(qStrFileName).fileName());
+	hrRetCode = m_pMEProjTabWidget->Init(m_pMEProjServer, m_pMEProjD3DWidget, QFileInfo(qStrFileName).fileName());
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	hrRetCode = m_pMEProjServer->Init(m_pMEProjTreeWidget, m_pMEProjTabWidget);

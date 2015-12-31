@@ -37,6 +37,7 @@ private:
 	MEProjServer*				m_pMEProjServer;
 	std::vector<TabInformation>	m_vTabInfo;
 	std::map<QString, bool>		m_mHash;
+	std::map<QString, int>		m_mHashTabIndex;
 	
 	QWidget*        m_pParent;	
 

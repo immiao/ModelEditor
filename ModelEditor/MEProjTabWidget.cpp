@@ -19,6 +19,7 @@ MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 	m_pMEProjServer = NULL;
 	m_vTabInfo.clear();
 	m_mHash.clear();
+	m_mHashTabIndex.clear();
 }
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
@@ -71,8 +72,10 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 {
 	QString qStrPath = pMEProjTreeWidgetItem->GetAbsolutePath();
 	if (m_mHash[qStrPath])
+	{
+		setCurrentIndex(m_mHashTabIndex[qStrPath]);
 		return;
-	m_mHash[qStrPath] = true;
+	}
 
 	bool bFlag = false;
 	QFile *pQFile = new QFile(qStrPath);
@@ -93,6 +96,10 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		pEditor->setPlainText(qStrXmlData);
 		addTab(pEditor, qStrFileName);
 		qDebug()<<"hhh";
+
+		m_mHash[qStrPath] = true;
+		m_mHashTabIndex[qStrPath] = m_vTabInfo.size() - 1;
+		setCurrentIndex(m_vTabInfo.size() - 1);
 	}
 
 	SAFE_DELETE(pQFile);
