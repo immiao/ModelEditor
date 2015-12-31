@@ -16,13 +16,13 @@
 
 MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
-	m_pMEProjServer = NULL;
 <<<<<<< HEAD
-	m_lpQWidget.clear();
+	
 =======
-	m_vTabInfo.clear();
+	m_pMEProjServer = NULL;
+	m_lpQWidget.clear();
+	m_mHash.clear()
 >>>>>>> miao/master
-	m_mHash.clear();
 }
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
@@ -35,7 +35,7 @@ HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidg
 	addTab(pInitialWidget, qStrTabName);
 	//第一个Tab不关闭，不属于CodeWidget，为保持index一致，放入空TabInformation
 	TabInformation emptyTabInformation;
-	m_vTabInfo.push_back(emptyTabInformation);
+	m_lpQWidget.push_back(emptyTabInformation);
 
 	//addTab(pInitialWidget, qStrTabName);
 	setTabsClosable(true);
@@ -64,10 +64,11 @@ void MEProjTabWidget::RemoveTab(int index)
 	if (index)
 	{
 		removeTab(index);
-
-		m_mHash[m_vTabInfo[index].qStrFileAbsolutePath] = false;
-		SAFE_DELETE(m_vTabInfo[index].pMEProjCodeWidget);
-		m_vTabInfo.erase(m_vTabInfo.begin() + index);
+		std::list<TabInformation>::iterator iter = m_lpQWidget.begin();
+		std::advance(iter, index);
+		m_mHash[(*iter).qStrFileAbsolutePath] = false;
+		SAFE_DELETE((*iter).pMEProjCodeWidget);
+		m_lpQWidget.erase(iter);
 	}
 }
 
@@ -92,26 +93,18 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		TabInformation tabInformation;
 		tabInformation.pMEProjCodeWidget = pEditor;
 		tabInformation.qStrFileAbsolutePath = qStrPath;
-<<<<<<< HEAD
-		tabInformation.nIndex = count();
-
 		m_lpQWidget.push_back(tabInformation);
-=======
-		m_vTabInfo.push_back(tabInformation);
->>>>>>> miao/master
 
 		pEditor->setPlainText(qStrXmlData);
-
 		addTab(pEditor, qStrFileName);
-		
+		qDebug()<<"hhh";
 	}
-	
+
 	SAFE_DELETE(pQFile);
 }
 
-void MEProjTabWidget::SaveCurrentFile()
+void MEProjTabWidget::SaveAllFile()
 {
-	
 	qDebug()<<currentIndex()<<endl;
 	qDebug()<<"Test";
 }

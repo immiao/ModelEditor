@@ -128,6 +128,7 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	KE_PROCESS_ERROR(m_pMEProjTabWidget);
 	hrRetCode = m_pMEProjTabWidget->Init(m_pMEProjServer, m_pD3dWidget, QFileInfo(qStrFileName).fileName());
 	KE_COM_PROCESS_ERROR(hrRetCode);
+	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjTabWidget, SLOT(SaveCurrentFile()));
 
 	hrRetCode = m_pMEProjServer->Init(m_pMEProjTreeWidget, m_pMEProjTabWidget);
 	KE_COM_PROCESS_ERROR(hrRetCode);
@@ -220,4 +221,4 @@ HRESULT ModelEditor::RemoveWidget()
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
-}	
+}
