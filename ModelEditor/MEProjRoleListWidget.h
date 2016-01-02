@@ -16,15 +16,20 @@
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <QListWidget>
+#include <QLayout>
+#include <xnamath.h>
+#include "MEProjRoleListWidgetItem.h"
 
 class MEProjRoleListWidget: public QListWidget
 {
 	Q_OBJECT
+
 public:
 	MEProjRoleListWidget(QWidget* pParent = NULL);
 	~MEProjRoleListWidget();
 	HRESULT Init();
 	HRESULT UnInit();
+	void AddWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos);
 };
 
 #endif // MEPROJROLELISTWIDGET_H

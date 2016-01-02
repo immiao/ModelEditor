@@ -39,6 +39,9 @@ HRESULT MEProjTreeWidget::Init(MEProjServer* pMEProjServer, const QString& qStrF
 
 	qStrListChildenFileName = qDir.entryList();
 	qFileInfoList			= qDir.entryInfoList();
+	m_pMEProjServer->SetXmlNameList(qStrListChildenFileName);
+	m_pMEProjServer->SetXmlInfoList(qFileInfoList);
+	
 	int	nFileInfoListIndex = 0;
 
 	foreach (qStrChildFileName, qStrListChildenFileName)
@@ -68,8 +71,7 @@ HRESULT MEProjTreeWidget::UnInit()
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 
-	// 下面两句顺序倒转会崩溃
-	SAFE_DELETE(m_pQTreeWidgetItem);
+	//SAFE_DELETE(m_pQTreeWidgetItem);
 	SAFE_DELETE(m_pQRootTreeWidgetItem);
 
 	hrResult = S_OK;

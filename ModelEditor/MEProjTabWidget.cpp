@@ -18,6 +18,7 @@ MEProjTabWidget::MEProjTabWidget(QWidget* pParent):QTabWidget(pParent)
 {
 	m_pMEProjServer = NULL;
 	m_mHashTabIndex.clear();
+}
 
 HRESULT MEProjTabWidget::Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName)
 {

@@ -17,13 +17,14 @@ MEProjServer::MEProjServer()
 	m_pMEProjTabWidget = NULL;
 }
 
-HRESULT MEProjServer::Init(MEProjTreeWidget* pMEProjTreeWidget, MEProjTabWidget* pMEProjTabWidget)
+HRESULT MEProjServer::Init(MEProjTreeWidget* pMEProjTreeWidget, MEProjTabWidget* pMEProjTabWidget, MEProjRoleListWidget* pMEProjRoleListWidget)
 {
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 	
 	m_pMEProjTreeWidget = pMEProjTreeWidget;
 	m_pMEProjTabWidget = pMEProjTabWidget;
+	m_pMEProjRoleListWidget = pMEProjRoleListWidget;
 
 	hrResult = S_OK;
 Exit0:
@@ -49,4 +50,41 @@ HRESULT MEProjServer::TreeNotifyTab(MEProjTreeWidgetItem* pMEProjTreeWidgetItem,
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
+}
+
+HRESULT MEProjServer::SetXmlNameList(QStringList& qStrXmlNames)
+{
+	HRESULT hrResult = E_FAIL;
+	HRESULT hrRetCode = E_FAIL;
+	
+	m_qStrXmlNames = qStrXmlNames;
+	hrResult = S_OK;
+Exit0:
+	return hrResult;
+}
+
+HRESULT	MEProjServer::SetXmlInfoList(QFileInfoList& qStrListXmlInfo)
+{
+	HRESULT hrResult = E_FAIL;
+	HRESULT hrRetCode = E_FAIL;
+	
+	m_qStrXmlInfo = qStrListXmlInfo;
+	hrResult = S_OK;
+Exit0:
+	return hrResult;
+}
+
+QStringList MEProjServer::GetXmlNameList()
+{
+	return m_qStrXmlNames;
+}
+
+QFileInfoList MEProjServer::GetXmlInfoList()
+{
+	return m_qStrXmlInfo;
+}
+
+void MEProjServer::ConfigNotifyRoleList(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos)
+{
+	m_pMEProjRoleListWidget->AddWidgetItem(qStrRoleName, qStrXmlFileName, qStrAbsolutePath, xmf3Pos);
 }

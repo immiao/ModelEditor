@@ -21,6 +21,8 @@ HRESULT MEProjRoleListWidget::Init()
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 
+	//setHeaderLabels(QStringList(QString::fromLocal8Bit("解决方案管理器")));
+
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -39,4 +41,11 @@ Exit0:
 MEProjRoleListWidget::~MEProjRoleListWidget()
 {
 
+}
+
+void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos)
+{
+	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleName, qStrXmlFileName, qStrAbsolutePath,
+		xmf3Pos, QIcon("Resources/role.jpg"));
+	addItem(pMEProjRoleListWidgetItem);
 }

@@ -116,6 +116,18 @@
     <ClCompile Include="MEProjRoleListWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MEProjRoleConfigWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MEProjRoleConfigWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MEProjRoleConfigWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MEProjRoleListWidgetItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modeleditor.h">
@@ -154,6 +166,9 @@
     <CustomBuild Include="MEProjRoleListWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="MEProjRoleConfigWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_modeleditor.h">
@@ -166,6 +181,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MEProjLineNumberArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsefulStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MEProjRoleListWidgetItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

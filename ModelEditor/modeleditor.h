@@ -22,6 +22,8 @@
 #include "MEProjServer.h"
 #include "MEProjD3DWidget.h"
 #include "MEProjRoleListWidget.h"
+#include "MEProjRoleConfigWidget.h"
+#include <qpushbutton.h>
 
 class ModelEditor : public QMainWindow
 {
@@ -38,20 +40,25 @@ private:
 	D3DWidget*				m_pD3dWidget;
 	MEProjD3DWidget*		m_pMEProjD3DWidget;
 	MEProjRoleListWidget*	m_pMEProjRoleListWidget;
+	MEProjRoleConfigWidget* m_pMEProjRoleConfigWidget;
 	MEProjTreeWidget*		m_pMEProjTreeWidget;
 	MEProjTabWidget*		m_pMEProjTabWidget;
 	MEProjServer*			m_pMEProjServer;
 	QHBoxLayout*			m_pLayout;
 	QVBoxLayout*			m_pVBoxLayout;
+	QHBoxLayout*			m_pHBoxLayout;
+	QPushButton*			m_pQPushButtonAddRole;
+	QPushButton*			m_pQPushButtonDeleteRole;
 	int						m_nState;	
 	HRESULT					InitBasicWidget();
 	HRESULT					InitMEProjWidget(const QString& qStrFileName);
 	HRESULT					RemoveWidget();
 
 private slots:
-	void openObjFileTriggered();
-	void openM3dFileTriggered();
-	void openMEProjFileTriggered();
+	void OpenObjFileTriggered();
+	void OpenM3dFileTriggered();
+	void OpenMEProjFileTriggered();
+	void OpenConfigWidget();
 };
 
 #endif // MODELEDITOR_H

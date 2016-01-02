@@ -16,11 +16,13 @@
 #include <QDebug>
 #include <QString>
 #include <QStringList>
+#include <QList>
 #include <d3dx11.h>
 #include <d3d11.h>
 #include "KEPublic2.h"
 #include "MEProjServer.h"
 #include "MEProjTreeWidgetItem.h"
+#include "UsefulStruct.h"
 
 class MEProjServer;
 class MEProjTreeWidget : public QTreeWidget
@@ -28,9 +30,9 @@ class MEProjTreeWidget : public QTreeWidget
 	Q_OBJECT
 
 private:
-	QTreeWidgetItem* m_pQRootTreeWidgetItem;
-	QTreeWidgetItem* m_pQTreeWidgetItem;
-	MEProjServer*	 m_pMEProjServer;
+	QTreeWidgetItem*	m_pQRootTreeWidgetItem;
+	QTreeWidgetItem*	m_pQTreeWidgetItem;
+	MEProjServer*		m_pMEProjServer;
 private slots:
 	void NotifyServer(QTreeWidgetItem* pMEProjTreeWidgetItem, int index);
 public:
