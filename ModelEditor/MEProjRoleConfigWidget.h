@@ -22,9 +22,12 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QStringList>
+#include <QString>
 #include <QLineEdit>
 #include <QValidator>
 #include "MEProjServer.h"
+#include <QDir>
+#include <QFileInfo>
 
 class MEProjRoleConfigWidget: public QWidget
 {
@@ -35,8 +38,8 @@ class MEProjRoleConfigWidget: public QWidget
 	QHBoxLayout*	m_pHBoxLayout1;
 	QHBoxLayout*	m_pHBoxLayout2;
 	QHBoxLayout*	m_pHBoxLayout3;
-	QComboBox*		m_pComboBoxRoleName;
-	QComboBox*		m_pComboBoxRoleXml;
+	QComboBox*		m_pComboBoxRoleFileName;
+	QComboBox*		m_pComboBoxXmlFileName;
 	QLineEdit*		m_pLineEditX;
 	QLineEdit*		m_pLineEditY;
 	QLineEdit*		m_pLineEditZ;
@@ -47,11 +50,13 @@ class MEProjRoleConfigWidget: public QWidget
 	QLabel*			m_pLabelZ;
 	QPushButton*	m_pPushButtonOK;
 	QPushButton*	m_pPushButtonCancel;
-	QList<QString>	m_qListStringRoleName;
-	QList<QString>	m_qListStringRoleXml;
 	QIntValidator*	m_pValidator;
 
 	MEProjServer*	m_pMEProjServer;
+	QStringList		m_qStrListXmlFilesName;
+	QFileInfoList	m_qFileInfoListXml;
+	QStringList		m_qStrListRoleFilesName;
+	QFileInfoList	m_qFileInfoListRole;
 public:
 	MEProjRoleConfigWidget(MEProjServer* m_pMEProjServer, QWidget* pParent = NULL);
 	~MEProjRoleConfigWidget();

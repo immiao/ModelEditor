@@ -52,39 +52,8 @@ Exit0:
 	return hrResult;
 }
 
-HRESULT MEProjServer::SetXmlNameList(QStringList& qStrXmlNames)
+void MEProjServer::ConfigNotifyRoleList(QString& qStrRoleFileName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName, 
+	QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos)
 {
-	HRESULT hrResult = E_FAIL;
-	HRESULT hrRetCode = E_FAIL;
-	
-	m_qStrXmlNames = qStrXmlNames;
-	hrResult = S_OK;
-Exit0:
-	return hrResult;
-}
-
-HRESULT	MEProjServer::SetXmlInfoList(QFileInfoList& qStrListXmlInfo)
-{
-	HRESULT hrResult = E_FAIL;
-	HRESULT hrRetCode = E_FAIL;
-	
-	m_qStrXmlInfo = qStrListXmlInfo;
-	hrResult = S_OK;
-Exit0:
-	return hrResult;
-}
-
-QStringList MEProjServer::GetXmlNameList()
-{
-	return m_qStrXmlNames;
-}
-
-QFileInfoList MEProjServer::GetXmlInfoList()
-{
-	return m_qStrXmlInfo;
-}
-
-void MEProjServer::ConfigNotifyRoleList(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos)
-{
-	m_pMEProjRoleListWidget->AddWidgetItem(qStrRoleName, qStrXmlFileName, qStrAbsolutePath, xmf3Pos);
+	m_pMEProjRoleListWidget->AddWidgetItem(qStrRoleFileName, qStrRoleFileAbsolutePath, qStrXmlFileName, qStrXmlFileAbsolutePath, xmf3Pos);
 }

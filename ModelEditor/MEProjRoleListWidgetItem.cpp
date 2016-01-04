@@ -10,10 +10,11 @@
 
 #include "MEProjRoleListWidgetItem.h"
 
-MEProjRoleListWidgetItem::MEProjRoleListWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrXmlFileAbsolutePath, 
-												   XMFLOAT3& xmf3Pos, const QIcon& qIcon):QListWidgetItem(qIcon, qStrRoleName)
+MEProjRoleListWidgetItem::MEProjRoleListWidgetItem(QString& qStrRoleFileName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName,
+		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos, const QIcon& qIcon):QListWidgetItem(qIcon, qStrRoleFileName)
 {
-	m_qStrRoleName = qStrRoleName;
+	m_qStrRoleFileName = qStrRoleFileName;
+	m_qStrRoleFileAbsolutePath = qStrRoleFileAbsolutePath;
 	m_qStrXmlFileName = qStrXmlFileName;
 	m_qStrXmlFileAbsolutePath = qStrXmlFileAbsolutePath;
 	m_xmf3Pos = xmf3Pos;

@@ -43,9 +43,10 @@ MEProjRoleListWidget::~MEProjRoleListWidget()
 
 }
 
-void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos)
+void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleFileName, QString& qStrRoleFileAbsolutePath, 
+	QString& qStrXmlFileName, QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos)
 {
-	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleName, qStrXmlFileName, qStrAbsolutePath,
-		xmf3Pos, QIcon("Resources/role.jpg"));
+	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleFileName, qStrRoleFileAbsolutePath, 
+		qStrXmlFileName, qStrXmlFileAbsolutePath, xmf3Pos, QIcon("Resources/role.jpg"));
 	addItem(pMEProjRoleListWidgetItem);
 }

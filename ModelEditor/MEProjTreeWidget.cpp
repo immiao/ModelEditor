@@ -39,8 +39,6 @@ HRESULT MEProjTreeWidget::Init(MEProjServer* pMEProjServer, const QString& qStrF
 
 	qStrListChildenFileName = qDir.entryList();
 	qFileInfoList			= qDir.entryInfoList();
-	m_pMEProjServer->SetXmlNameList(qStrListChildenFileName);
-	m_pMEProjServer->SetXmlInfoList(qFileInfoList);
 	
 	int	nFileInfoListIndex = 0;
 

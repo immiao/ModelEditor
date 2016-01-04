@@ -883,6 +883,7 @@ void D3DWidget::UpdateBoneTransformMatrix()
 	for (UINT i = 0; i < m_animationClip.BoneAnimations.size(); i++)
 	{
 		std::vector<Keyframe> &rKeyframes = m_animationClip.BoneAnimations[i].Keyframes;
+
 		if( m_fTime <= rKeyframes.front().TimePos )
 		{
 			XMVECTOR S = XMLoadFloat3(&rKeyframes.front().Scale);

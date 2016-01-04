@@ -18,8 +18,8 @@ MEProjRoleConfigWidget::MEProjRoleConfigWidget(MEProjServer* pMEProjServer, QWid
 	m_pHBoxLayout1 = NULL;
 	m_pHBoxLayout2 = NULL;
 	m_pHBoxLayout3 = NULL;
-	m_pComboBoxRoleName = NULL;
-	m_pComboBoxRoleXml = NULL;
+	m_pComboBoxRoleFileName = NULL;
+	m_pComboBoxXmlFileName = NULL;
 	m_pLineEditX = NULL;
 	m_pLineEditY = NULL;
 	m_pLineEditZ = NULL;
@@ -31,7 +31,6 @@ MEProjRoleConfigWidget::MEProjRoleConfigWidget(MEProjServer* pMEProjServer, QWid
 	m_pPushButtonOK = NULL;
 	m_pPushButtonCancel = NULL;
 
-	m_qListStringRoleName.clear();
 	m_pMEProjServer = pMEProjServer;
 	setWindowTitle(QString::fromLocal8Bit("Ìí¼ÓÐÂ½ÇÉ«"));
 }
@@ -40,6 +39,11 @@ HRESULT MEProjRoleConfigWidget::Init()
 {
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
+	QDir			qDir;
+	QStringList		qStrListM3dFilters;
+	QStringList		qStrListXmlFilters;
+	qStrListM3dFilters << "*.m3d";
+	qStrListXmlFilters << "*.xml";
 
 	m_pVBoxLayout = new QVBoxLayout;
 	KE_PROCESS_ERROR(m_pVBoxLayout);
@@ -51,13 +55,21 @@ HRESULT MEProjRoleConfigWidget::Init()
 	KE_PROCESS_ERROR(m_pHBoxLayout2);
 	m_pHBoxLayout3 = new QHBoxLayout;
 	KE_PROCESS_ERROR(m_pHBoxLayout3);
-	m_pComboBoxRoleName = new QComboBox();
-	KE_PROCESS_ERROR(m_pComboBoxRoleName);
-	m_qListStringRoleName.append("Soldier");
-	m_pComboBoxRoleName->addItems(QStringList(m_qListStringRoleName));
-	m_pComboBoxRoleXml = new QComboBox();
-	KE_PROCESS_ERROR(m_pComboBoxRoleXml);
-	m_pComboBoxRoleXml->addItems(m_pMEProjServer->GetXmlNameList());
+
+	m_pComboBoxRoleFileName = new QComboBox();
+	KE_PROCESS_ERROR(m_pComboBoxRoleFileName);
+	qDir.setNameFilters(qStrListM3dFilters);
+	m_qStrListRoleFilesName = qDir.entryList();
+	m_qFileInfoListRole = qDir.entryInfoList();
+	m_pComboBoxRoleFileName->addItems(m_qStrListRoleFilesName);
+
+	m_pComboBoxXmlFileName = new QComboBox();
+	KE_PROCESS_ERROR(m_pComboBoxXmlFileName);
+	qDir.setNameFilters(qStrListXmlFilters);
+	m_qStrListXmlFilesName = qDir.entryList();
+	m_qFileInfoListXml = qDir.entryInfoList();
+	m_pComboBoxXmlFileName->addItems(m_qStrListXmlFilesName);
+
 	m_pLineEditX = new QLineEdit();
 	KE_PROCESS_ERROR(m_pLineEditX);
 	m_pLineEditY = new QLineEdit();
@@ -83,9 +95,9 @@ HRESULT MEProjRoleConfigWidget::Init()
 	KE_PROCESS_ERROR(m_pValidator);
 
 	m_pHBoxLayout->addWidget(m_pLabelName);
-	m_pHBoxLayout->addWidget(m_pComboBoxRoleName);
+	m_pHBoxLayout->addWidget(m_pComboBoxRoleFileName);
 	m_pHBoxLayout1->addWidget(m_pLabelXml);
-	m_pHBoxLayout1->addWidget(m_pComboBoxRoleXml);
+	m_pHBoxLayout1->addWidget(m_pComboBoxXmlFileName);
 	m_pHBoxLayout2->addWidget(m_pLabelX);
 	m_pHBoxLayout2->addWidget(m_pLineEditX);
 	m_pHBoxLayout2->addWidget(m_pLabelY);
@@ -117,19 +129,19 @@ HRESULT MEProjRoleConfigWidget::UnInit()
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 
-	SAFE_DELETE(m_pComboBoxRoleName);
-	SAFE_DELETE(m_pComboBoxRoleXml);
-	SAFE_DELETE(m_pLineEditX);
-	SAFE_DELETE(m_pLineEditY);
-	SAFE_DELETE(m_pLineEditZ);
-	SAFE_DELETE(m_pLabelName);
-	SAFE_DELETE(m_pLabelXml);
-	SAFE_DELETE(m_pLabelX);
-	SAFE_DELETE(m_pLabelY);
-	SAFE_DELETE(m_pLabelZ);
-	SAFE_DELETE(m_pPushButtonOK);
-	SAFE_DELETE(m_pPushButtonCancel);
-	SAFE_DELETE(m_pValidator);
+	//SAFE_DELETE(m_pComboBoxRoleFileName);
+	//SAFE_DELETE(m_pComboBoxXmlFileName);
+	//SAFE_DELETE(m_pLineEditX);
+	//SAFE_DELETE(m_pLineEditY);
+	//SAFE_DELETE(m_pLineEditZ);
+	//SAFE_DELETE(m_pLabelName);
+	//SAFE_DELETE(m_pLabelXml);
+	//SAFE_DELETE(m_pLabelX);
+	//SAFE_DELETE(m_pLabelY);
+	//SAFE_DELETE(m_pLabelZ);
+	//SAFE_DELETE(m_pPushButtonOK);
+	//SAFE_DELETE(m_pPushButtonCancel);
+	//SAFE_DELETE(m_pValidator);
 
 	hrResult = S_OK;
 Exit0:
@@ -148,8 +160,9 @@ void MEProjRoleConfigWidget::AddNewRole()
 	xmf3Pos.y = m_pLineEditY->text().toInt();
 	xmf3Pos.z = m_pLineEditZ->text().toInt();
 
-	m_pMEProjServer->ConfigNotifyRoleList(m_pComboBoxRoleName->currentText(),
-		m_pComboBoxRoleXml->currentText(),
-		m_pMEProjServer->GetXmlInfoList().at(m_pComboBoxRoleXml->currentIndex()).absoluteFilePath(),
+	m_pMEProjServer->ConfigNotifyRoleList(m_pComboBoxRoleFileName->currentText(),
+		m_qFileInfoListRole.at(m_pComboBoxRoleFileName->currentIndex()).absoluteFilePath(),
+		m_pComboBoxXmlFileName->currentText(),
+		m_qFileInfoListXml.at(m_pComboBoxXmlFileName->currentIndex()).absoluteFilePath(),
 		xmf3Pos);
 }

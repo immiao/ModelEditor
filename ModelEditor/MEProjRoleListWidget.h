@@ -29,7 +29,8 @@ public:
 	~MEProjRoleListWidget();
 	HRESULT Init();
 	HRESULT UnInit();
-	void AddWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos);
+	void AddWidgetItem(QString& qStrRoleName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName, 
+		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos);
 };
 
 #endif // MEPROJROLELISTWIDGET_H

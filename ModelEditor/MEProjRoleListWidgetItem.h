@@ -21,14 +21,15 @@
 class MEProjRoleListWidgetItem : public QListWidgetItem
 {
 private:
-	QString		m_qStrRoleName;
+	QString		m_qStrRoleFileName;
+	QString		m_qStrRoleFileAbsolutePath;
 	QString		m_qStrXmlFileName;
 	QString		m_qStrXmlFileAbsolutePath;
 	QIcon		m_qIcon;
 	XMFLOAT3	m_xmf3Pos;
 public:
-	MEProjRoleListWidgetItem(QString& qStrRoleName, QString& qStrXmlFileName, QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos,
-		const QIcon& qIcon);
+	MEProjRoleListWidgetItem(QString& qStrRoleFileName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName,
+		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos, const QIcon& qIcon);
 };
 
 #endif // MEPROJROLELISTWIDGETITEM_H

@@ -66,10 +66,6 @@ HRESULT ModelEditor::UnInit()
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pMEProjTreeWidget);
 
-		hrRetCode = m_pMEProjRoleConfigWidget->UnInit();
-		KE_COM_PROCESS_ERROR(hrRetCode);
-		SAFE_DELETE(m_pMEProjRoleConfigWidget);
-
 		hrRetCode = m_pMEProjRoleListWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pMEProjTabWidget);
