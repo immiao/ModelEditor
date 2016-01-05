@@ -41,8 +41,7 @@ VS_OUTPUT VS(float3 Pos : POSITION, float4 Color : COLOR)
     return output;
 }
 
-VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES, 
-					float Speed : SPEED) // speed代表角色移动速率(speed现在是废的，移动在CPU实现）
+VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES) // speed代表角色移动速率(speed现在是废的，移动在CPU实现）
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 
@@ -67,7 +66,7 @@ VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight :
 	return output;
 }
 
-VS_OUTPUT TestSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES)
+VS_OUTPUT StopSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
     //output.Pos = mul(Pos, WorldMatrix);
@@ -99,6 +98,16 @@ technique11 SkinnedRender
     pass P0
     {
         SetVertexShader(CompileShader(vs_5_0, SkinnedVS()));
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_5_0, PS()));
+    }
+}
+
+technique11 StopSkinnedRender
+{
+    pass P0
+    {
+        SetVertexShader(CompileShader(vs_5_0, StopSkinnedVS()));
         SetGeometryShader(NULL);
         SetPixelShader(CompileShader(ps_5_0, PS()));
     }

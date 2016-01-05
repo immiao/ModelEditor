@@ -50,7 +50,7 @@ class MEProjRoleConfigWidget: public QWidget
 	QLabel*			m_pLabelZ;
 	QPushButton*	m_pPushButtonOK;
 	QPushButton*	m_pPushButtonCancel;
-	QIntValidator*	m_pValidator;
+	QRegExpValidator*	m_pValidator;
 
 	MEProjServer*	m_pMEProjServer;
 	QStringList		m_qStrListXmlFilesName;

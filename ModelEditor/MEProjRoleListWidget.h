@@ -19,15 +19,16 @@
 #include <QLayout>
 #include <xnamath.h>
 #include "MEProjRoleListWidgetItem.h"
-
+#include "MEProjServer.h"
 class MEProjRoleListWidget: public QListWidget
 {
 	Q_OBJECT
 
+	MEProjServer*	m_pMEProjServer;
 public:
 	MEProjRoleListWidget(QWidget* pParent = NULL);
 	~MEProjRoleListWidget();
-	HRESULT Init();
+	HRESULT Init(MEProjServer* pMEProjServer);
 	HRESULT UnInit();
 	void AddWidgetItem(QString& qStrRoleName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName, 
 		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos);

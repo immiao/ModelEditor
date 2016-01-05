@@ -30,6 +30,8 @@ private:
 public:
 	MEProjRoleListWidgetItem(QString& qStrRoleFileName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName,
 		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos, const QIcon& qIcon);
+	QString GetRoleFilePath();
+	XMFLOAT3 GetPos();
 };
 
 #endif // MEPROJROLELISTWIDGETITEM_H

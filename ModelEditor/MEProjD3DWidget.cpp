@@ -10,7 +10,7 @@
 
 #include "MEProjD3DWidget.h"
 
-MEProjD3DWidget::MEProjD3DWidget(QWidget* pParent)
+MEProjD3DWidget::MEProjD3DWidget(MEProjServer* pMEProjServer, QWidget* pParent)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
@@ -53,6 +53,32 @@ MEProjD3DWidget::MEProjD3DWidget(QWidget* pParent)
 	m_dt = 5;
 	m_fTime = 0.0f;
 	m_bReadFinish = false;
+
+	m_pMEProjServer = pMEProjServer;
+	m_vMEProjSkinnedVertex.clear();
+	m_vMEProjSkinnedIndices.clear();
+	m_nMEProjBones.clear();
+	m_nMEProjAnimationClips.clear();
+	m_vMEProjBoneOffsets.clear();
+	m_vMEProjBoneParentIndex.clear();
+	m_MEProjanimationClip.clear();
+	m_xmmMEProjBoneTransforms.clear();
+	m_xmmMEProjFinalBoneTransforms.clear();
+	m_pMEProjSkinnedVertexBuffer.clear();
+	m_pMEProjSkinnedIndexBuffer.clear();
+	m_fMEProjTime.clear();
+	m_fMEProjDistance.clear();
+	m_fCurrentTime = 0.0f;
+	m_Dir[0].x = -1; m_Dir[0].y = -1; m_Dir[0].z = -1;
+	m_Dir[1].x = -1; m_Dir[1].y = -1; m_Dir[1].z = 1;
+	m_Dir[2].x = -1; m_Dir[2].y = 1; m_Dir[2].z = -1;
+	m_Dir[3].x = -1; m_Dir[3].y = 1; m_Dir[3].z = 1;
+	m_Dir[4].x = 1; m_Dir[4].y = -1; m_Dir[4].z = -1;
+	m_Dir[5].x = 1; m_Dir[5].y = -1; m_Dir[5].z = 1;
+	m_Dir[6].x = 1; m_Dir[6].y = 1; m_Dir[6].z = -1;
+	m_Dir[7].x = 1; m_Dir[7].y = 1; m_Dir[7].z = 1;
+
+	m_nState = 0;
 }
 
 HRESULT MEProjD3DWidget::Init()
@@ -143,6 +169,14 @@ HRESULT MEProjD3DWidget::UnInit()
 	SAFE_RELEASE(m_pGridIndicesBuffer);
 	SAFE_RELEASE(m_rsWireFrame);
 	SAFE_RELEASE(m_rsSolid);
+
+	int nMEProjVertexBufferSize = m_pMEProjSkinnedVertexBuffer.size();
+	for (int i = 0; i < nMEProjVertexBufferSize; i++)
+		SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
+	int nMEProjIndexBufferSize = m_pMEProjSkinnedIndexBuffer.size();
+	for (int i = 0; i < nMEProjIndexBufferSize; i++)
+		SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+	SAFE_RELEASE(m_pStopSkinnedVertexLayout);
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -303,6 +337,8 @@ HRESULT MEProjD3DWidget::InitDevice()
 	KE_PROCESS_ERROR(m_pTechnique);
 	m_pSkinnedTechnique = m_pEffect->GetTechniqueByName("SkinnedRender");
 	KE_PROCESS_ERROR(m_pSkinnedTechnique);
+	m_pStopSkinnedTechnique = m_pEffect->GetTechniqueByName("StopSkinnedRender");
+	KE_PROCESS_ERROR(m_pStopSkinnedTechnique);
 
 	m_xmmWorldViewProjVariable = m_pEffect->GetVariableByName("gWolrdViewProjMatrix")->AsMatrix();
 	m_xmmRoleWorldViewProjVariable = m_pEffect->GetVariableByName("gRoleWolrdViewProjMatrix")->AsMatrix();
@@ -334,13 +370,27 @@ HRESULT MEProjD3DWidget::InitDevice()
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"WEIGHT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"SPEED", 0, DXGI_FORMAT_R32_FLOAT, 0, 56, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
     nNumElements = sizeof(skinnedLayout) / sizeof(skinnedLayout[0]);
     m_pSkinnedTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
-    hrRetCode = m_pd3dDevice->CreateInputLayout(skinnedLayout, nNumElements, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, &m_pSkinnedVertexLayout);
+    hrRetCode = m_pd3dDevice->CreateInputLayout(skinnedLayout, nNumElements, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, 
+		&m_pSkinnedVertexLayout);
 	KE_COM_PROCESS_ERROR(hrRetCode);
 	KE_PROCESS_ERROR(m_pSkinnedVertexLayout);
+
+	D3D11_INPUT_ELEMENT_DESC stopSkinnedLayout[] =
+    {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"WEIGHT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+    nNumElements = sizeof(stopSkinnedLayout) / sizeof(stopSkinnedLayout[0]);
+    m_pStopSkinnedTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
+    hrRetCode = m_pd3dDevice->CreateInputLayout(stopSkinnedLayout, nNumElements, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, 
+		&m_pStopSkinnedVertexLayout);
+	KE_COM_PROCESS_ERROR(hrRetCode);
+	KE_PROCESS_ERROR(m_pStopSkinnedVertexLayout);
 
 	// Set primitive topology
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -371,7 +421,6 @@ Exit0:
 // Render the frame
 HRESULT MEProjD3DWidget::Render()
 {
-	//qDebug() << "in Render: " << width();
 	//qDebug() << height();
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
@@ -383,23 +432,6 @@ HRESULT MEProjD3DWidget::Render()
 
 	m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, farrayClearColor);
 	m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	// set the camera
-	m_mWorld = XMMatrixIdentity();
-	if (m_bReadFinish)
-	{
-		m_mRoleWorld = XMMatrixIdentity();
-		m_fDistance -= 0.1;
-		XMMATRIX xmmRoleTranslate = XMMatrixTranslation(0, 0, m_fDistance);
-		m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
-	}
-
-    m_mView = XMMatrixLookAtLH(m_xmvEye, m_xmvAt, m_xmvUp);
-	m_mProjection =XMMatrixPerspectiveFovLH((float)XM_PI * 0.5f, width() / (FLOAT)height(), 0.1f, 100000.0f);
-	m_xmmWorldViewProj = m_mWorld * m_mView * m_mProjection;
-	m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
-	m_xmmWorldViewProjVariable->SetMatrix((float*)(&m_xmmWorldViewProj));
-	m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
 	
 	// removed at 2015/09/23
 	//hrRetCode = m_pTechnique->GetDesc(&techDesc);
@@ -418,32 +450,54 @@ HRESULT MEProjD3DWidget::Render()
     m_pDeviceContext->IASetIndexBuffer(m_pGridIndicesBuffer, DXGI_FORMAT_R32_UINT, 0);
 	m_pDeviceContext->DrawIndexed(m_meshGrid.vIndices.size(), 0, 0);
 
-	// draw .obj Object
-	if (m_nIndicesCounter && m_nVerticesCounter)
-	{
-		qDebug() << "Draw .obj File";
-		m_pDeviceContext->RSSetState(m_rsWireFrame);
-		m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &uStride, &uOffset);
-		m_pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_pDeviceContext->DrawIndexed(m_nIndicesCounter, 0, 0);
-	}
-	// draw .m3d Object
-	else if (m_bReadFinish && !m_vSkinnedIndices.empty() && !m_vSkinnedVertex.empty())
-	{
-		m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmFinalBoneTransforms[0]), 0, m_xmmFinalBoneTransforms.size());
-		m_pDeviceContext->IASetInputLayout(m_pSkinnedVertexLayout);
-		pEffectPass = m_pSkinnedTechnique->GetPassByIndex(0);
-		KE_PROCESS_ERROR(pEffectPass);
-		hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
-		KE_COM_PROCESS_ERROR(hrRetCode);
+	// Grid, Not Role
+	m_mWorld = XMMatrixIdentity();
+	m_mView = XMMatrixLookAtLH(m_xmvEye, m_xmvAt, m_xmvUp);
+	m_mProjection =XMMatrixPerspectiveFovLH((float)XM_PI * 0.5f, width() / (FLOAT)height(), 0.1f, 100000.0f);
+	m_xmmWorldViewProj = m_mWorld * m_mView * m_mProjection;
+	m_xmmWorldViewProjVariable->SetMatrix((float*)(&m_xmmWorldViewProj));
 
-		//qDebug() << "Draw .m3d File : " << m_vSkinnedIndices.size();
+	if (!m_vMEProjSkinnedIndices.empty() && !m_vMEProjSkinnedVertex.empty())
+	{
+		for (int i = 0; i < m_nRoleNum; i++)
+		{
+			if (m_bReadFinish)
+			{
+				m_mRoleWorld = XMMatrixIdentity();
+				XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
+				//m_fMEProjDistance[i] -= 0.1;
+				XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z);
+				m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
+			}
 
-		UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
-		m_pDeviceContext->RSSetState(m_rsWireFrame);
-		m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pSkinnedVertexBuffer, &uSkinnedStride, &uOffset);
-		m_pDeviceContext->IASetIndexBuffer(m_pSkinnedIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_pDeviceContext->DrawIndexed(m_vSkinnedIndices.size(), 0, 0);
+			m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
+			m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
+
+			m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmMEProjFinalBoneTransforms[i][0]),
+				0, m_xmmMEProjFinalBoneTransforms[i].size());
+			if (m_nState == 0)
+			{
+				pEffectPass = m_pStopSkinnedTechnique->GetPassByIndex(0);
+				KE_PROCESS_ERROR(pEffectPass);
+				m_pDeviceContext->IASetInputLayout(m_pStopSkinnedVertexLayout);
+			}
+			else if (m_nState == 1)
+			{
+				pEffectPass = m_pSkinnedTechnique->GetPassByIndex(0);
+				KE_PROCESS_ERROR(pEffectPass);
+				m_pDeviceContext->IASetInputLayout(m_pSkinnedVertexLayout);
+			}
+			hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
+ 			KE_COM_PROCESS_ERROR(hrRetCode);
+			//qDebug() << "Draw .m3d File : " << m_vSkinnedIndices.size();
+
+			UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
+   			m_pDeviceContext->RSSetState(m_rsWireFrame);
+			m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pMEProjSkinnedVertexBuffer[i], &uSkinnedStride, &uOffset);
+			m_pDeviceContext->IASetIndexBuffer(m_pMEProjSkinnedIndexBuffer[i], DXGI_FORMAT_R32_UINT, 0);
+			m_pDeviceContext->DrawIndexed(m_vMEProjSkinnedIndices[i].size(), 0, 0);
+		}
+
 	}
 
     hrRetCode = m_pSwapChain->Present(0, 0);
@@ -512,6 +566,38 @@ HRESULT MEProjD3DWidget::ResetVertexIndiceBuffer()
 		hrRetCode = m_pd3dDevice->CreateBuffer(&bufferDesc, &InitData, &m_pSkinnedIndexBuffer);
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		KE_PROCESS_ERROR(m_pSkinnedIndexBuffer);
+	}
+
+	if (!m_vMEProjSkinnedVertex.empty() && !m_vMEProjSkinnedIndices.empty())
+	{
+		for (int i = 0; i < m_nRoleNum; i++)
+			SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
+		for (int i = 0; i < m_nRoleNum; i++)
+			SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+
+		for (int i = 0; i < m_nRoleNum; i++)
+		{
+			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			bufferDesc.ByteWidth = sizeof(GeometryGenerator::SKINNED_VERTEX) * m_vMEProjSkinnedVertex[i].size();
+			bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bufferDesc.CPUAccessFlags = 0;
+			bufferDesc.MiscFlags = 0;
+			InitData.pSysMem = &m_vMEProjSkinnedVertex[i][0];
+			hrRetCode = m_pd3dDevice->CreateBuffer(&bufferDesc, &InitData, &m_pMEProjSkinnedVertexBuffer[i]);
+			KE_COM_PROCESS_ERROR(hrRetCode);
+			KE_PROCESS_ERROR(m_pMEProjSkinnedVertexBuffer[i]);
+	
+			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			bufferDesc.ByteWidth = sizeof(int) * m_vMEProjSkinnedIndices[i].size();        // 36 vertices needed for 12 triangles in a triangle list
+			bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+			bufferDesc.CPUAccessFlags = 0;
+			bufferDesc.MiscFlags = 0;
+			InitData.pSysMem = &m_vMEProjSkinnedIndices[i][0];
+			hrRetCode = m_pd3dDevice->CreateBuffer(&bufferDesc, &InitData, &m_pMEProjSkinnedIndexBuffer[i]);
+			KE_COM_PROCESS_ERROR(hrRetCode);
+			KE_PROCESS_ERROR(m_pMEProjSkinnedIndexBuffer[i]);
+		}
+
 	}
 
 	hrResult = S_OK;
@@ -584,7 +670,6 @@ HRESULT MEProjD3DWidget::ReadFromM3dFile(char* pcFileName)
 			&m_vSkinnedVertex[i].uaBoundIndices[2], &m_vSkinnedVertex[i].uaBoundIndices[3]);
 		// added at 2015/12/16 for role animation
 		//m_vSkinnedVertex[i].xmf3Weight.z += 50;
-		m_vSkinnedVertex[i].fSpeed = 1.0f;
 		// added at 2015/12/16 for role animation
 	}
 
@@ -662,6 +747,7 @@ HRESULT MEProjD3DWidget::ReadFromM3dFile(char* pcFileName)
 	m_bReadFinish = true;
 	hrResult = S_OK;
 Exit0:
+	fclose(pFile);
 	return hrResult;
 }
 
@@ -743,6 +829,7 @@ MEProjD3DWidget::~MEProjD3DWidget()
 void MEProjD3DWidget::paintEvent(QPaintEvent* pEvent)
 {
 	//ReSetVertexIndiceBuffer();
+	m_fCurrentTime += m_dt / 1000.0;
 	UpdateBoneTransformMatrix();
 	Render();
 }
@@ -875,97 +962,317 @@ void MEProjD3DWidget::ClearVertexIndiceCounter()
 
 void MEProjD3DWidget::UpdateBoneTransformMatrix()
 {
-	if (!m_bReadFinish)
+	if (!m_bReadFinish || !m_nState)
 		return;
-	qDebug() << "Updating : " << m_fTime;
-	m_fTime += m_dt / 1000.0;
-	// Interpolate
-	for (UINT i = 0; i < m_animationClip.BoneAnimations.size(); i++)
+	int size = m_vMEProjSkinnedVertex.size();
+	for (int outLoop = 0; outLoop < size; outLoop++)
 	{
-		std::vector<Keyframe> &rKeyframes = m_animationClip.BoneAnimations[i].Keyframes;
-		if( m_fTime <= rKeyframes.front().TimePos )
+		m_fMEProjTime[outLoop] += m_dt / 1000.0;
+		// Interpolate
+		for (UINT i = 0; i < m_MEProjanimationClip[outLoop].BoneAnimations.size(); i++)
 		{
-			XMVECTOR S = XMLoadFloat3(&rKeyframes.front().Scale);
-			XMVECTOR P = XMLoadFloat3(&rKeyframes.front().Translation);
-			XMVECTOR Q = XMLoadFloat4(&rKeyframes.front().RotationQuat);
-
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-			//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
-			XMStoreFloat4x4(&m_xmmBoneTransforms[i], XMMatrixAffineTransformation(S, zero, Q, P));
-		}
-		else if( m_fTime >= rKeyframes.back().TimePos )
-		{
-			XMVECTOR S = XMLoadFloat3(&rKeyframes.back().Scale);
-			XMVECTOR P = XMLoadFloat3(&rKeyframes.back().Translation);
-			XMVECTOR Q = XMLoadFloat4(&rKeyframes.back().RotationQuat);
-
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-			//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
-			XMStoreFloat4x4(&m_xmmBoneTransforms[i], XMMatrixAffineTransformation(S, zero, Q, P));
-		}
-		else
-		{
-			// .m3d文件中的pos是相对父骨骼的pos
-			for(UINT j = 0; j < rKeyframes.size() - 1; ++j)
+			std::vector<Keyframe> &rKeyframes = m_MEProjanimationClip[outLoop].BoneAnimations[i].Keyframes;
+			if( m_fMEProjTime[outLoop] <= rKeyframes.front().TimePos )
 			{
-				if( m_fTime >= rKeyframes[j].TimePos && m_fTime <= rKeyframes[j+1].TimePos )
+				XMVECTOR S = XMLoadFloat3(&rKeyframes.front().Scale);
+				XMVECTOR P = XMLoadFloat3(&rKeyframes.front().Translation);
+				XMVECTOR Q = XMLoadFloat4(&rKeyframes.front().RotationQuat);
+
+				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+				//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
+				XMStoreFloat4x4(&m_xmmMEProjBoneTransforms[outLoop][i], XMMatrixAffineTransformation(S, zero, Q, P));
+			}
+			else if( m_fMEProjTime[outLoop] >= rKeyframes.back().TimePos )
+			{
+				XMVECTOR S = XMLoadFloat3(&rKeyframes.back().Scale);
+				XMVECTOR P = XMLoadFloat3(&rKeyframes.back().Translation);
+				XMVECTOR Q = XMLoadFloat4(&rKeyframes.back().RotationQuat);
+
+				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+				//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
+				XMStoreFloat4x4(&m_xmmMEProjBoneTransforms[outLoop][i], XMMatrixAffineTransformation(S, zero, Q, P));
+			}
+			else
+			{
+				// .m3d文件中的pos是相对父骨骼的pos
+				for(UINT j = 0; j < rKeyframes.size() - 1; ++j)
 				{
-					float lerpPercent = (m_fTime - rKeyframes[j].TimePos) / (rKeyframes[j+1].TimePos - rKeyframes[j].TimePos);
+					if( m_fMEProjTime[outLoop] >= rKeyframes[j].TimePos && m_fMEProjTime[outLoop] <= rKeyframes[j+1].TimePos )
+					{
+						float lerpPercent = (m_fMEProjTime[outLoop] - rKeyframes[j].TimePos) / 
+							(rKeyframes[j+1].TimePos - rKeyframes[j].TimePos);
 
-					XMVECTOR s0 = XMLoadFloat3(&rKeyframes[j].Scale);
-					XMVECTOR s1 = XMLoadFloat3(&rKeyframes[j+1].Scale);
+						XMVECTOR s0 = XMLoadFloat3(&rKeyframes[j].Scale);
+						XMVECTOR s1 = XMLoadFloat3(&rKeyframes[j+1].Scale);
 
-					XMVECTOR p0 = XMLoadFloat3(&rKeyframes[j].Translation);
-					XMVECTOR p1 = XMLoadFloat3(&rKeyframes[j+1].Translation);
+						XMVECTOR p0 = XMLoadFloat3(&rKeyframes[j].Translation);
+						XMVECTOR p1 = XMLoadFloat3(&rKeyframes[j+1].Translation);
 
-					XMVECTOR q0 = XMLoadFloat4(&rKeyframes[j].RotationQuat);
-					XMVECTOR q1 = XMLoadFloat4(&rKeyframes[j+1].RotationQuat);
+						XMVECTOR q0 = XMLoadFloat4(&rKeyframes[j].RotationQuat);
+						XMVECTOR q1 = XMLoadFloat4(&rKeyframes[j+1].RotationQuat);
 
-					XMVECTOR S = XMVectorLerp(s0, s1, lerpPercent);
-					XMVECTOR P = XMVectorLerp(p0, p1, lerpPercent);
-					XMVECTOR Q = XMQuaternionSlerp(q0, q1, lerpPercent);
+						XMVECTOR S = XMVectorLerp(s0, s1, lerpPercent);
+						XMVECTOR P = XMVectorLerp(p0, p1, lerpPercent);
+						XMVECTOR Q = XMQuaternionSlerp(q0, q1, lerpPercent);
 
-					XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-					//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
+						XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+						//m_xmmBoneTransforms[i] = XMMatrixAffineTransformation(S, zero, Q, P);
 					
-					XMStoreFloat4x4(&m_xmmBoneTransforms[i], XMMatrixAffineTransformation(S, zero, Q, P));
-					break;
+						XMStoreFloat4x4(&m_xmmMEProjBoneTransforms[outLoop][i], XMMatrixAffineTransformation(S, zero, Q, P));
+						break;
+					}
 				}
 			}
 		}
-	}
 	
-	// calculate final bone transformation
-	std::vector<XMFLOAT4X4> toRootTransforms;
-	toRootTransforms.resize(m_nBones);
-	toRootTransforms[0] = m_xmmBoneTransforms[0];
-	//XMMATRIX t = XMMatrixMultiply(m_xmmBoneTransforms[1], toRootTransforms[0]);
-	for (UINT i = 1; i < m_nBones; i++)
-	{
-		int nParentIndex = m_vBoneParentIndex[i];
-		//toRootTransforms[i] = XMMatrixMultiply(m_xmmBoneTransforms[i], toRootTransforms[nParentIndex]);
-		//m_xmmFinalBoneTransforms[i] = XMMatrixMultiply(m_vBoneOffsets[i], toRootTransforms[i]);
+		// calculate final bone transformation
+		std::vector<XMFLOAT4X4> toRootTransforms;
+		toRootTransforms.resize(m_nMEProjBones[outLoop]);
+		toRootTransforms[0] = m_xmmMEProjBoneTransforms[outLoop][0];
+		//XMMATRIX t = XMMatrixMultiply(m_xmmBoneTransforms[1], toRootTransforms[0]);
+		for (UINT i = 1; i < m_nMEProjBones[outLoop]; i++)
+		{
+			int nParentIndex = m_vMEProjBoneParentIndex[outLoop][i];
+			//toRootTransforms[i] = XMMatrixMultiply(m_xmmBoneTransforms[i], toRootTransforms[nParentIndex]);
+			//m_xmmFinalBoneTransforms[i] = XMMatrixMultiply(m_vBoneOffsets[i], toRootTransforms[i]);
 
-		XMMATRIX toParent = XMLoadFloat4x4(&m_xmmBoneTransforms[i]);
-		XMMATRIX parentToRoot = XMLoadFloat4x4(&toRootTransforms[nParentIndex]);
+			XMMATRIX toParent = XMLoadFloat4x4(&m_xmmMEProjBoneTransforms[outLoop][i]);
+			XMMATRIX parentToRoot = XMLoadFloat4x4(&toRootTransforms[nParentIndex]);
 
-		XMMATRIX toRoot = XMMatrixMultiply(toParent, parentToRoot);
+			XMMATRIX toRoot = XMMatrixMultiply(toParent, parentToRoot);
 
-		XMStoreFloat4x4(&toRootTransforms[i], toRoot);
+			XMStoreFloat4x4(&toRootTransforms[i], toRoot);
+		}
+
+		for(UINT i = 0; i < m_nMEProjBones[outLoop]; ++i)
+		{
+			XMMATRIX offset = XMLoadFloat4x4(&m_vMEProjBoneOffsets[outLoop][i]);
+			XMMATRIX toRoot = XMLoadFloat4x4(&toRootTransforms[i]);
+			XMStoreFloat4x4(&m_xmmMEProjFinalBoneTransforms[outLoop][i], XMMatrixMultiply(offset, toRoot));
+		}
+
+		if (m_fMEProjTime[outLoop] > m_MEProjanimationClip[outLoop].fEndTime)
+			m_fMEProjTime[outLoop] = 0.0f;
 	}
-
-	for(UINT i = 0; i < m_nBones; ++i)
-	{
-		XMMATRIX offset = XMLoadFloat4x4(&m_vBoneOffsets[i]);
-		XMMATRIX toRoot = XMLoadFloat4x4(&toRootTransforms[i]);
-		XMStoreFloat4x4(&m_xmmFinalBoneTransforms[i], XMMatrixMultiply(offset, toRoot));
-	}
-
-	if (m_fTime > m_animationClip.fEndTime)
-		m_fTime = 0.0f;
 }
 
 void MEProjD3DWidget::SetReadFinish(bool bFlag)
 {
 	m_bReadFinish = bFlag;
+}
+
+HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& qItemList)
+{
+	HRESULT hrResult = E_FAIL;
+	HRESULT hrRetCode = E_FAIL;
+
+	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem;
+
+	int index = 0;
+
+	foreach (pMEProjRoleListWidgetItem, qItemList)
+	{
+		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetRoleFilePath().toLatin1().constData(), "r");
+		char cStr[100];
+		char ignore[100];
+		KE_PROCESS_ERROR(pFile);
+		int nNumSkinnedVertex;
+		int nNumSkinnedIndices;
+		int nNumMaterial;
+		// header
+		fscanf(pFile, "%s", ignore);
+		fscanf(pFile, "%s %d", ignore, &nNumMaterial);
+		fscanf(pFile, "%s %d", ignore, &nNumSkinnedVertex);
+		fscanf(pFile, "%s %d", ignore, &nNumSkinnedIndices); // the number of triangles
+		m_vMEProjSkinnedVertex[index].resize(nNumSkinnedVertex);
+		m_vMEProjSkinnedIndices[index].resize(nNumSkinnedIndices * 3);
+
+		fscanf(pFile, "%s %d", ignore, &m_nMEProjBones[index]);
+		fscanf(pFile, "%s %d", ignore, &m_nMEProjAnimationClips[index]);
+
+		// material
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < nNumMaterial; i++)
+		{
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+		}
+
+		// subset
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < nNumMaterial; i++)
+		{
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %s", ignore, ignore);
+		}
+
+		// vertex
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < nNumSkinnedVertex; i++)
+		{
+			fscanf(pFile, "%s %f %f %f", ignore, &m_vMEProjSkinnedVertex[index][i].xmf3Pos.x, &m_vMEProjSkinnedVertex[index][i].xmf3Pos.y, 
+				&m_vMEProjSkinnedVertex[index][i].xmf3Pos.z);
+			//m_vSkinnedVertex[i].xmf3Pos.x += 50;
+			//m_vSkinnedVertex[i].xmf3Pos.y += 50;
+			//m_vSkinnedVertex[i].xmf3Pos.z += 50;
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %f %f %f %s", ignore, &m_vMEProjSkinnedVertex[index][i].xmf3Weight.x, 
+				&m_vMEProjSkinnedVertex[index][i].xmf3Weight.y, &m_vMEProjSkinnedVertex[index][i].xmf3Weight.z, ignore);
+			fscanf(pFile, "%s %d %d %d %d", ignore, &m_vMEProjSkinnedVertex[index][i].uaBoundIndices[0], 
+				&m_vMEProjSkinnedVertex[index][i].uaBoundIndices[1], &m_vMEProjSkinnedVertex[index][i].uaBoundIndices[2], 
+				&m_vMEProjSkinnedVertex[index][i].uaBoundIndices[3]);
+			// added at 2015/12/16 for role animation
+			//m_vSkinnedVertex[i].xmf3Weight.z += 50;
+			// added at 2015/12/16 for role animation
+		}
+
+		// indices
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < nNumSkinnedIndices; i++)
+		{
+			int offset = i * 3;
+			fscanf(pFile, "%d %d %d", &m_vMEProjSkinnedIndices[index][offset], &m_vMEProjSkinnedIndices[index][offset + 1], 
+				&m_vMEProjSkinnedIndices[index][offset + 2]);
+		}
+
+		// bone offset
+		m_vMEProjBoneOffsets[index].resize(m_nMEProjBones[index]);
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < m_nMEProjBones[index]; i++)
+		{
+			fscanf(pFile, "%s", ignore);
+			fscanf(pFile, "%f %f %f %f", &m_vMEProjBoneOffsets[index][i](0,0), &m_vMEProjBoneOffsets[index][i](0,1), 
+				&m_vMEProjBoneOffsets[index][i](0,2), &m_vMEProjBoneOffsets[index][i](0,3));
+			fscanf(pFile, "%f %f %f %f", &m_vMEProjBoneOffsets[index][i](1,0), &m_vMEProjBoneOffsets[index][i](1,1), 
+				&m_vMEProjBoneOffsets[index][i](1,2), &m_vMEProjBoneOffsets[index][i](1,3));
+			fscanf(pFile, "%f %f %f %f", &m_vMEProjBoneOffsets[index][i](2,0), &m_vMEProjBoneOffsets[index][i](2,1), 
+				&m_vMEProjBoneOffsets[index][i](2,2), &m_vMEProjBoneOffsets[index][i](2,3));
+			fscanf(pFile, "%f %f %f %f", &m_vMEProjBoneOffsets[index][i](3,0), &m_vMEProjBoneOffsets[index][i](3,1), 
+				&m_vMEProjBoneOffsets[index][i](3,2), &m_vMEProjBoneOffsets[index][i](3,3));
+		}
+
+		// bone hierarchy
+		m_vMEProjBoneParentIndex[index].resize(m_nMEProjBones[index]);
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < m_nMEProjBones[index]; i++)
+		{
+			fscanf(pFile, "%s %d", ignore, &m_vMEProjBoneParentIndex[index][i]);
+		}
+
+		// animation clips
+		fscanf(pFile, "%s", ignore);
+		for (UINT i = 0; i < m_nMEProjAnimationClips[index]; i++)
+		{
+			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s", ignore);
+
+			m_MEProjanimationClip[index].BoneAnimations.resize(m_nMEProjBones[index]);
+
+			// read bone key frames
+			for (UINT boneIndex = 0; boneIndex < m_nMEProjBones[index]; boneIndex++)
+			{
+				UINT nKeyFrames = 0;
+				fscanf(pFile, "%s %s %d", ignore, ignore, &nKeyFrames);
+				fscanf(pFile, "%s", ignore); // {
+
+				m_MEProjanimationClip[index].BoneAnimations[boneIndex].Keyframes.resize(nKeyFrames);
+				for (UINT j = 0; j < nKeyFrames; j++)
+				{
+					float t    = 0.0f;
+					XMFLOAT3 p(0.0f, 0.0f, 0.0f);
+					XMFLOAT3 s(1.0f, 1.0f, 1.0f);
+					XMFLOAT4 q(0.0f, 0.0f, 0.0f, 1.0f);
+					fscanf(pFile, "%s %f", ignore, &t);
+					fscanf(pFile, "%s %f %f %f", ignore, &p.x, &p.y, &p.z);
+					fscanf(pFile, "%s %f %f %f", ignore, &s.x, &s.y, &s.z);
+					fscanf(pFile, "%s %f %f %f %f", ignore, &q.x, &q.y, &q.z, &q.w);
+
+					m_MEProjanimationClip[index].BoneAnimations[boneIndex].Keyframes[j].TimePos      = t;
+					m_MEProjanimationClip[index].BoneAnimations[boneIndex].Keyframes[j].Translation  = p;
+					m_MEProjanimationClip[index].BoneAnimations[boneIndex].Keyframes[j].Scale        = s;
+					m_MEProjanimationClip[index].BoneAnimations[boneIndex].Keyframes[j].RotationQuat = q;
+				}
+
+				fscanf(pFile, "%s", ignore); // }
+			}
+		}
+		m_MEProjanimationClip[index].GetEndTime();
+		m_xmmMEProjBoneTransforms[index].resize(m_nMEProjBones[index]);
+		m_xmmMEProjFinalBoneTransforms[index].resize(m_nMEProjBones[index]);
+
+		index++;
+		fclose(pFile);
+	}
+
+	hrRetCode = ResetVertexIndiceBuffer();
+	KE_COM_PROCESS_ERROR(hrRetCode);
+
+	m_bReadFinish = true;
+	hrResult = S_OK;
+Exit0:
+	return hrResult;
+}
+
+void MEProjD3DWidget::UpdateRole()
+{
+	m_qItemList = m_pMEProjServer->GetItemList();
+	m_nRoleNum = m_qItemList.size();
+	m_vMEProjSkinnedVertex.resize(m_nRoleNum);
+	m_vMEProjSkinnedIndices.resize(m_nRoleNum);
+	m_nMEProjBones.resize(m_nRoleNum);
+	m_nMEProjAnimationClips.resize(m_nRoleNum);
+	m_vMEProjBoneOffsets.resize(m_nRoleNum);
+	m_vMEProjBoneParentIndex.resize(m_nRoleNum);
+	m_MEProjanimationClip.resize(m_nRoleNum);
+	m_xmmMEProjBoneTransforms.resize(m_nRoleNum);
+	m_xmmMEProjFinalBoneTransforms.resize(m_nRoleNum);
+	m_pMEProjSkinnedVertexBuffer.resize(m_nRoleNum);
+	m_pMEProjSkinnedIndexBuffer.resize(m_nRoleNum);
+	m_fMEProjTime.resize(m_nRoleNum);
+	m_fMEProjDistance.resize(m_nRoleNum);
+	ReadFromM3dFileList(m_qItemList);
+
+	m_vSegment.resize(m_nRoleNum);
+	BuildUpTimeLine();
+}
+
+void MEProjD3DWidget::Play()
+{
+	m_nState = 1;
+}
+
+void MEProjD3DWidget::Stop()
+{
+	m_nState = 0;
+	m_fCurrentTime = 0;
+	for (int i = 0; i < m_nRoleNum; i++)
+		m_fMEProjTime[i] = 0;
+}
+
+void MEProjD3DWidget::BuildUpTimeLine()
+{
+	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem;
+	int index = 0;
+	foreach (pMEProjRoleListWidgetItem, m_qItemList)
+	{
+		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetRoleFilePath().toLatin1().constData(), "r");
+		char cDir[100];
+		float fDistance, fTime;
+		fscanf(pFile, "%s %f %f", cDir, &fDistance, &fTime);
+
+		index++;
+		fclose(pFile);
+	}
 }

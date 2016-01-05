@@ -20,3 +20,13 @@ MEProjRoleListWidgetItem::MEProjRoleListWidgetItem(QString& qStrRoleFileName, QS
 	m_xmf3Pos = xmf3Pos;
 	m_qIcon = qIcon;
 }
+
+QString MEProjRoleListWidgetItem::GetRoleFilePath()
+{
+	return m_qStrRoleFileAbsolutePath;
+}
+
+XMFLOAT3 MEProjRoleListWidgetItem::GetPos()
+{
+	return m_xmf3Pos;
+}

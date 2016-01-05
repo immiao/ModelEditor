@@ -16,13 +16,13 @@ MEProjRoleListWidget::MEProjRoleListWidget(QWidget* pParent):QListWidget(pParent
 	
 }
 
-HRESULT MEProjRoleListWidget::Init()
+HRESULT MEProjRoleListWidget::Init(MEProjServer* pMEProjServer)
 {
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 
 	//setHeaderLabels(QStringList(QString::fromLocal8Bit("解决方案管理器")));
-
+	m_pMEProjServer = pMEProjServer;
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -49,4 +49,5 @@ void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleFileName, QString& qSt
 	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleFileName, qStrRoleFileAbsolutePath, 
 		qStrXmlFileName, qStrXmlFileAbsolutePath, xmf3Pos, QIcon("Resources/role.jpg"));
 	addItem(pMEProjRoleListWidgetItem);
+	m_pMEProjServer->NotifyD3DWidgetUpdateRole();
 }

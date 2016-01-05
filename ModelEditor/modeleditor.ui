@@ -42,6 +42,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_save"/>
+   <addaction name="action_play"/>
+   <addaction name="action_stop"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="openObjFile">
@@ -73,7 +75,28 @@
     <string>保存xml文件</string>
    </property>
    <property name="toolTip">
-    <string>save</string>
+    <string>保存文件</string>
+   </property>
+  </action>
+  <action name="action_play">
+   <property name="icon">
+    <iconset resource="modeleditor.qrc">
+     <normaloff>:/ModelEditor/Resources/Play.png</normaloff>:/ModelEditor/Resources/Play.png</iconset>
+   </property>
+   <property name="text">
+    <string>播放</string>
+   </property>
+  </action>
+  <action name="action_stop">
+   <property name="icon">
+    <iconset resource="modeleditor.qrc">
+     <normaloff>:/ModelEditor/Resources/Stop.png</normaloff>:/ModelEditor/Resources/Stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>停止</string>
+   </property>
+   <property name="toolTip">
+    <string>停止</string>
    </property>
   </action>
  </widget>

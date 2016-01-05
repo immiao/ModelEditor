@@ -42,6 +42,8 @@ HRESULT MEProjRoleConfigWidget::Init()
 	QDir			qDir;
 	QStringList		qStrListM3dFilters;
 	QStringList		qStrListXmlFilters;
+	QRegExp regExp("^-?\\d+$"); 
+
 	qStrListM3dFilters << "*.m3d";
 	qStrListXmlFilters << "*.xml";
 
@@ -91,9 +93,9 @@ HRESULT MEProjRoleConfigWidget::Init()
 	m_pPushButtonCancel = new QPushButton(QString::fromLocal8Bit("È¡Ïû"));
 	KE_PROCESS_ERROR(m_pPushButtonCancel);
 
-	m_pValidator = new QIntValidator(0, 100000, this);
+	m_pValidator = new QRegExpValidator(regExp, this);
 	KE_PROCESS_ERROR(m_pValidator);
-
+	
 	m_pHBoxLayout->addWidget(m_pLabelName);
 	m_pHBoxLayout->addWidget(m_pComboBoxRoleFileName);
 	m_pHBoxLayout1->addWidget(m_pLabelXml);

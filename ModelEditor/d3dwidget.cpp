@@ -584,7 +584,6 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 			&m_vSkinnedVertex[i].uaBoundIndices[2], &m_vSkinnedVertex[i].uaBoundIndices[3]);
 		// added at 2015/12/16 for role animation
 		//m_vSkinnedVertex[i].xmf3Weight.z += 50;
-		m_vSkinnedVertex[i].fSpeed = 1.0f;
 		// added at 2015/12/16 for role animation
 	}
 

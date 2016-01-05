@@ -130,7 +130,7 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 
 	m_pMEProjRoleListWidget = new MEProjRoleListWidget();
 	KE_PROCESS_ERROR(m_pMEProjRoleListWidget);
-	hrRetCode = m_pMEProjRoleListWidget->Init();
+	hrRetCode = m_pMEProjRoleListWidget->Init(m_pMEProjServer);
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	m_pQPushButtonAddRole = new QPushButton(QIcon("Resources/add.png"), QString(QString::fromLocal8Bit("添加新角色")));
@@ -145,7 +145,7 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	//KE_COM_PROCESS_ERROR(hrRetCode);
 	// 暂时用D3DWidget来初始化Tab1，2015/12/23
 
-	m_pMEProjD3DWidget = new MEProjD3DWidget();
+	m_pMEProjD3DWidget = new MEProjD3DWidget(m_pMEProjServer);
 	KE_PROCESS_ERROR(m_pMEProjD3DWidget);
 	hrRetCode = m_pMEProjD3DWidget->Init();
 	KE_COM_PROCESS_ERROR(hrRetCode);
@@ -156,9 +156,11 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjTabWidget, SLOT(SaveCurrentFile()));
+	connect(ui.action_play, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Play()));
+	connect(ui.action_stop, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Stop()));
 	connect(m_pQPushButtonAddRole, SIGNAL(clicked()), this, SLOT(OpenConfigWidget()));
 
-	hrRetCode = m_pMEProjServer->Init(m_pMEProjTreeWidget, m_pMEProjTabWidget, m_pMEProjRoleListWidget);
+	hrRetCode = m_pMEProjServer->Init(m_pMEProjTreeWidget, m_pMEProjTabWidget, m_pMEProjRoleListWidget, m_pMEProjD3DWidget);
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	m_pMEProjTreeWidget->setFixedWidth(200);

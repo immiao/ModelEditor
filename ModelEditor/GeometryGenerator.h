@@ -36,7 +36,6 @@ namespace GeometryGenerator
 		XMFLOAT4 xmf4Color;
 		XMFLOAT3 xmf3Weight;
 		UINT	 uaBoundIndices[4];
-		FLOAT	 fSpeed;
 		SKINNED_VERTEX()
 		{
 			xmf4Color.x = 0.0f;
