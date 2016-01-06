@@ -26,6 +26,11 @@ QString MEProjRoleListWidgetItem::GetRoleFilePath()
 	return m_qStrRoleFileAbsolutePath;
 }
 
+QString MEProjRoleListWidgetItem::GetXmlFilePath()
+{
+	return m_qStrXmlFileAbsolutePath;
+}
+
 XMFLOAT3 MEProjRoleListWidgetItem::GetPos()
 {
 	return m_xmf3Pos;

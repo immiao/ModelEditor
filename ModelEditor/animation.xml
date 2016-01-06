@@ -1,5 +1,5 @@
-forward 1000 5
-right 1000 5
-right 1000 5
-right 1000 5
+forward 250 1
+right 250 1
+right 250 1
+right 250 1
 end

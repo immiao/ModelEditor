@@ -72,7 +72,15 @@ struct Direction
 struct Segment
 {
 	int nDirIndex;
+	XMMATRIX xmmRotation;
+	float fxSpeed, fySpeed, fzSpeed;
 	float fEndTime;
+	Segment()
+	{
+		nDirIndex = 0;
+		fxSpeed = fySpeed = fzSpeed = fEndTime = 0.0f;
+	}
+
 };
 
 class TestQt;
@@ -81,9 +89,8 @@ class MEProjD3DWidget : public QWidget
 	Q_OBJECT
 	// Q_DISABLE_COPY(d3DRenderWidget)
 public:
+	XMMATRIX mul(CXMMATRIX x, CXMMATRIX y);
 	XMFLOAT4X4 M;
-
-
 	MEProjD3DWidget(MEProjServer* pMEProjServer, QWidget* pParent = NULL);
 	HRESULT Init();
 	HRESULT UnInit();
@@ -163,9 +170,14 @@ private:
 	QList<MEProjRoleListWidgetItem*>								m_qItemList;
 	int																m_nState; // 0Í£Ö¹£¬1²¥·Å£¬2ÔÝÍ£
 	float															m_fCurrentTime;
+	std::vector<int>												m_vCurrentSegmentIndex;
 	std::vector<XMFLOAT3>											m_vxmf3CurrentMove;
-	std::vector<vector<Segment> >									m_vSegment;
-	Direction														m_Dir[8];
+	std::vector<std::vector<Segment> >								m_vSegment;
+	Direction														m_Dir[27];
+	std::vector<float>												m_vfX;
+	std::vector<float>												m_vfY;
+	std::vector<float>												m_vfZ;
+	std::vector<bool>												m_vStopFlag;
 
 	// added at 2015/9/23 for animation
 	std::vector<GeometryGenerator::SKINNED_VERTEX>  m_vSkinnedVertex;

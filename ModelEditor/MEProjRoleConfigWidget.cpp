@@ -162,9 +162,13 @@ void MEProjRoleConfigWidget::AddNewRole()
 	xmf3Pos.y = m_pLineEditY->text().toInt();
 	xmf3Pos.z = m_pLineEditZ->text().toInt();
 
+	qDebug() << m_pComboBoxXmlFileName->currentText();
+	qDebug() << m_qFileInfoListXml.at(m_pComboBoxXmlFileName->currentIndex()).absoluteFilePath();
+
 	m_pMEProjServer->ConfigNotifyRoleList(m_pComboBoxRoleFileName->currentText(),
 		m_qFileInfoListRole.at(m_pComboBoxRoleFileName->currentIndex()).absoluteFilePath(),
 		m_pComboBoxXmlFileName->currentText(),
 		m_qFileInfoListXml.at(m_pComboBoxXmlFileName->currentIndex()).absoluteFilePath(),
 		xmf3Pos);
+
 }

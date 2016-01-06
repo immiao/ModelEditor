@@ -70,13 +70,36 @@ MEProjD3DWidget::MEProjD3DWidget(MEProjServer* pMEProjServer, QWidget* pParent)
 	m_fMEProjDistance.clear();
 	m_fCurrentTime = 0.0f;
 	m_Dir[0].x = -1; m_Dir[0].y = -1; m_Dir[0].z = -1;
-	m_Dir[1].x = -1; m_Dir[1].y = -1; m_Dir[1].z = 1;
-	m_Dir[2].x = -1; m_Dir[2].y = 1; m_Dir[2].z = -1;
-	m_Dir[3].x = -1; m_Dir[3].y = 1; m_Dir[3].z = 1;
-	m_Dir[4].x = 1; m_Dir[4].y = -1; m_Dir[4].z = -1;
-	m_Dir[5].x = 1; m_Dir[5].y = -1; m_Dir[5].z = 1;
-	m_Dir[6].x = 1; m_Dir[6].y = 1; m_Dir[6].z = -1;
-	m_Dir[7].x = 1; m_Dir[7].y = 1; m_Dir[7].z = 1;
+	m_Dir[1].x = -1; m_Dir[1].y = -1; m_Dir[1].z = 0;
+	m_Dir[2].x = -1; m_Dir[2].y = -1; m_Dir[2].z = 1;
+	m_Dir[3].x = -1; m_Dir[3].y = 0; m_Dir[3].z = -1;
+	m_Dir[4].x = -1; m_Dir[4].y = 0; m_Dir[4].z = 0; // right
+	m_Dir[5].x = -1; m_Dir[5].y = 0; m_Dir[5].z = 1;
+	m_Dir[6].x = -1; m_Dir[6].y = 1; m_Dir[6].z = -1;
+	m_Dir[7].x = -1; m_Dir[7].y = 1; m_Dir[7].z = 0;
+	m_Dir[8].x = -1; m_Dir[8].y = 1; m_Dir[8].z = 1;
+	
+	m_Dir[9].x = 0; m_Dir[9].y = -1; m_Dir[9].z = -1;
+	m_Dir[10].x = 0; m_Dir[10].y = -1; m_Dir[10].z = 0;
+	m_Dir[11].x = 0; m_Dir[11].y = -1; m_Dir[11].z = 1; 
+	m_Dir[12].x = 0; m_Dir[12].y = 0; m_Dir[12].z = -1; // forward
+	m_Dir[13].x = 0; m_Dir[13].y = 0; m_Dir[13].z = 0;
+	m_Dir[14].x = 0; m_Dir[14].y = 0; m_Dir[14].z = 1; // back
+	m_Dir[15].x = 0; m_Dir[15].y = 1; m_Dir[15].z = -1;
+	m_Dir[16].x = 0; m_Dir[16].y = 1; m_Dir[16].z = 0;
+	m_Dir[17].x = 0; m_Dir[17].y = 1; m_Dir[17].z = 1;
+
+	m_Dir[18].x = 1; m_Dir[18].y = -1; m_Dir[18].z = -1;
+	m_Dir[19].x = 1; m_Dir[19].y = -1; m_Dir[19].z = 0;
+	m_Dir[20].x = 1; m_Dir[20].y = -1; m_Dir[20].z = 1;
+	m_Dir[21].x = 1; m_Dir[21].y = 0; m_Dir[21].z = -1;
+	m_Dir[22].x = 1; m_Dir[22].y = 0; m_Dir[22].z = 0; // left
+	m_Dir[23].x = 1; m_Dir[23].y = 0; m_Dir[23].z = 1;
+	m_Dir[24].x = 1; m_Dir[24].y = 1; m_Dir[24].z = -1;
+	m_Dir[25].x = 1; m_Dir[25].y = 1; m_Dir[25].z = 0;
+	m_Dir[26].x = 1; m_Dir[26].y = 1; m_Dir[26].z = 1;
+	m_vSegment.clear();
+	m_vCurrentSegmentIndex.clear();
 
 	m_nState = 0;
 }
@@ -459,45 +482,111 @@ HRESULT MEProjD3DWidget::Render()
 
 	if (!m_vMEProjSkinnedIndices.empty() && !m_vMEProjSkinnedVertex.empty())
 	{
+		bool bIsAllStop = true;
 		for (int i = 0; i < m_nRoleNum; i++)
 		{
-			if (m_bReadFinish)
+			if (m_nState == 1 && !m_vStopFlag[i])
+			{
+				if (i == 1)
+					int x = 10;
+				if (m_vCurrentSegmentIndex[i]==1)
+					int x=10;
+				if (m_fCurrentTime > m_vSegment[i][m_vCurrentSegmentIndex[i]].fEndTime)
+					m_vCurrentSegmentIndex[i]++;
+				if (m_vCurrentSegmentIndex[i] > m_vSegment[i].size() - 1)
+					m_vStopFlag[i] = true;
+				if (!m_vStopFlag[i])
+				{
+					int nCurrentSegmentIndex = m_vCurrentSegmentIndex[i];
+					m_mRoleWorld = XMMatrixIdentity();
+					XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
+					//m_fMEProjDistance[i] -= 0.1;
+					int nDirIndex = m_vSegment[i][nCurrentSegmentIndex].nDirIndex;
+					m_vfX[i] += m_Dir[nDirIndex].x * m_vSegment[i][nCurrentSegmentIndex].fxSpeed * m_dt / 1000.0;
+					m_vfY[i] += m_Dir[nDirIndex].y * m_vSegment[i][nCurrentSegmentIndex].fySpeed * m_dt / 1000.0;
+					m_vfZ[i] += m_Dir[nDirIndex].z * m_vSegment[i][nCurrentSegmentIndex].fzSpeed * m_dt / 1000.0;
+					XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x + m_vfX[i], xmf3Pos.y + m_vfY[i], xmf3Pos.z + m_vfZ[i]);
+
+					//m_mRoleWorld = m_mRoleWorld * m_vSegment[i][nCurrentSegmentIndex].xmmRotation;
+					m_mRoleWorld = mul(m_mRoleWorld, m_vSegment[i][nCurrentSegmentIndex].xmmRotation);
+					//if (m_mRoleWorld._11 < 0.00001) m_mRoleWorld._11 = 0;
+					//if (m_mRoleWorld._12 < 0.00001) m_mRoleWorld._12 = 0;
+					//if (m_mRoleWorld._13 < 0.00001) m_mRoleWorld._13 = 0;
+					//if (m_mRoleWorld._14 < 0.00001) m_mRoleWorld._14 = 0;
+					//if (m_mRoleWorld._21 < 0.00001) m_mRoleWorld._21 = 0;
+					//if (m_mRoleWorld._22 < 0.00001) m_mRoleWorld._22 = 0;
+					//if (m_mRoleWorld._23 < 0.00001) m_mRoleWorld._23 = 0;
+					//if (m_mRoleWorld._24 < 0.00001) m_mRoleWorld._24 = 0;
+					//if (m_mRoleWorld._31 < 0.00001) m_mRoleWorld._31 = 0;
+					//if (m_mRoleWorld._32 < 0.00001) m_mRoleWorld._32 = 0;
+					//if (m_mRoleWorld._33 < 0.00001) m_mRoleWorld._33 = 0;
+					//if (m_mRoleWorld._34 < 0.00001) m_mRoleWorld._34 = 0;
+					//if (m_mRoleWorld._41 < 0.00001) m_mRoleWorld._41 = 0;
+					//if (m_mRoleWorld._42 < 0.00001) m_mRoleWorld._42 = 0;
+					//if (m_mRoleWorld._43 < 0.00001) m_mRoleWorld._43 = 0;
+					//if (m_mRoleWorld._44 < 0.00001) m_mRoleWorld._44 = 0;
+
+					m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
+
+					m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
+					m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
+
+					m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmMEProjFinalBoneTransforms[i][0]),
+						0, m_xmmMEProjFinalBoneTransforms[i].size());
+					pEffectPass = m_pSkinnedTechnique->GetPassByIndex(0);
+					KE_PROCESS_ERROR(pEffectPass);
+					m_pDeviceContext->IASetInputLayout(m_pSkinnedVertexLayout);
+					bIsAllStop = false;
+				}
+				else //当前角色动画完毕停止运动，只有一帧
+				{
+					m_mRoleWorld = XMMatrixIdentity();
+					XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
+					XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z);
+					m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
+
+					m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
+					m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
+
+					m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmMEProjFinalBoneTransforms[i][0]),
+						0, m_xmmMEProjFinalBoneTransforms[i].size());
+					pEffectPass = m_pStopSkinnedTechnique->GetPassByIndex(0);
+					KE_PROCESS_ERROR(pEffectPass);
+					m_pDeviceContext->IASetInputLayout(m_pStopSkinnedVertexLayout);
+					qDebug() << "STOP1";
+				}
+
+			}
+			else //角色是停止的或者运动完毕后停止
 			{
 				m_mRoleWorld = XMMatrixIdentity();
 				XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
-				//m_fMEProjDistance[i] -= 0.1;
 				XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z);
 				m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
-			}
 
-			m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
-			m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
+				m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
+				m_xmmRoleWorldViewProjVariable->SetMatrix((float*)(&m_xmmRoleWorldViewProj));
 
-			m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmMEProjFinalBoneTransforms[i][0]),
-				0, m_xmmMEProjFinalBoneTransforms[i].size());
-			if (m_nState == 0)
-			{
+				m_xmmBoneTransformsVariable->SetMatrixArray(reinterpret_cast<const float*>(&m_xmmMEProjFinalBoneTransforms[i][0]),
+					0, m_xmmMEProjFinalBoneTransforms[i].size());
 				pEffectPass = m_pStopSkinnedTechnique->GetPassByIndex(0);
 				KE_PROCESS_ERROR(pEffectPass);
 				m_pDeviceContext->IASetInputLayout(m_pStopSkinnedVertexLayout);
+				qDebug() << "STOP2";
 			}
-			else if (m_nState == 1)
-			{
-				pEffectPass = m_pSkinnedTechnique->GetPassByIndex(0);
-				KE_PROCESS_ERROR(pEffectPass);
-				m_pDeviceContext->IASetInputLayout(m_pSkinnedVertexLayout);
-			}
+
 			hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
  			KE_COM_PROCESS_ERROR(hrRetCode);
 			//qDebug() << "Draw .m3d File : " << m_vSkinnedIndices.size();
-
+			qDebug() << m_fCurrentTime;
 			UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
    			m_pDeviceContext->RSSetState(m_rsWireFrame);
 			m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pMEProjSkinnedVertexBuffer[i], &uSkinnedStride, &uOffset);
 			m_pDeviceContext->IASetIndexBuffer(m_pMEProjSkinnedIndexBuffer[i], DXGI_FORMAT_R32_UINT, 0);
 			m_pDeviceContext->DrawIndexed(m_vMEProjSkinnedIndices[i].size(), 0, 0);
 		}
-
+		if (bIsAllStop)
+			Stop();
 	}
 
     hrRetCode = m_pSwapChain->Present(0, 0);
@@ -829,7 +918,8 @@ MEProjD3DWidget::~MEProjD3DWidget()
 void MEProjD3DWidget::paintEvent(QPaintEvent* pEvent)
 {
 	//ReSetVertexIndiceBuffer();
-	m_fCurrentTime += m_dt / 1000.0;
+	if (m_nState == 1)
+		m_fCurrentTime += m_dt / 1000.0;
 	UpdateBoneTransformMatrix();
 	Render();
 }
@@ -1243,9 +1333,14 @@ void MEProjD3DWidget::UpdateRole()
 	m_fMEProjTime.resize(m_nRoleNum);
 	m_fMEProjDistance.resize(m_nRoleNum);
 	ReadFromM3dFileList(m_qItemList);
-
 	m_vSegment.resize(m_nRoleNum);
+	m_vCurrentSegmentIndex.resize(m_nRoleNum);
+	m_vStopFlag.resize(m_nRoleNum);
+	m_vfX.resize(m_nRoleNum);
+	m_vfY.resize(m_nRoleNum);
+	m_vfZ.resize(m_nRoleNum);
 	BuildUpTimeLine();
+	Stop();
 }
 
 void MEProjD3DWidget::Play()
@@ -1258,7 +1353,12 @@ void MEProjD3DWidget::Stop()
 	m_nState = 0;
 	m_fCurrentTime = 0;
 	for (int i = 0; i < m_nRoleNum; i++)
+	{
 		m_fMEProjTime[i] = 0;
+		m_vCurrentSegmentIndex[i] = 0;
+		m_vStopFlag[i] = false;
+		m_vfX[i] = m_vfY[i] = m_vfZ[i] = 0;
+	}
 }
 
 void MEProjD3DWidget::BuildUpTimeLine()
@@ -1267,12 +1367,103 @@ void MEProjD3DWidget::BuildUpTimeLine()
 	int index = 0;
 	foreach (pMEProjRoleListWidgetItem, m_qItemList)
 	{
-		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetRoleFilePath().toLatin1().constData(), "r");
+		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetXmlFilePath().toLatin1().constData(), "r");
 		char cDir[100];
 		float fDistance, fTime;
-		fscanf(pFile, "%s %f %f", cDir, &fDistance, &fTime);
-
+		float fTotalTime = 0.0f;
+		
+		int nPreIndex = 12;
+		XMMATRIX xmmPreRotation = XMMatrixIdentity();
+		while (1)
+		{
+			Segment s;
+			fscanf(pFile, "%s", cDir);
+			if (!strcmp(cDir, "end"))
+				break;
+			fscanf(pFile, "%f %f", &fDistance, &fTime);
+			
+			if (!strcmp(cDir, "forward"))
+			{
+				if (nPreIndex == 12 || nPreIndex == 14)
+					s.fzSpeed = fDistance / fTime;
+				else if (nPreIndex == 4 || nPreIndex == 22)
+					s.fxSpeed = fDistance / fTime;
+				s.nDirIndex = nPreIndex;
+				s.xmmRotation = xmmPreRotation;
+			}
+			else if (!strcmp(cDir, "right"))
+			{ //12 4 14 22
+				if (nPreIndex == 12)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 4;
+				}
+				else if (nPreIndex == 4)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 14;
+				}
+				else if (nPreIndex == 14)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 22;
+				}
+				else if (nPreIndex == 22)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 12;
+				}
+				//s.xmmRotation = XMMatrixRotationY(0.5 * XM_PI);
+				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(0.5 * XM_PI);
+			}
+			s.fEndTime = fTotalTime + fTime;
+			fTotalTime = s.fEndTime;
+			m_vSegment[index].push_back(s);
+			nPreIndex = s.nDirIndex;
+			xmmPreRotation = s.xmmRotation;
+		}
 		index++;
 		fclose(pFile);
 	}
+}
+
+XMMATRIX MEProjD3DWidget::mul(CXMMATRIX M1, CXMMATRIX M2) // 草泥马自带的math库的乘法有毒
+{
+	XMMATRIX mResult;
+	float x = M1._11;
+    float y = M1._12;
+    float z = M1._13;
+    float w = M1._14;
+    // Perform the operation on the first row
+    mResult._11 = (M2._11*x)+(M2._21*y)+(M2._31*z)+(M2._41*w);
+    mResult._12 = (M2._12*x)+(M2._22*y)+(M2._32*z)+(M2._42*w);
+    mResult._13 = (M2._13*x)+(M2._23*y)+(M2._33*z)+(M2._43*w);
+    mResult._14 = (M2._14*x)+(M2._24*y)+(M2._34*z)+(M2._44*w);
+    // Repeat for all the other rows
+    x = M1._21;
+    y = M1._22;
+    z = M1._23;
+    w = M1._24;
+    mResult._21 = (M2._11*x)+(M2._21*y)+(M2._31*z)+(M2._41*w);
+    mResult._22 = (M2._12*x)+(M2._22*y)+(M2._32*z)+(M2._42*w);
+    mResult._23 = (M2._13*x)+(M2._23*y)+(M2._33*z)+(M2._43*w);
+    mResult._24 = (M2._14*x)+(M2._24*y)+(M2._34*z)+(M2._44*w);
+    x = M1._31;
+    y = M1._32;
+    z = M1._33;
+    w = M1._34;
+    mResult._31 = (M2._11*x)+(M2._21*y)+(M2._31*z)+(M2._41*w);
+    mResult._32 = (M2._12*x)+(M2._22*y)+(M2._32*z)+(M2._42*w);
+    mResult._33 = (M2._13*x)+(M2._23*y)+(M2._33*z)+(M2._43*w);
+    mResult._34 = (M2._14*x)+(M2._24*y)+(M2._34*z)+(M2._44*w);
+    x = M1._41;
+    y = M1._42;
+    z = M1._43;
+    w = M1._44;
+    mResult._41 = (M2._11*x)+(M2._21*y)+(M2._31*z)+(M2._41*w);
+    mResult._42 = (M2._12*x)+(M2._22*y)+(M2._32*z)+(M2._42*w);
+    mResult._43 = (M2._13*x)+(M2._23*y)+(M2._33*z)+(M2._43*w);
+    mResult._44 = (M2._14*x)+(M2._24*y)+(M2._34*z)+(M2._44*w);
+
+	return mResult;
 }

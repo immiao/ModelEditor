@@ -49,5 +49,7 @@ void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleFileName, QString& qSt
 	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleFileName, qStrRoleFileAbsolutePath, 
 		qStrXmlFileName, qStrXmlFileAbsolutePath, xmf3Pos, QIcon("Resources/role.jpg"));
 	addItem(pMEProjRoleListWidgetItem);
+	qDebug() << "OK@#";
 	m_pMEProjServer->NotifyD3DWidgetUpdateRole();
+	qDebug() << "OK!!!";
 }
