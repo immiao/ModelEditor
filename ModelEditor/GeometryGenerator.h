@@ -23,6 +23,9 @@ namespace GeometryGenerator
 		XMFLOAT4 xmf4Color;
 		SIMPLE_VERTEX()
 		{
+			//xmf4Color.x = 1.0;
+			//xmf4Color.y = 1.0;
+			//xmf4Color.z = 1.0;
 			xmf4Color.y = 0.6;
 			//fvColor.x = rand()%100/100.0;
 			//fvColor.y = rand()%100/100.0;
@@ -36,11 +39,14 @@ namespace GeometryGenerator
 		XMFLOAT4 xmf4Color;
 		XMFLOAT3 xmf3Weight;
 		UINT	 uaBoundIndices[4];
+		XMFLOAT2 xmf2Tex;
 		SKINNED_VERTEX()
 		{
-			xmf4Color.x = 0.0f;
-			xmf4Color.y = 0.6f;
-			xmf4Color.z = 0.0f;
+			xmf4Color.x = 1.0;
+			xmf4Color.y = 0.0;
+			xmf4Color.z = 0.0;
+			xmf2Tex.x = 0.0f;
+			xmf2Tex.y = 0.0f;
 		}
 	};
 

@@ -53,6 +53,8 @@ D3DWidget::D3DWidget(QWidget* pParent)
 	m_dt = 5;
 	m_fTime = 0.0f;
 	m_bReadFinish = false;
+
+	m_vTextureRV.clear();
 }
 
 HRESULT D3DWidget::Init()
@@ -143,6 +145,9 @@ HRESULT D3DWidget::UnInit()
 	SAFE_RELEASE(m_pGridIndicesBuffer);
 	SAFE_RELEASE(m_rsWireFrame);
 	SAFE_RELEASE(m_rsSolid);
+
+	for (int i = 0; i < m_vTextureRV.size(); i++)
+		SAFE_RELEASE(m_vTextureRV[i]);
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -219,7 +224,7 @@ HRESULT D3DWidget::InitDevice()
 	ZeroMemory(&solidDesc, sizeof(D3D11_RASTERIZER_DESC));
 	solidDesc.FillMode = D3D11_FILL_SOLID;
 	solidDesc.CullMode = D3D11_CULL_BACK;
-	solidDesc.FrontCounterClockwise = false;
+	solidDesc.FrontCounterClockwise = true;
 	solidDesc.DepthClipEnable = true;
 	solidDesc.AntialiasedLineEnable = true;
 	solidDesc.MultisampleEnable = true;
@@ -334,7 +339,7 @@ HRESULT D3DWidget::InitDevice()
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"WEIGHT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"SPEED", 0, DXGI_FORMAT_R32_FLOAT, 0, 56, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 56, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
     nNumElements = sizeof(skinnedLayout) / sizeof(skinnedLayout[0]);
     m_pSkinnedTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
@@ -389,7 +394,7 @@ HRESULT D3DWidget::Render()
 	if (m_bReadFinish)
 	{
 		m_mRoleWorld = XMMatrixIdentity();
-		m_fDistance -= 0.1;
+		//m_fDistance -= 0.1;
 		XMMATRIX xmmRoleTranslate = XMMatrixTranslation(0, 0, m_fDistance);
 		m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
 	}
@@ -422,7 +427,7 @@ HRESULT D3DWidget::Render()
 	if (m_nIndicesCounter && m_nVerticesCounter)
 	{
 		qDebug() << "Draw .obj File";
-		m_pDeviceContext->RSSetState(m_rsWireFrame);
+		//m_pDeviceContext->RSSetState(m_rsWireFrame);
 		m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &uStride, &uOffset);
 		m_pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		m_pDeviceContext->DrawIndexed(m_nIndicesCounter, 0, 0);
@@ -434,16 +439,27 @@ HRESULT D3DWidget::Render()
 		m_pDeviceContext->IASetInputLayout(m_pSkinnedVertexLayout);
 		pEffectPass = m_pSkinnedTechnique->GetPassByIndex(0);
 		KE_PROCESS_ERROR(pEffectPass);
-		hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
-		KE_COM_PROCESS_ERROR(hrRetCode);
 
 		//qDebug() << "Draw .m3d File : " << m_vSkinnedIndices.size();
 
 		UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
-		m_pDeviceContext->RSSetState(m_rsWireFrame);
+		m_pDeviceContext->RSSetState(m_rsSolid);
 		m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pSkinnedVertexBuffer, &uSkinnedStride, &uOffset);
 		m_pDeviceContext->IASetIndexBuffer(m_pSkinnedIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_pDeviceContext->DrawIndexed(m_vSkinnedIndices.size(), 0, 0);
+
+		//m_pDeviceContext->DrawIndexed(m_vSkinnedIndices.size(), 0, 0);
+		//m_pDiffuseVariable->SetResource(m_vTextureRV[0]);
+		//m_pDeviceContext->DrawIndexed(m_vSubset[0].nFaceCount * 3, m_vSubset[0].nFaceStart * 3, 0);
+		//m_pDiffuseVariable->SetResource(m_vTextureRV[1]);
+		//m_pDeviceContext->DrawIndexed(m_vSubset[1].nFaceCount * 3, m_vSubset[1].nFaceStart * 3, 0);
+		for (int i = 0; i < m_vSubset.size(); i++)
+		{
+			m_pDiffuseVariable->SetResource(m_vTextureRV[i]);
+			hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
+			KE_COM_PROCESS_ERROR(hrRetCode);
+			m_pDeviceContext->DrawIndexed(m_vSubset[i].nFaceCount * 3, m_vSubset[i].nFaceStart * 3, 0);
+		}
+		
 	}
 
     hrRetCode = m_pSwapChain->Present(0, 0);
@@ -524,6 +540,9 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
 
+	for (int i = 0; i < m_vTextureRV.size(); i++)
+		SAFE_RELEASE(m_vTextureRV[i]);
+
 	FILE* pFile = fopen(pcFileName, "r");
 	char cStr[100];
 	char ignore[100];
@@ -544,6 +563,7 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 
 	// material
 	fscanf(pFile, "%s", ignore);
+	m_vSubset.resize(nNumMaterial);
 	for (UINT i = 0; i < nNumMaterial; i++)
 	{
 		fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
@@ -553,7 +573,7 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 		fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
 		fscanf(pFile, "%s %s", ignore, ignore);
 		fscanf(pFile, "%s %s", ignore, ignore);
-		fscanf(pFile, "%s %s", ignore, ignore);
+		fwscanf(pFile, L"%s %s", ignore, m_vSubset[i].cDiffuseTexPath);
 		fscanf(pFile, "%s %s", ignore, ignore);
 	}
 
@@ -564,8 +584,8 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 		fscanf(pFile, "%s %s", ignore, ignore);
 		fscanf(pFile, "%s %s", ignore, ignore);
 		fscanf(pFile, "%s %s", ignore, ignore);
-		fscanf(pFile, "%s %s", ignore, ignore);
-		fscanf(pFile, "%s %s", ignore, ignore);
+		fscanf(pFile, "%s %d", ignore, &m_vSubset[i].nFaceStart);
+		fscanf(pFile, "%s %d", ignore, &m_vSubset[i].nFaceCount);
 	}
 
 	// vertex
@@ -576,9 +596,9 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 		//m_vSkinnedVertex[i].xmf3Pos.x += 50;
 		//m_vSkinnedVertex[i].xmf3Pos.y += 50;
 		//m_vSkinnedVertex[i].xmf3Pos.z += 50;
+		fscanf(pFile, "%s %s %s %s %s", ignore, ignore, ignore, ignore, ignore);
 		fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
-		fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
-		fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+		fscanf(pFile, "%s %f %f", ignore, &m_vSkinnedVertex[i].xmf2Tex.x, &m_vSkinnedVertex[i].xmf2Tex.y);
 		fscanf(pFile, "%s %f %f %f %s", ignore, &m_vSkinnedVertex[i].xmf3Weight.x, &m_vSkinnedVertex[i].xmf3Weight.y, &m_vSkinnedVertex[i].xmf3Weight.z, ignore);
 		fscanf(pFile, "%s %d %d %d %d", ignore, &m_vSkinnedVertex[i].uaBoundIndices[0], &m_vSkinnedVertex[i].uaBoundIndices[1], 
 			&m_vSkinnedVertex[i].uaBoundIndices[2], &m_vSkinnedVertex[i].uaBoundIndices[3]);
@@ -659,6 +679,16 @@ HRESULT D3DWidget::ReadFromM3dFile(char* pcFileName)
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	m_bReadFinish = true;
+
+	int size = m_vSubset.size();
+	m_vTextureRV.resize(size);
+	m_pDiffuseVariable = m_pEffect->GetVariableByName( "txDiffuse" )->AsShaderResource();
+	for (int i = 0; i < size; i++)
+	{
+		D3DX11CreateShaderResourceViewFromFile(m_pd3dDevice, m_vSubset[i].cDiffuseTexPath, NULL, NULL, &m_vTextureRV[i], NULL );
+		//D3DX11CreateShaderResourceViewFromFile(m_pd3dDevice, "jacket_diff.dds", NULL, NULL, &m_vTextureRV[i], NULL );
+	}
+
 	hrResult = S_OK;
 Exit0:
 	return hrResult;

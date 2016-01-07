@@ -31,6 +31,13 @@
 #include "GeometryGenerator.h"
 #include <stdlib.h>
 
+struct Subset
+{
+	int nFaceStart;
+	int nFaceCount;
+	WCHAR cDiffuseTexPath[100];
+};
+
 struct Keyframe
 {
     float TimePos;
@@ -80,6 +87,10 @@ public:
 	~D3DWidget();
 
 private:
+	std::vector<Subset>						m_vSubset;
+	std::vector<ID3D11ShaderResourceView*>	m_vTextureRV;
+	ID3DX11EffectShaderResourceVariable*	m_pDiffuseVariable;
+
 	virtual QPaintEngine* paintEngine() const {return NULL;}
 	virtual void paintEvent(QPaintEvent* pEvent);
 	virtual void resizeEvent(QResizeEvent* pEvent);

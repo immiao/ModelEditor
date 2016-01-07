@@ -24,10 +24,19 @@ float g_fElapsedTime;
 //    oPos = Pos;
 //	oColor = Color;
 //}
+Texture2D txDiffuse;
+SamplerState samLinear
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
 struct VS_OUTPUT
 {
     float4 Pos : SV_POSITION;
     float4 Color : COLOR0;
+	float2 Tex : TEXCOORD0;
 };
 
 VS_OUTPUT VS(float3 Pos : POSITION, float4 Color : COLOR)
@@ -41,7 +50,8 @@ VS_OUTPUT VS(float3 Pos : POSITION, float4 Color : COLOR)
     return output;
 }
 
-VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES) // speed代表角色移动速率(speed现在是废的，移动在CPU实现）
+VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES,
+					float2 Tex : TEXCOORD)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 
@@ -62,11 +72,13 @@ VS_OUTPUT SkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight :
 	//posL = Pos;
 	output.Pos = mul(float4(posL, 1.0f), gRoleWolrdViewProjMatrix);
 	output.Color = Color;
+	output.Tex = Tex;
 
 	return output;
 }
 
-VS_OUTPUT StopSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES)
+VS_OUTPUT StopSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weight : WEIGHT, uint4 BoneIndices : BONEINDICES,
+						float2 Tex : TEXCOORD)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
     //output.Pos = mul(Pos, WorldMatrix);
@@ -74,10 +86,16 @@ VS_OUTPUT StopSkinnedVS(float3 Pos : POSITION, float4 Color : COLOR, float3 Weig
     //output.Pos = mul(output.Pos, ProjectionMatrix);
 	output.Pos = mul(float4(Pos, 1.0f), gRoleWolrdViewProjMatrix);
     output.Color = Color;
+	output.Tex = Tex;
     return output;
 }
 
 // Pixel Shader
+float4 TexPS(VS_OUTPUT input): SV_Target
+{
+    return txDiffuse.Sample(samLinear, input.Tex) * input.Color;
+}
+
 float4 PS(VS_OUTPUT input): SV_Target
 {
     return input.Color;
@@ -99,7 +117,7 @@ technique11 SkinnedRender
     {
         SetVertexShader(CompileShader(vs_5_0, SkinnedVS()));
         SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PS()));
+        SetPixelShader(CompileShader(ps_5_0, TexPS()));
     }
 }
 
@@ -109,6 +127,6 @@ technique11 StopSkinnedRender
     {
         SetVertexShader(CompileShader(vs_5_0, StopSkinnedVS()));
         SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PS()));
+        SetPixelShader(CompileShader(ps_5_0, TexPS()));
     }
 }

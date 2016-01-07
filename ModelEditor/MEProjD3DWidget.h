@@ -178,6 +178,9 @@ private:
 	std::vector<float>												m_vfY;
 	std::vector<float>												m_vfZ;
 	std::vector<bool>												m_vStopFlag;
+	std::vector<std::vector<Subset> >								m_vSubset;
+	std::vector<std::vector<ID3D11ShaderResourceView*> >			m_vTextureRV;
+	ID3DX11EffectShaderResourceVariable*							m_pDiffuseVariable;
 
 	// added at 2015/9/23 for animation
 	std::vector<GeometryGenerator::SKINNED_VERTEX>  m_vSkinnedVertex;

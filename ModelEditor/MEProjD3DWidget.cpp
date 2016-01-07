@@ -100,6 +100,7 @@ MEProjD3DWidget::MEProjD3DWidget(MEProjServer* pMEProjServer, QWidget* pParent)
 	m_Dir[26].x = 1; m_Dir[26].y = 1; m_Dir[26].z = 1;
 	m_vSegment.clear();
 	m_vCurrentSegmentIndex.clear();
+	m_vTextureRV.clear();
 
 	m_nState = 0;
 }
@@ -199,6 +200,14 @@ HRESULT MEProjD3DWidget::UnInit()
 	int nMEProjIndexBufferSize = m_pMEProjSkinnedIndexBuffer.size();
 	for (int i = 0; i < nMEProjIndexBufferSize; i++)
 		SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+
+	int nSize1 = m_vTextureRV.size();
+	for (int i = 0; i < nSize1; i++)
+	{
+		int nSize2 = m_vTextureRV[i].size();
+		for (int j = 0; j < nSize2; j++)
+			SAFE_RELEASE(m_vTextureRV[i][j]);
+	}
 	SAFE_RELEASE(m_pStopSkinnedVertexLayout);
 	hrResult = S_OK;
 Exit0:
@@ -276,7 +285,7 @@ HRESULT MEProjD3DWidget::InitDevice()
 	ZeroMemory(&solidDesc, sizeof(D3D11_RASTERIZER_DESC));
 	solidDesc.FillMode = D3D11_FILL_SOLID;
 	solidDesc.CullMode = D3D11_CULL_BACK;
-	solidDesc.FrontCounterClockwise = false;
+	solidDesc.FrontCounterClockwise = true;
 	solidDesc.DepthClipEnable = true;
 	solidDesc.AntialiasedLineEnable = true;
 	solidDesc.MultisampleEnable = true;
@@ -367,6 +376,7 @@ HRESULT MEProjD3DWidget::InitDevice()
 	m_xmmRoleWorldViewProjVariable = m_pEffect->GetVariableByName("gRoleWolrdViewProjMatrix")->AsMatrix();
 	m_xmmBoneTransformsVariable = m_pEffect->GetVariableByName("gBoneTransforms")->AsMatrix();
 	m_pElapsedTime = m_pEffect->GetVariableByName("g_fElapsedTime")->AsScalar();
+	m_pDiffuseVariable = m_pEffect->GetVariableByName( "txDiffuse" )->AsShaderResource();
 	//m_pWorldVariable = m_pEffect->GetVariableByName("WorldMatrix")->AsMatrix();
 	//m_pViewVariable = m_pEffect->GetVariableByName("ViewMatrix")->AsMatrix();
 	//m_pProjectionVariable = m_pEffect->GetVariableByName("ProjectionMatrix")->AsMatrix();
@@ -393,6 +403,7 @@ HRESULT MEProjD3DWidget::InitDevice()
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"WEIGHT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 56, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
     nNumElements = sizeof(skinnedLayout) / sizeof(skinnedLayout[0]);
     m_pSkinnedTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
@@ -407,6 +418,7 @@ HRESULT MEProjD3DWidget::InitDevice()
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"WEIGHT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 56, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
     nNumElements = sizeof(stopSkinnedLayout) / sizeof(stopSkinnedLayout[0]);
     m_pStopSkinnedTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
@@ -553,7 +565,6 @@ HRESULT MEProjD3DWidget::Render()
 					pEffectPass = m_pStopSkinnedTechnique->GetPassByIndex(0);
 					KE_PROCESS_ERROR(pEffectPass);
 					m_pDeviceContext->IASetInputLayout(m_pStopSkinnedVertexLayout);
-					qDebug() << "STOP1";
 				}
 
 			}
@@ -572,18 +583,21 @@ HRESULT MEProjD3DWidget::Render()
 				pEffectPass = m_pStopSkinnedTechnique->GetPassByIndex(0);
 				KE_PROCESS_ERROR(pEffectPass);
 				m_pDeviceContext->IASetInputLayout(m_pStopSkinnedVertexLayout);
-				qDebug() << "STOP2";
 			}
-
-			hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
+			
  			KE_COM_PROCESS_ERROR(hrRetCode);
-			//qDebug() << "Draw .m3d File : " << m_vSkinnedIndices.size();
-			qDebug() << m_fCurrentTime;
 			UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
-   			m_pDeviceContext->RSSetState(m_rsWireFrame);
+   			m_pDeviceContext->RSSetState(m_rsSolid);
 			m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pMEProjSkinnedVertexBuffer[i], &uSkinnedStride, &uOffset);
 			m_pDeviceContext->IASetIndexBuffer(m_pMEProjSkinnedIndexBuffer[i], DXGI_FORMAT_R32_UINT, 0);
-			m_pDeviceContext->DrawIndexed(m_vMEProjSkinnedIndices[i].size(), 0, 0);
+
+			for (int j = 0; j < m_vSubset[i].size(); j++)
+			{
+				m_pDiffuseVariable->SetResource(m_vTextureRV[i][j]);
+				hrRetCode = pEffectPass->Apply(0, m_pDeviceContext);
+				KE_COM_PROCESS_ERROR(hrRetCode);
+				m_pDeviceContext->DrawIndexed(m_vSubset[i][j].nFaceCount * 3, m_vSubset[i][j].nFaceStart * 3, 0);
+			}
 		}
 		if (bIsAllStop)
 			Stop();
@@ -1160,6 +1174,14 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 
 	int index = 0;
 
+	int nSize1 = m_vTextureRV.size();
+	for (int i = 0; i < nSize1; i++)
+	{
+		int nSize2 = m_vTextureRV[i].size();
+		for (int j = 0; j < nSize2; j++)
+			SAFE_RELEASE(m_vTextureRV[i][j]);
+	}
+
 	foreach (pMEProjRoleListWidgetItem, qItemList)
 	{
 		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetRoleFilePath().toLatin1().constData(), "r");
@@ -1182,6 +1204,7 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 
 		// material
 		fscanf(pFile, "%s", ignore);
+		m_vSubset[index].resize(nNumMaterial);
 		for (UINT i = 0; i < nNumMaterial; i++)
 		{
 			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
@@ -1191,7 +1214,7 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
 			fscanf(pFile, "%s %s", ignore, ignore);
 			fscanf(pFile, "%s %s", ignore, ignore);
-			fscanf(pFile, "%s %s", ignore, ignore);
+			fwscanf(pFile, L"%s %s", ignore, m_vSubset[index][i].cDiffuseTexPath);
 			fscanf(pFile, "%s %s", ignore, ignore);
 		}
 
@@ -1202,8 +1225,8 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 			fscanf(pFile, "%s %s", ignore, ignore);
 			fscanf(pFile, "%s %s", ignore, ignore);
 			fscanf(pFile, "%s %s", ignore, ignore);
-			fscanf(pFile, "%s %s", ignore, ignore);
-			fscanf(pFile, "%s %s", ignore, ignore);
+			fscanf(pFile, "%s %d", ignore, &m_vSubset[index][i].nFaceStart);
+			fscanf(pFile, "%s %d", ignore, &m_vSubset[index][i].nFaceCount);
 		}
 
 		// vertex
@@ -1215,9 +1238,9 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 			//m_vSkinnedVertex[i].xmf3Pos.x += 50;
 			//m_vSkinnedVertex[i].xmf3Pos.y += 50;
 			//m_vSkinnedVertex[i].xmf3Pos.z += 50;
+			fscanf(pFile, "%s %s %s %s %s", ignore, ignore, ignore, ignore, ignore);
 			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
-			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
-			fscanf(pFile, "%s %s %s %s", ignore, ignore, ignore, ignore);
+			fscanf(pFile, "%s %f %f", ignore, &m_vMEProjSkinnedVertex[index][i].xmf2Tex.x, &m_vMEProjSkinnedVertex[index][i].xmf2Tex.y);
 			fscanf(pFile, "%s %f %f %f %s", ignore, &m_vMEProjSkinnedVertex[index][i].xmf3Weight.x, 
 				&m_vMEProjSkinnedVertex[index][i].xmf3Weight.y, &m_vMEProjSkinnedVertex[index][i].xmf3Weight.z, ignore);
 			fscanf(pFile, "%s %d %d %d %d", ignore, &m_vMEProjSkinnedVertex[index][i].uaBoundIndices[0], 
@@ -1302,6 +1325,15 @@ HRESULT MEProjD3DWidget::ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& q
 		m_xmmMEProjBoneTransforms[index].resize(m_nMEProjBones[index]);
 		m_xmmMEProjFinalBoneTransforms[index].resize(m_nMEProjBones[index]);
 
+		int size = m_vSubset[index].size();
+		m_vTextureRV[index].resize(size);
+		for (int i = 0; i < size; i++)
+		{
+			D3DX11CreateShaderResourceViewFromFile(m_pd3dDevice, m_vSubset[index][i].cDiffuseTexPath, NULL, NULL, 
+				&m_vTextureRV[index][i], NULL );
+			//D3DX11CreateShaderResourceViewFromFile(m_pd3dDevice, "jacket_diff.dds", NULL, NULL, &m_vTextureRV[i], NULL );
+		}
+
 		index++;
 		fclose(pFile);
 	}
@@ -1332,13 +1364,16 @@ void MEProjD3DWidget::UpdateRole()
 	m_pMEProjSkinnedIndexBuffer.resize(m_nRoleNum);
 	m_fMEProjTime.resize(m_nRoleNum);
 	m_fMEProjDistance.resize(m_nRoleNum);
-	ReadFromM3dFileList(m_qItemList);
 	m_vSegment.resize(m_nRoleNum);
 	m_vCurrentSegmentIndex.resize(m_nRoleNum);
 	m_vStopFlag.resize(m_nRoleNum);
 	m_vfX.resize(m_nRoleNum);
 	m_vfY.resize(m_nRoleNum);
 	m_vfZ.resize(m_nRoleNum);
+	m_vSubset.resize(m_nRoleNum);
+	m_vTextureRV.resize(m_nRoleNum);
+
+	ReadFromM3dFileList(m_qItemList);
 	BuildUpTimeLine();
 	Stop();
 }
