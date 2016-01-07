@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="ModelEditor">
+    <file>Resources/Save All.png</file>
     <file>Resources/Pause.png</file>
     <file>Resources/Play.png</file>
     <file>Resources/Stop.png</file>

@@ -20,6 +20,7 @@
 #include "MEProjServer.h"
 #include "MEProjTreeWidgetItem.h"
 #include "MEProjCodeWidget.h"
+#include "MEProjHighlighter.h"
 #include <vector>
 
 struct TabInformation
@@ -36,6 +37,7 @@ class MEProjTabWidget : public QTabWidget
 private:
 	MEProjServer*				m_pMEProjServer;
 	std::vector<TabInformation>	m_vTabInfo;
+	std::vector<MEProjHighlighter*>	m_vHighlighter;
 	std::map<QString, bool>		m_mHash;
 	std::map<QString, int>		m_mHashTabIndex;
 	
@@ -47,11 +49,13 @@ private slots:
 public:
 	MEProjTabWidget(QWidget* pParent = NULL);
 	void AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetItem, int index);
+	void FileSave(int nIndex);
 	HRESULT Init(MEProjServer* pMEProjServer, QWidget* pInitialWidget, QString& qStrTabName);
 	HRESULT UnInit();
 
 public slots:
 	void SaveCurrentFile();
+	void SaveAllFile();
 };
 
 #endif // MEPROJTABWIDGET_H

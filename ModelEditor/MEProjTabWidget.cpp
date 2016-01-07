@@ -63,6 +63,7 @@ void MEProjTabWidget::RemoveTab(int index)
 		m_mHash[m_vTabInfo[index].qStrFileAbsolutePath] = false;
 		SAFE_DELETE(m_vTabInfo[index].pMEProjCodeWidget);
 		m_vTabInfo.erase(m_vTabInfo.begin() + index);
+		m_vHighlighter.erase(m_vHighlighter.begin() + index - 1);
 	}
 }
 
@@ -83,8 +84,16 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 	bFlag = pQFile->open(QIODevice::ReadWrite | QIODevice::Text);	
 	if (bFlag)
 	{
+		QFont qFont; // Set the editor font
+		qFont.setFamily("Courier");
+		qFont.setFixedPitch(true);
+		qFont.setPointSize(10);
+
 		QString qStrXmlData = QString(pQFile->readAll());
 		MEProjCodeWidget *pEditor = new MEProjCodeWidget;
+		pEditor->setFont(qFont);
+		MEProjHighlighter *pHighlighter = new MEProjHighlighter(pEditor->document()); // Set the highlighter
+		m_vHighlighter.push_back(pHighlighter);
 
 		TabInformation tabInformation;
 		tabInformation.pMEProjCodeWidget = pEditor;
@@ -96,7 +105,6 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 		pEditor->setPlainText(qStrXmlData);
 		addTab(pEditor, qStrFileName);
 		
-
 		m_mHash[qStrPath] = true;
 		m_mHashTabIndex[qStrPath] = m_vTabInfo.size() - 1;
 		setCurrentIndex(m_vTabInfo.size() - 1);
@@ -107,25 +115,30 @@ void MEProjTabWidget::AddXmlTabWidget(MEProjTreeWidgetItem* pMEProjTreeWidgetIte
 
 void MEProjTabWidget::SaveCurrentFile()
 {
-	qDebug()<<"00000";
-	QFile *pQFile = new QFile(m_vTabInfo[currentIndex()].qStrFileAbsolutePath);			
-	QString qStrContent = m_vTabInfo[currentIndex()].pMEProjCodeWidget->toPlainText();
-	//qDebug()<<qStrContent;
-	std::string strTempContent = qStrContent.toStdString();  //将Qstring转换成string，在转成char*写入文件
-	qDebug()<<"22222";
-	const char* pcWriteContent = strTempContent.c_str();
-	bool bFlag = false;
-	qDebug()<<"33333";
+	FileSave(currentIndex());
+}
 
+void MEProjTabWidget::SaveAllFile()
+{
+	int nFileNum = m_vTabInfo.size();
+	for (int i=1; i<nFileNum; i++)
+	{
+		FileSave(i);
+	}
+}
+
+void MEProjTabWidget::FileSave(int nIndex)
+{
+	QFile *pQFile = new QFile(m_vTabInfo[nIndex].qStrFileAbsolutePath);			
+	QString qStrContent = m_vTabInfo[nIndex].pMEProjCodeWidget->toPlainText();
+	std::string strTempContent = qStrContent.toStdString();  //将Qstring转换成string，在转成char*写入文件
+	const char* pcWriteContent = strTempContent.c_str();
+
+	bool bFlag = false;
 	bFlag = pQFile->open(QIODevice::WriteOnly | QIODevice::Text);
-	qDebug()<<"44444";
 	if (bFlag)
 	{
 		pQFile->write(pcWriteContent);
 	}
 	SAFE_DELETE(pQFile);
-	qDebug()<<"55555";
-
-	qDebug()<<currentIndex()<<endl;
-	qDebug()<<"Test";
 }
