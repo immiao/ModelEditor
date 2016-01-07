@@ -554,7 +554,7 @@ HRESULT MEProjD3DWidget::Render()
 				{
 					m_mRoleWorld = XMMatrixIdentity();
 					XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
-					XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z);
+					XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x + m_vfX[i], xmf3Pos.y + m_vfY[i], xmf3Pos.z + m_vfZ[i]);
 					m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
 
 					m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
@@ -572,7 +572,7 @@ HRESULT MEProjD3DWidget::Render()
 			{
 				m_mRoleWorld = XMMatrixIdentity();
 				XMFLOAT3 xmf3Pos = m_qItemList.at(i)->GetPos();
-				XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z);
+				XMMATRIX xmmRoleTranslate = XMMatrixTranslation(xmf3Pos.x + m_vfX[i], xmf3Pos.y + m_vfY[i], xmf3Pos.z + m_vfZ[i]);
 				m_mRoleWorld = m_mRoleWorld * xmmRoleTranslate;
 
 				m_xmmRoleWorldViewProj = m_mRoleWorld * m_mView * m_mProjection;
@@ -599,8 +599,8 @@ HRESULT MEProjD3DWidget::Render()
 				m_pDeviceContext->DrawIndexed(m_vSubset[i][j].nFaceCount * 3, m_vSubset[i][j].nFaceStart * 3, 0);
 			}
 		}
-		if (bIsAllStop)
-			Stop();
+		//if (bIsAllStop)
+		//	Stop();
 	}
 
     hrRetCode = m_pSwapChain->Present(0, 0);
@@ -1380,6 +1380,7 @@ void MEProjD3DWidget::UpdateRole()
 
 void MEProjD3DWidget::Play()
 {
+	Stop();
 	m_nState = 1;
 }
 
@@ -1555,10 +1556,23 @@ XMMATRIX MEProjD3DWidget::mul(CXMMATRIX M1, CXMMATRIX M2) // ²ÝÄàÂí×Ô´øµÄmath¿âµ
 
 void MEProjD3DWidget::SetSelectedItemColor(int index)
 {
+	qDebug() << index;
 	for (int i = 0; i < m_nRoleNum; i++)
 	{
-		int size = m_vMEProjSkinnedVertex[index].size();
+		int size = m_vMEProjSkinnedVertex[i].size();
 		for (int j = 0; j < size; j++)	
-			m_vMEProjSkinnedVertex[index][i].xmf4Color.x = 1.0f;
+		{
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.x = 1.0f;
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.y = 1.0f;
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.z = 1.0f;
+		}
 	}
+	int size = m_vMEProjSkinnedVertex[index].size();
+	for (int i = 0; i < size; i++)	
+	{
+		m_vMEProjSkinnedVertex[index][i].xmf4Color.x = 1.0f;
+		m_vMEProjSkinnedVertex[index][i].xmf4Color.y = 0.0f;
+		m_vMEProjSkinnedVertex[index][i].xmf4Color.z = 0.0f;
+	}
+	ResetVertexIndiceBuffer();
 }

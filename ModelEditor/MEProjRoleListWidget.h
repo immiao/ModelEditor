@@ -32,6 +32,8 @@ public:
 	HRESULT UnInit();
 	void AddWidgetItem(QString& qStrRoleName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName, 
 		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos);
+private slots:
+	void NotifyServerItemIndex(int index);
 };
 
 #endif // MEPROJROLELISTWIDGET_H

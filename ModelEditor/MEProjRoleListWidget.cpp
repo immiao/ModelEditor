@@ -23,6 +23,7 @@ HRESULT MEProjRoleListWidget::Init(MEProjServer* pMEProjServer)
 
 	//setHeaderLabels(QStringList(QString::fromLocal8Bit("解决方案管理器")));
 	m_pMEProjServer = pMEProjServer;
+	connect(this, SIGNAL(currentRowChanged(int)), this, SLOT(NotifyServerItemIndex(int)));
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -52,4 +53,9 @@ void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleFileName, QString& qSt
 	qDebug() << "OK@#";
 	m_pMEProjServer->NotifyD3DWidgetUpdateRole();
 	qDebug() << "OK!!!";
+}
+
+void MEProjRoleListWidget::NotifyServerItemIndex(int index)
+{
+	m_pMEProjServer->NotifyD3DWidgetUpdateColor(index);
 }

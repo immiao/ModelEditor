@@ -81,4 +81,5 @@ void MEProjServer::NotifyD3DWidgetUpdateRole()
 void MEProjServer::NotifyD3DWidgetUpdateColor(int index)
 {
 	m_pMEProjD3DWidget->SetSelectedItemColor(index);
+	qDebug() << "UpdateColor";
 }
