@@ -158,9 +158,11 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjTabWidget, SLOT(SaveCurrentFile()));
 	connect(ui.action_saveAll, SIGNAL(triggered()), m_pMEProjTabWidget, SLOT(SaveAllFile()));
 	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(BuildUpTimeLine()));
+	connect(ui.action_grid, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(SetWireFrame()));
 	connect(ui.action_play, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Play()));
 	connect(ui.action_stop, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Stop()));
 	connect(m_pQPushButtonAddRole, SIGNAL(clicked()), this, SLOT(OpenConfigWidget()));
+	connect(m_pQPushButtonDeleteRole, SIGNAL(clicked()), m_pMEProjRoleListWidget, SLOT(DeleteItem()));
 
 	hrRetCode = m_pMEProjServer->Init(m_pMEProjTreeWidget, m_pMEProjTabWidget, m_pMEProjRoleListWidget, m_pMEProjD3DWidget);
 	KE_COM_PROCESS_ERROR(hrRetCode);

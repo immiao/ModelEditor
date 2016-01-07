@@ -42,8 +42,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_save"/>
-   <addaction name="action_saveAll"/>
-   <addaction name="action_play"/>
+   <addaction name="action_grid"/>   <addaction name="action_saveAll"/>   <addaction name="action_play"/>
    <addaction name="action_stop"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -100,6 +99,15 @@
     <string>停止</string>
    </property>
   </action>
+  <action name="action_grid">
+   <property name="icon">
+    <iconset resource="modeleditor.qrc">
+     <normaloff>:/ModelEditor/Resources/Grid.png</normaloff>:/ModelEditor/Resources/Grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>网格</string>
+   </property>
+  </action>
   <action name="action_saveAll">
    <property name="icon">
     <iconset resource="modeleditor.qrc">
@@ -108,8 +116,7 @@
    <property name="text">
     <string>保存所有文件</string>
    </property>
-  </action>
- </widget>
+  </action> </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="modeleditor.qrc"/>

@@ -101,11 +101,13 @@ public:
 	HRESULT ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& qItemList);
 	void UpdateRole();
 	void SetSelectedItemColor(int index);
+	void ReleaseVector();
 	~MEProjD3DWidget();
 private slots:
 	void Play();
 	void Stop();
 	void BuildUpTimeLine();
+	void SetWireFrame();
 
 private:
 	virtual QPaintEngine* paintEngine() const {return NULL;}
@@ -183,6 +185,7 @@ private:
 	std::vector<std::vector<Subset> >								m_vSubset;
 	std::vector<std::vector<ID3D11ShaderResourceView*> >			m_vTextureRV;
 	ID3DX11EffectShaderResourceVariable*							m_pDiffuseVariable;
+	bool															m_bWireFrame;
 
 	// added at 2015/9/23 for animation
 	std::vector<GeometryGenerator::SKINNED_VERTEX>  m_vSkinnedVertex;
