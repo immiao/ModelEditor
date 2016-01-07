@@ -1402,13 +1402,14 @@ void MEProjD3DWidget::BuildUpTimeLine()
 	int index = 0;
 	foreach (pMEProjRoleListWidgetItem, m_qItemList)
 	{
+		m_vSegment[index].clear();
 		FILE* pFile = fopen(pMEProjRoleListWidgetItem->GetXmlFilePath().toLatin1().constData(), "r");
 		char cDir[100];
 		float fDistance, fTime;
 		float fTotalTime = 0.0f;
 		
-		int nPreIndex = 12;
-		XMMATRIX xmmPreRotation = XMMatrixIdentity();
+		int nPreIndex = 14;
+		XMMATRIX xmmPreRotation = XMMatrixRotationY(XM_PI);
 		while (1)
 		{
 			Segment s;
@@ -1449,7 +1450,7 @@ void MEProjD3DWidget::BuildUpTimeLine()
 					s.nDirIndex = 12;
 				}
 				//s.xmmRotation = XMMatrixRotationY(0.5 * XM_PI);
-				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(0.5 * XM_PI);
+				s.xmmRotation = xmmPreRotation * XMMatrixRotationY(0.5 * XM_PI);
 			}
 			else if (!strcmp(cDir, "back"))
 			{
@@ -1473,7 +1474,7 @@ void MEProjD3DWidget::BuildUpTimeLine()
 					s.fxSpeed = fDistance / fTime;
 					s.nDirIndex = 4;
 				}
-				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(XM_PI);
+				s.xmmRotation = xmmPreRotation * XMMatrixRotationY(XM_PI);
 			}
 			else if (!strcmp(cDir, "left"))
 			{
@@ -1497,7 +1498,7 @@ void MEProjD3DWidget::BuildUpTimeLine()
 					s.fzSpeed = fDistance / fTime;
 					s.nDirIndex = 14;
 				}
-				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(1.5 * XM_PI);
+				s.xmmRotation = xmmPreRotation * XMMatrixRotationY(1.5 * XM_PI);
 			}
 
 			s.fEndTime = fTotalTime + fTime;
@@ -1550,4 +1551,14 @@ XMMATRIX MEProjD3DWidget::mul(CXMMATRIX M1, CXMMATRIX M2) // ²ÝÄàÂí×Ô´øµÄmath¿âµ
     mResult._44 = (M2._14*x)+(M2._24*y)+(M2._34*z)+(M2._44*w);
 
 	return mResult;
+}
+
+void MEProjD3DWidget::SetSelectedItemColor(int index)
+{
+	for (int i = 0; i < m_nRoleNum; i++)
+	{
+		int size = m_vMEProjSkinnedVertex[index].size();
+		for (int j = 0; j < size; j++)	
+			m_vMEProjSkinnedVertex[index][i].xmf4Color.x = 1.0f;
+	}
 }

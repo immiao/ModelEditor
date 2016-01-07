@@ -156,6 +156,7 @@ HRESULT ModelEditor::InitMEProjWidget(const QString& qStrFileName)
 	KE_COM_PROCESS_ERROR(hrRetCode);
 
 	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjTabWidget, SLOT(SaveCurrentFile()));
+	connect(ui.action_save, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(BuildUpTimeLine()));
 	connect(ui.action_play, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Play()));
 	connect(ui.action_stop, SIGNAL(triggered()), m_pMEProjD3DWidget, SLOT(Stop()));
 	connect(m_pQPushButtonAddRole, SIGNAL(clicked()), this, SLOT(OpenConfigWidget()));

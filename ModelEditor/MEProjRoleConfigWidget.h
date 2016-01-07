@@ -64,6 +64,7 @@ public:
 	HRESULT UnInit();
 private slots:
 	void AddNewRole();
+	void NotifyServerItemIndex(int index);
 };
 
 #endif // MEPROJROLECONFIGWIDGET_H

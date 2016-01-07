@@ -121,6 +121,7 @@ HRESULT MEProjRoleConfigWidget::Init()
 	connect(m_pPushButtonOK, SIGNAL(clicked()), this, SLOT(AddNewRole()));
 	connect(m_pPushButtonOK, SIGNAL(clicked()), this, SLOT(close()));
 	connect(m_pPushButtonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(this, SIGNAL(currentRowChanged(int)), this, SLOT(NotifyServerItemIndex(int)));
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -170,5 +171,9 @@ void MEProjRoleConfigWidget::AddNewRole()
 		m_pComboBoxXmlFileName->currentText(),
 		m_qFileInfoListXml.at(m_pComboBoxXmlFileName->currentIndex()).absoluteFilePath(),
 		xmf3Pos);
+}
 
+void MEProjRoleConfigWidget::NotifyServerItemIndex(int index)
+{
+	m_pMEProjServer->NotifyD3DWidgetUpdateColor(index);
 }

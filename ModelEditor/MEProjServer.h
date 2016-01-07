@@ -45,6 +45,7 @@ public:
 		QString& qStrAbsolutePath, XMFLOAT3& xmf3Pos);
 	QList<MEProjRoleListWidgetItem*> GetItemList();
 	void NotifyD3DWidgetUpdateRole();
+	void NotifyD3DWidgetUpdateColor(int index);
 };
 
 #endif // MEPROJSERVER_H

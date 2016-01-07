@@ -77,3 +77,8 @@ void MEProjServer::NotifyD3DWidgetUpdateRole()
 {
 	m_pMEProjD3DWidget->UpdateRole();
 }
+
+void MEProjServer::NotifyD3DWidgetUpdateColor(int index)
+{
+	m_pMEProjD3DWidget->SetSelectedItemColor(index);
+}

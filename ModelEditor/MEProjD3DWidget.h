@@ -100,10 +100,13 @@ public:
 	HRESULT ReadFromM3dFile(char* pcFileName);
 	HRESULT ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& qItemList);
 	void UpdateRole();
+	void SetSelectedItemColor(int index);
 	~MEProjD3DWidget();
 private slots:
 	void Play();
 	void Stop();
+	void BuildUpTimeLine();
+
 private:
 	virtual QPaintEngine* paintEngine() const {return NULL;}
 	virtual void paintEvent(QPaintEvent* pEvent);
@@ -117,7 +120,6 @@ private:
 	HRESULT Render();
 	HRESULT BuildBuffer(const GeometryGenerator::MESH_DATA &meshData);
 	HRESULT ResetVertexIndiceBuffer();
-	void BuildUpTimeLine();
 
 	QWidget*							m_pParent;
 	QTimer*								m_pTimer;
