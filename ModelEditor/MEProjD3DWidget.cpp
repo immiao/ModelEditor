@@ -1451,6 +1451,55 @@ void MEProjD3DWidget::BuildUpTimeLine()
 				//s.xmmRotation = XMMatrixRotationY(0.5 * XM_PI);
 				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(0.5 * XM_PI);
 			}
+			else if (!strcmp(cDir, "back"))
+			{
+				if (nPreIndex == 12)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 14;
+				}
+				else if (nPreIndex == 4)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 22;
+				}
+				else if (nPreIndex == 14)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 12;
+				}
+				else if (nPreIndex == 22)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 4;
+				}
+				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(XM_PI);
+			}
+			else if (!strcmp(cDir, "left"))
+			{
+				if (nPreIndex == 12)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 22;
+				}
+				else if (nPreIndex == 4)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 12;
+				}
+				else if (nPreIndex == 14)
+				{
+					s.fxSpeed = fDistance / fTime;
+					s.nDirIndex = 4;
+				}
+				else if (nPreIndex == 22)
+				{
+					s.fzSpeed = fDistance / fTime;
+					s.nDirIndex = 14;
+				}
+				s.xmmRotation = s.xmmRotation * XMMatrixRotationY(1.5 * XM_PI);
+			}
+
 			s.fEndTime = fTotalTime + fTime;
 			fTotalTime = s.fEndTime;
 			m_vSegment[index].push_back(s);

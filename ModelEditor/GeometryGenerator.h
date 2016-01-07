@@ -43,8 +43,8 @@ namespace GeometryGenerator
 		SKINNED_VERTEX()
 		{
 			xmf4Color.x = 1.0;
-			xmf4Color.y = 0.0;
-			xmf4Color.z = 0.0;
+			xmf4Color.y = 1.0;
+			xmf4Color.z = 1.0;
 			xmf2Tex.x = 0.0f;
 			xmf2Tex.y = 0.0f;
 		}
