@@ -101,6 +101,7 @@ MEProjD3DWidget::MEProjD3DWidget(MEProjServer* pMEProjServer, QWidget* pParent)
 	m_vSegment.clear();
 	m_vCurrentSegmentIndex.clear();
 	m_vTextureRV.clear();
+	m_bWireFrame = false;
 
 	m_nState = 0;
 }
@@ -587,7 +588,10 @@ HRESULT MEProjD3DWidget::Render()
 			
  			KE_COM_PROCESS_ERROR(hrRetCode);
 			UINT uSkinnedStride = sizeof(GeometryGenerator::SKINNED_VERTEX);
-   			m_pDeviceContext->RSSetState(m_rsSolid);
+			if (m_bWireFrame)
+				m_pDeviceContext->RSSetState(m_rsWireFrame);
+			else
+				m_pDeviceContext->RSSetState(m_rsSolid);
 			m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pMEProjSkinnedVertexBuffer[i], &uSkinnedStride, &uOffset);
 			m_pDeviceContext->IASetIndexBuffer(m_pMEProjSkinnedIndexBuffer[i], DXGI_FORMAT_R32_UINT, 0);
 
@@ -673,10 +677,10 @@ HRESULT MEProjD3DWidget::ResetVertexIndiceBuffer()
 
 	if (!m_vMEProjSkinnedVertex.empty() && !m_vMEProjSkinnedIndices.empty())
 	{
-		for (int i = 0; i < m_nRoleNum; i++)
-			SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
-		for (int i = 0; i < m_nRoleNum; i++)
-			SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+		//for (int i = 0; i < m_nRoleNum; i++)
+		//	SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
+		//for (int i = 0; i < m_nRoleNum; i++)
+		//	SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
 
 		for (int i = 0; i < m_nRoleNum; i++)
 		{
@@ -1349,8 +1353,10 @@ Exit0:
 
 void MEProjD3DWidget::UpdateRole()
 {
+	ReleaseVector();
 	m_qItemList = m_pMEProjServer->GetItemList();
 	m_nRoleNum = m_qItemList.size();
+
 	m_vMEProjSkinnedVertex.resize(m_nRoleNum);
 	m_vMEProjSkinnedIndices.resize(m_nRoleNum);
 	m_nMEProjBones.resize(m_nRoleNum);
@@ -1360,8 +1366,8 @@ void MEProjD3DWidget::UpdateRole()
 	m_MEProjanimationClip.resize(m_nRoleNum);
 	m_xmmMEProjBoneTransforms.resize(m_nRoleNum);
 	m_xmmMEProjFinalBoneTransforms.resize(m_nRoleNum);
-	m_pMEProjSkinnedVertexBuffer.resize(m_nRoleNum);
-	m_pMEProjSkinnedIndexBuffer.resize(m_nRoleNum);
+	m_pMEProjSkinnedVertexBuffer.resize(m_nRoleNum); // need release
+	m_pMEProjSkinnedIndexBuffer.resize(m_nRoleNum); // need release
 	m_fMEProjTime.resize(m_nRoleNum);
 	m_fMEProjDistance.resize(m_nRoleNum);
 	m_vSegment.resize(m_nRoleNum);
@@ -1371,8 +1377,10 @@ void MEProjD3DWidget::UpdateRole()
 	m_vfY.resize(m_nRoleNum);
 	m_vfZ.resize(m_nRoleNum);
 	m_vSubset.resize(m_nRoleNum);
-	m_vTextureRV.resize(m_nRoleNum);
+	m_vTextureRV.resize(m_nRoleNum);  // need release
 
+	if (!m_nRoleNum)
+		return;
 	ReadFromM3dFileList(m_qItemList);
 	BuildUpTimeLine();
 	Stop();
@@ -1556,7 +1564,6 @@ XMMATRIX MEProjD3DWidget::mul(CXMMATRIX M1, CXMMATRIX M2) // ²ÝÄàÂí×Ô´øµÄmath¿âµ
 
 void MEProjD3DWidget::SetSelectedItemColor(int index)
 {
-	qDebug() << index;
 	for (int i = 0; i < m_nRoleNum; i++)
 	{
 		int size = m_vMEProjSkinnedVertex[i].size();
@@ -1575,4 +1582,29 @@ void MEProjD3DWidget::SetSelectedItemColor(int index)
 		m_vMEProjSkinnedVertex[index][i].xmf4Color.z = 0.0f;
 	}
 	ResetVertexIndiceBuffer();
+}
+
+void MEProjD3DWidget::SetWireFrame()
+{
+	m_bWireFrame = !m_bWireFrame;
+}
+
+void MEProjD3DWidget::ReleaseVector()
+{
+	int size1, size2;
+
+	size1 = m_pMEProjSkinnedVertexBuffer.size();
+	for (int i = 0; i < size1; i++)
+		SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
+	size1 = m_pMEProjSkinnedIndexBuffer.size();
+	for (int i = 0; i < size1; i++)
+		SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+
+	size1 = m_vTextureRV.size();
+	for (int i = 0; i < size1; i++)
+	{
+		size2 = m_vTextureRV[i].size();
+		for (int j = 0; j < size2; j++)
+			SAFE_RELEASE(m_vTextureRV[i][j]);
+	}
 }

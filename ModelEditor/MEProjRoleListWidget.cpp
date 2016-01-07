@@ -23,7 +23,7 @@ HRESULT MEProjRoleListWidget::Init(MEProjServer* pMEProjServer)
 
 	//setHeaderLabels(QStringList(QString::fromLocal8Bit("解决方案管理器")));
 	m_pMEProjServer = pMEProjServer;
-	connect(this, SIGNAL(currentRowChanged(int)), this, SLOT(NotifyServerItemIndex(int)));
+	connect(this, SIGNAL(currentRowChanged(int)), this, SLOT(NotifyServerItemUpdateColor(int)));
 	hrResult = S_OK;
 Exit0:
 	return hrResult;
@@ -50,12 +50,27 @@ void MEProjRoleListWidget::AddWidgetItem(QString& qStrRoleFileName, QString& qSt
 	MEProjRoleListWidgetItem* pMEProjRoleListWidgetItem = new MEProjRoleListWidgetItem(qStrRoleFileName, qStrRoleFileAbsolutePath, 
 		qStrXmlFileName, qStrXmlFileAbsolutePath, xmf3Pos, QIcon("Resources/role.jpg"));
 	addItem(pMEProjRoleListWidgetItem);
-	qDebug() << "OK@#";
 	m_pMEProjServer->NotifyD3DWidgetUpdateRole();
-	qDebug() << "OK!!!";
 }
 
-void MEProjRoleListWidget::NotifyServerItemIndex(int index)
+void MEProjRoleListWidget::NotifyServerItemUpdateColor(int index)
 {
+	if (index < 0)
+		return;
+	qDebug() << "Who first1??? : " << count();
 	m_pMEProjServer->NotifyD3DWidgetUpdateColor(index);
+	qDebug() << "Who first2??? : " << count();
+}
+
+void MEProjRoleListWidget::DeleteItem() // 必然触发NotifyServerItemIndex
+{
+	int nRow = currentRow();
+	if (nRow < 0)
+		return;
+	disconnect(this, SIGNAL(currentRowChanged(int)), NULL, NULL);
+	QListWidgetItem* p = item(nRow);
+	SAFE_DELETE(p); //触发后先换行, 因此立即执行NotifyServerItemIndex, count还没有得到更新, 要先disconnect
+	m_pMEProjServer->NotifyD3DWidgetUpdateRole();
+	NotifyServerItemUpdateColor(currentRow());
+	connect(this, SIGNAL(currentRowChanged(int)), this, SLOT(NotifyServerItemUpdateColor(int)));
 }

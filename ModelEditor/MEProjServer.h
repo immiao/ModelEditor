@@ -23,6 +23,7 @@
 #include <xnamath.h>
 #include <QFileInfo>
 #include <QString>
+#include <QListWidget>
 
 class MEProjTreeWidget;
 class MEProjTabWidget;
