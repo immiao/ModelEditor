@@ -47,6 +47,10 @@ public:
 	QList<MEProjRoleListWidgetItem*> GetItemList();
 	void NotifyD3DWidgetUpdateRole();
 	void NotifyD3DWidgetUpdateColor(int index);
+public slots:
+	void NotifyD3DWidgetClearItemColor();
+	void NotifyTreeWidgetHighlight(const QString& qStrXmlPath);
+	void NotifyTreeWidgetClearHighlight();
 };
 
 #endif // MEPROJSERVER_H

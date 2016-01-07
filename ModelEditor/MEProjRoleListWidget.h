@@ -20,11 +20,15 @@
 #include <xnamath.h>
 #include "MEProjRoleListWidgetItem.h"
 #include "MEProjServer.h"
+#include <QWidget>
+#include <QMouseEvent>
+
 class MEProjRoleListWidget: public QListWidget
 {
 	Q_OBJECT
 
 	MEProjServer*	m_pMEProjServer;
+	void mousePressEvent(QMouseEvent* pEvent);
 public:
 	MEProjRoleListWidget(QWidget* pParent = NULL);
 	~MEProjRoleListWidget();
@@ -33,7 +37,7 @@ public:
 	void AddWidgetItem(QString& qStrRoleName, QString& qStrRoleFileAbsolutePath, QString& qStrXmlFileName, 
 		QString& qStrXmlFileAbsolutePath, XMFLOAT3& xmf3Pos);
 private slots:
-	void NotifyServerItemUpdateColor(int index);
+	//void NotifyServerItemUpdateColor(int index);
 	void DeleteItem();
 };
 

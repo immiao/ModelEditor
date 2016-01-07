@@ -80,6 +80,22 @@ void MEProjServer::NotifyD3DWidgetUpdateRole()
 
 void MEProjServer::NotifyD3DWidgetUpdateColor(int index)
 {
+	if (index < 0)
+		return;
 	m_pMEProjD3DWidget->SetSelectedItemColor(index);
-	qDebug() << "UpdateColor";
+}
+
+void MEProjServer::NotifyD3DWidgetClearItemColor()
+{
+	m_pMEProjD3DWidget->ClearItemColor();
+}
+
+void MEProjServer::NotifyTreeWidgetHighlight(const QString& qStrXmlPath)
+{
+	m_pMEProjTreeWidget->Highlight(qStrXmlPath);
+}
+
+void MEProjServer::NotifyTreeWidgetClearHighlight()
+{
+	m_pMEProjTreeWidget->ClearHighlight();
 }

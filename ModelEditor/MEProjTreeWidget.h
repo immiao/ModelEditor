@@ -39,6 +39,8 @@ public:
 	MEProjTreeWidget(QWidget* pParent = NULL);
 	HRESULT Init(MEProjServer* pMEProjServer, const QString& qStrFileName);
 	HRESULT UnInit();
+	void Highlight(const QString& qStrXmlPath);
+	void ClearHighlight();
 };
 
 #endif // MEPROJTREEWIDGET_H

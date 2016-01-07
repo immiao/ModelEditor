@@ -82,3 +82,31 @@ void MEProjTreeWidget::NotifyServer(QTreeWidgetItem* pQTreeWidgetItem, int index
 	m_pMEProjServer->TreeNotifyTab(dynamic_cast<MEProjTreeWidgetItem*>(pQTreeWidgetItem), index);
 	qDebug() << "Item Double Clicked";
 }
+
+void MEProjTreeWidget::Highlight(const QString& qStrXmlPath)
+{
+	QTreeWidgetItem* root = topLevelItem(0);
+	int nRootChildNum = root->childCount();
+	qDebug() << "WOCAONIMA : " << nRootChildNum;
+	for (int i = 0; i < nRootChildNum; i++)
+	{
+		MEProjTreeWidgetItem* p = dynamic_cast<MEProjTreeWidgetItem*>(root->child(i));
+		qDebug() << "ONE:" << qStrXmlPath;
+		qDebug() << "TWO:" << p->GetAbsolutePath();
+		if (p->GetAbsolutePath() == qStrXmlPath)
+		{
+			p->setBackgroundColor(0, QColor(255, 0, 0));
+			break;
+		}
+	}
+}
+
+void MEProjTreeWidget::ClearHighlight()
+{
+	QTreeWidgetItem* root = topLevelItem(0);
+	int nRootChildNum = root->childCount();
+	for (int i = 0; i < nRootChildNum; i++)
+	{
+		root->child(i)->setBackgroundColor(0, QColor(0, 0, 0, 0));
+	}
+}
