@@ -110,10 +110,9 @@ HRESULT MEProjD3DWidget::Init()
 {
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
-
 	// added at 2015/9/1 to eliminate scaling which causes sawtooth
-	setFixedWidth(1006);
-	setFixedHeight(697);
+	setFixedWidth(1006); //1006
+	setFixedHeight(600); //697
 	// added at 2015/9/1 to eliminate scaling which causes sawtooth
 
 	hrRetCode = InitDevice();
@@ -288,8 +287,8 @@ HRESULT MEProjD3DWidget::InitDevice()
 	solidDesc.CullMode = D3D11_CULL_BACK;
 	solidDesc.FrontCounterClockwise = true;
 	solidDesc.DepthClipEnable = true;
-	solidDesc.AntialiasedLineEnable = true;
-	solidDesc.MultisampleEnable = true;
+	solidDesc.AntialiasedLineEnable = false;
+	solidDesc.MultisampleEnable = false;
 
 	hrRetCode = m_pd3dDevice->CreateRasterizerState(&solidDesc, &m_rsSolid);
 	KE_COM_PROCESS_ERROR(hrRetCode);
@@ -457,6 +456,7 @@ Exit0:
 // Render the frame
 HRESULT MEProjD3DWidget::Render()
 {
+	//qDebug() << width();
 	//qDebug() << height();
 	HRESULT hrResult = E_FAIL;
 	HRESULT hrRetCode = E_FAIL;
@@ -677,10 +677,10 @@ HRESULT MEProjD3DWidget::ResetVertexIndiceBuffer()
 
 	if (!m_vMEProjSkinnedVertex.empty() && !m_vMEProjSkinnedIndices.empty())
 	{
-		//for (int i = 0; i < m_nRoleNum; i++)
-		//	SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
-		//for (int i = 0; i < m_nRoleNum; i++)
-		//	SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
+		for (int i = 0; i < m_nRoleNum; i++)
+			SAFE_RELEASE(m_pMEProjSkinnedVertexBuffer[i]);
+		for (int i = 0; i < m_nRoleNum; i++)
+			SAFE_RELEASE(m_pMEProjSkinnedIndexBuffer[i]);
 
 		for (int i = 0; i < m_nRoleNum; i++)
 		{
@@ -1580,6 +1580,21 @@ void MEProjD3DWidget::SetSelectedItemColor(int index)
 		m_vMEProjSkinnedVertex[index][i].xmf4Color.x = 1.0f;
 		m_vMEProjSkinnedVertex[index][i].xmf4Color.y = 0.0f;
 		m_vMEProjSkinnedVertex[index][i].xmf4Color.z = 0.0f;
+	}
+	ResetVertexIndiceBuffer();
+}
+
+void MEProjD3DWidget::ClearItemColor()
+{
+	for (int i = 0; i < m_nRoleNum; i++)
+	{
+		int size = m_vMEProjSkinnedVertex[i].size();
+		for (int j = 0; j < size; j++)	
+		{
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.x = 1.0f;
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.y = 1.0f;
+			m_vMEProjSkinnedVertex[i][j].xmf4Color.z = 1.0f;
+		}
 	}
 	ResetVertexIndiceBuffer();
 }

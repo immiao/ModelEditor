@@ -21,6 +21,7 @@ class MEProjTreeWidgetItem : public QTreeWidgetItem
 {
 private:
 	QString m_qStrAbsolutePath;
+	QString m_qStrFileName;
 public:
 	MEProjTreeWidgetItem(const QStringList& strings, const QString& qStrAbsolutePath);
 	MEProjTreeWidgetItem(QTreeWidget* parent, const QStringList& strings);

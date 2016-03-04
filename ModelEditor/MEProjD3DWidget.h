@@ -101,6 +101,7 @@ public:
 	HRESULT ReadFromM3dFileList(QList<MEProjRoleListWidgetItem*>& qItemList);
 	void UpdateRole();
 	void SetSelectedItemColor(int index);
+	void ClearItemColor();
 	void ReleaseVector();
 	~MEProjD3DWidget();
 private slots:
