@@ -935,7 +935,7 @@ void D3DWidget::UpdateBoneTransformMatrix()
 		}
 		else
 		{
-			// .m3d文件中的pos是相对父骨骼的pos
+			// pos in .m3d files are the position relative to its parent
 			for(UINT j = 0; j < rKeyframes.size() - 1; ++j)
 			{
 				if( m_fTime >= rKeyframes[j].TimePos && m_fTime <= rKeyframes[j+1].TimePos )

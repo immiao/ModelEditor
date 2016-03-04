@@ -30,6 +30,8 @@ ModelEditor::ModelEditor(QWidget *pParent)
 		this, SLOT(OpenM3dFileTriggered()));
 	connect(ui.openMEProjFile, SIGNAL(triggered()),
 		this, SLOT(OpenMEProjFileTriggered()));
+	connect(ui.actionRay_Tracing, SIGNAL(triggered()),
+		this, SLOT(RayTracingDemo()));
 
 }
 
@@ -52,24 +54,29 @@ HRESULT ModelEditor::UnInit()
 	{
 	case 0:
 	case 1:
+		KE_PROCESS_ERROR(m_pD3dWidget);
 		hrRetCode = m_pD3dWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pD3dWidget);
 		SAFE_DELETE(m_pLayout);
 		break;
 	case 2:
+		KE_PROCESS_ERROR(m_pMEProjD3DWidget);
 		hrRetCode = m_pMEProjD3DWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pMEProjD3DWidget);
 
+		KE_PROCESS_ERROR(m_pMEProjTreeWidget);
 		hrRetCode = m_pMEProjTreeWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pMEProjTreeWidget);
 
+		KE_PROCESS_ERROR(m_pMEProjRoleListWidget);
 		hrRetCode = m_pMEProjRoleListWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
-		SAFE_DELETE(m_pMEProjTabWidget);
+		SAFE_DELETE(m_pMEProjRoleListWidget);
 
+		KE_PROCESS_ERROR(m_pMEProjTabWidget);
 		hrRetCode = m_pMEProjTabWidget->UnInit();
 		KE_COM_PROCESS_ERROR(hrRetCode);
 		SAFE_DELETE(m_pMEProjTabWidget);
@@ -78,6 +85,13 @@ HRESULT ModelEditor::UnInit()
 		SAFE_DELETE(m_pQPushButtonAddRole);
 		SAFE_DELETE(m_pQPushButtonDeleteRole);
 
+		break;
+	case 3:
+		KE_PROCESS_ERROR(m_pRayTracingWidget);
+		hrRetCode = m_pRayTracingWidget->UnInit();
+		KE_COM_PROCESS_ERROR(hrRetCode);
+		SAFE_DELETE(m_pRayTracingWidget);
+		SAFE_DELETE(m_pLayout);
 		break;
 	default:
 		break;
@@ -269,4 +283,15 @@ void ModelEditor::OpenConfigWidget()
 	qDebug() << "OK-1";
 	m_pMEProjRoleConfigWidget->Init();
 	m_pMEProjRoleConfigWidget->show();
+}
+
+void ModelEditor::RayTracingDemo() //Î´´¦ÀíHRESULT
+{
+	RemoveWidget();
+	m_nState = 3;
+	m_pRayTracingWidget = new RayTracingWidget();
+	m_pRayTracingWidget->Init();
+	m_pLayout = new QHBoxLayout;
+	m_pLayout->addWidget(m_pRayTracingWidget);
+	ui.centralWidget->setLayout(m_pLayout);
 }

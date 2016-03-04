@@ -24,6 +24,7 @@
 #include "MEProjRoleListWidget.h"
 #include "MEProjRoleConfigWidget.h"
 #include <qpushbutton.h>
+#include "RayTracingWidget.h"
 
 class ModelEditor : public QMainWindow
 {
@@ -36,6 +37,8 @@ public:
 	~ModelEditor();
 
 private:
+	RayTracingWidget*		m_pRayTracingWidget;
+
 	Ui::ModelEditorClass	ui;
 	D3DWidget*				m_pD3dWidget;
 	MEProjD3DWidget*		m_pMEProjD3DWidget;
@@ -59,6 +62,7 @@ private slots:
 	void OpenM3dFileTriggered();
 	void OpenMEProjFileTriggered();
 	void OpenConfigWidget();
+	void RayTracingDemo();
 };
 
 #endif // MODELEDITOR_H

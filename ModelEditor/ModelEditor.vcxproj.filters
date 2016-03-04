@@ -137,6 +137,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MEProjHighlighter.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="RayTracingWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modeleditor.h">
@@ -199,6 +202,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MEProjRoleListWidgetItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

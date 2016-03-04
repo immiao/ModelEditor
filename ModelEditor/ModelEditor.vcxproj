@@ -153,6 +153,7 @@
     <ClCompile Include="MEProjTabWidget.cpp" />
     <ClCompile Include="MEProjTreeWidgetItem.cpp" />
     <ClCompile Include="modeleditor.cpp" />
+    <ClCompile Include="RayTracingWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modeleditor.h">
@@ -193,6 +194,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
     <ClInclude Include="MEProjRoleListWidgetItem.h" />
+    <ClInclude Include="RayTracingWidget.h" />
     <ClInclude Include="UsefulStruct.h" />
     <CustomBuild Include="MEProjRoleConfigWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
