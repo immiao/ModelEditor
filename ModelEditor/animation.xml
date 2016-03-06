@@ -1,2 +1,7 @@
 forward 250 6
+forward 0 1
+back 250 6
+forward 0 6
+right 250 3
+right 250 3
 end

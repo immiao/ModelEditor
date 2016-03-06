@@ -42,12 +42,6 @@ public:
 
 };
 
-class Color
-{
-public:
-	float r, g, b;
-};
-
 class Ray
 {
 public:
@@ -60,30 +54,180 @@ public:
 	}
 };
 
-class Sphere
+class Color
 {
 public:
-	XMVECTOR pos;
-	int radius;
-	Sphere(XMVECTOR tPos, int tRadius)
+	XMVECTOR color;
+	Color operator*(float t)
 	{
-		pos = tPos;
-		radius = tRadius;
+		Color result;
+		result.color = color * t;
+		return result;
+	}
+	Color operator+(Color& c)
+	{
+		Color result;
+		result.color = color + c.color;
+		return result;
 	}
 
 };
 
-class Plane
+class Light
+{
+public:
+	XMVECTOR dir;
+	Color lightColor;
+};
+
+class Material
+{
+public:
+	float reflectiveness;
+	Material(float tReflectiveness)
+	{
+		reflectiveness = tReflectiveness;
+	}
+
+	virtual Color sample(Ray& ray, XMVECTOR& pos, XMVECTOR& normal) = 0;
+};
+
+class CheckerMaterial : public Material
+{
+public:
+	CheckerMaterial(float tReflectiveness) : Material(tReflectiveness)
+	{
+
+	}
+
+	Color sample(Ray& ray, XMVECTOR& pos, XMVECTOR& normal)
+	{
+		Color black, white;
+		black.color.m128_f32[0] = black.color.m128_f32[1] = black.color.m128_f32[2] = 0.0f;
+		white.color.m128_f32[0] = white.color.m128_f32[1] = white.color.m128_f32[2] = 1.0f;
+		return abs((int)(pos.m128_f32[0]) + (int)floor(pos.m128_f32[2])) % 2 == 0 ? black : white;
+	}
+
+};
+
+class PhongMaterial : public Material
+{
+	XMVECTOR diffuse;
+	XMVECTOR specular;
+	float shininess;
+	float reflectiveness;
+	Light light;
+public:
+	PhongMaterial(XMVECTOR& tDiffuse, XMVECTOR& tSpecular, float tShininess, float tReflectiveness) : Material(tReflectiveness)
+	{
+		diffuse = tDiffuse;
+		specular = tSpecular;
+		shininess = tShininess;
+
+		light.dir.m128_f32[0] = 2.0f;
+		light.dir.m128_f32[1] = 2.0f;
+		light.dir.m128_f32[2] = 2.0f;
+		light.dir.m128_f32[3] = 1.0f;
+		light.lightColor.color.m128_f32[0] = 1.0f;
+		light.lightColor.color.m128_f32[1] = 1.0f;
+		light.lightColor.color.m128_f32[2] = 1.0f;
+	}
+	Color sample(Ray& ray, XMVECTOR& pos, XMVECTOR& normal)
+	{
+		float NdotL = XMVector3Dot(normal, light.dir).m128_f32[0];
+		XMVECTOR H = XMVector3Normalize(light.dir - ray.dir);
+		float NdotH = XMVector3Dot(normal, H).m128_f32[0];
+		XMVECTOR diffuseTerm = diffuse * max(NdotL, 0);
+		XMVECTOR specularTerm = specular * pow(max(NdotH, 0), shininess);
+		Color color;
+		color.color = light.lightColor.color * (diffuseTerm + specularTerm);
+		return color;
+	}
+
+};
+
+class IntersectResult;
+class Geometry
 {
 public:
 	XMVECTOR pos;
-	XMVECTOR normal;
-	int distance;
-	Plane(XMVECTOR tPos, XMVECTOR tNormal, int tDistance)
+	Material* pMaterial;
+	Geometry(XMVECTOR tPos, Material* tpMaterial)
 	{
 		pos = tPos;
+		pMaterial = tpMaterial;
+	}
+	virtual bool IntersectPoint(Ray& ray, IntersectResult& result) = 0;
+};
+
+class IntersectResult
+{
+public:
+	bool isHit;
+	Geometry* geometry;
+	XMVECTOR pos;
+	XMVECTOR normal;
+};
+
+class Sphere : public Geometry
+{
+	// |VectorX - VectorOrigin| = r
+public:
+	int radius;
+	Sphere(XMVECTOR tPos, int tRadius, Material* tpMaterial) : Geometry(tPos, tpMaterial)
+	{
+		radius = tRadius;
+	}
+	bool IntersectPoint(Ray& ray, IntersectResult& result)
+	{
+		XMVECTOR v = ray.pos - pos;
+		float a0 =  XMVector3LengthSq(v).m128_f32[0] - radius * radius;
+		float DdotV = XMVector3Dot(ray.dir, v).m128_f32[0];
+
+		if (DdotV <= 0)
+		{
+			float discr = DdotV * DdotV - a0;
+			if (discr >= 0)
+			{
+				result.geometry = this;
+				float t = -DdotV - sqrt(discr);
+				result.pos = ray.pos + (ray.dir * t);
+				result.normal = XMVector3Normalize(result.pos - pos);
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+};
+
+class Plane : public Geometry
+{
+	// VectorX * VectorNormal = d
+public:
+	XMVECTOR normal;
+	int distance;
+	Plane(XMVECTOR tPos, XMVECTOR tNormal, int tDistance, Material* tpMaterial) : Geometry(tPos, tpMaterial)
+	{
 		normal = tNormal;
 		distance = tDistance;
+	}
+	bool IntersectPoint(Ray& ray, IntersectResult& result)
+	{
+		float distance = XMVector3Dot(normal, ray.pos - pos).m128_f32[0];
+		float cos = XMVector3Dot(normal, ray.dir).m128_f32[0];
+		if (cos >= 0)
+			return false;
+
+		float t = - distance / cos;
+		XMVECTOR pos = ray.pos + (ray.dir * t);
+
+		result.pos = pos;
+		result.normal = normal;
+		result.geometry = this;
+
+		return true;
 	}
 
 };
@@ -92,10 +236,18 @@ class RayTracingWidget : public QWidget
 {
 	int m_width;
 	int m_height;
+	Sphere* sphere1;
+	Sphere* sphere2;
+	Plane* plane;
+	Camera* camera;
+	PhongMaterial* phongMaterial;
+	CheckerMaterial* checkerMaterial;
+	Geometry* geometry[3];
+	int maxDepth;
 	virtual void paintEvent(QPaintEvent* pEvent);
 public:
 	RayTracingWidget(QWidget* pParent = NULL);
-	XMVECTOR EmitRay(Ray& ray);
+	Color EmitRay(Ray& ray, int depth);
 	HRESULT Init();
 	HRESULT UnInit();
 };
