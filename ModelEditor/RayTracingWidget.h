@@ -37,7 +37,7 @@ public:
 		front = tFront;
 		up = tUp;
 		FOV = tFOV;
-		right = XMVector3Cross(front, up);
+		right = XMVector3Cross(up, front);
 	}
 
 };
@@ -70,6 +70,13 @@ public:
 		result.color = color + c.color;
 		return result;
 	}
+	void SetValid()
+	{
+		if (color.m128_f32[0] > 1) color.m128_f32[0] = 1; else if (color.m128_f32[0] < 0) color.m128_f32[0] = 0;
+		if (color.m128_f32[1] > 1) color.m128_f32[1] = 1; else if (color.m128_f32[1] < 0) color.m128_f32[1] = 0;
+		if (color.m128_f32[2] > 1) color.m128_f32[2] = 1; else if (color.m128_f32[2] < 0) color.m128_f32[2] = 0;
+	}
+
 
 };
 
@@ -105,7 +112,7 @@ public:
 		Color black, white;
 		black.color.m128_f32[0] = black.color.m128_f32[1] = black.color.m128_f32[2] = 0.0f;
 		white.color.m128_f32[0] = white.color.m128_f32[1] = white.color.m128_f32[2] = 1.0f;
-		return abs((int)(pos.m128_f32[0]) + (int)floor(pos.m128_f32[2])) % 2 == 0 ? black : white;
+		return abs((int)floor(pos.m128_f32[0] + 0.5) + (int)floor(pos.m128_f32[2] + 0.5)) % 2 == 0 ? black : white;
 	}
 
 };
@@ -124,10 +131,11 @@ public:
 		specular = tSpecular;
 		shininess = tShininess;
 
-		light.dir.m128_f32[0] = 2.0f;
-		light.dir.m128_f32[1] = 2.0f;
-		light.dir.m128_f32[2] = 2.0f;
+		light.dir.m128_f32[0] = 0.0f;
+		light.dir.m128_f32[1] = 0.0f;
+		light.dir.m128_f32[2] = -1.0f;
 		light.dir.m128_f32[3] = 1.0f;
+		light.dir = XMVector3Normalize(light.dir);
 		light.lightColor.color.m128_f32[0] = 1.0f;
 		light.lightColor.color.m128_f32[1] = 1.0f;
 		light.lightColor.color.m128_f32[2] = 1.0f;
@@ -167,14 +175,15 @@ public:
 	Geometry* geometry;
 	XMVECTOR pos;
 	XMVECTOR normal;
+	float distance;
 };
 
 class Sphere : public Geometry
 {
 	// |VectorX - VectorOrigin| = r
 public:
-	int radius;
-	Sphere(XMVECTOR tPos, int tRadius, Material* tpMaterial) : Geometry(tPos, tpMaterial)
+	float radius;
+	Sphere(XMVECTOR tPos, float tRadius, Material* tpMaterial) : Geometry(tPos, tpMaterial)
 	{
 		radius = tRadius;
 	}
@@ -190,8 +199,8 @@ public:
 			if (discr >= 0)
 			{
 				result.geometry = this;
-				float t = -DdotV - sqrt(discr);
-				result.pos = ray.pos + (ray.dir * t);
+				result.distance = -DdotV - sqrt(discr);
+				result.pos = ray.pos + (ray.dir * result.distance);
 				result.normal = XMVector3Normalize(result.pos - pos);
 				return true;
 			}
@@ -240,14 +249,20 @@ class RayTracingWidget : public QWidget
 	Sphere* sphere2;
 	Plane* plane;
 	Camera* camera;
-	PhongMaterial* phongMaterial;
+	PhongMaterial* phongMaterial1;
+	PhongMaterial* phongMaterial2;
 	CheckerMaterial* checkerMaterial;
 	Geometry* geometry[3];
 	int maxDepth;
+	Sphere* test;
+	Camera* testCamera;
+	Color BLACK;
+	Color WHITE;
 	virtual void paintEvent(QPaintEvent* pEvent);
 public:
 	RayTracingWidget(QWidget* pParent = NULL);
 	Color EmitRay(Ray& ray, int depth);
+	Color TestEmitRay(Ray& ray);
 	HRESULT Init();
 	HRESULT UnInit();
 };

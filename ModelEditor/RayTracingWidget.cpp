@@ -12,7 +12,12 @@
 
 RayTracingWidget::RayTracingWidget(QWidget* pParent):QWidget(pParent)
 {
-	maxDepth = 1;
+	maxDepth = 3;
+	XMVECTOR x1;
+	x1.m128_f32[0] = 0.0f; x1.m128_f32[1] = 0.0f; x1.m128_f32[2] = 0.0f; x1.m128_f32[3] = 1.0;
+	BLACK.color = x1;
+	x1.m128_f32[0] = 1.0f; x1.m128_f32[1] = 1.0f; x1.m128_f32[2] = 1.0f; x1.m128_f32[3] = 1.0;
+	WHITE.color = x1;
 }
 
 HRESULT RayTracingWidget::Init()
@@ -21,21 +26,31 @@ HRESULT RayTracingWidget::Init()
 	HRESULT hrRetCode = E_FAIL;
 
 	XMVECTOR x1, x2, x3;
-	x1.m128_f32[0] = 0.0314; x1.m128_f32[1] = 0.4314; x1.m128_f32[2] = 0.5294; x1.m128_f32[3] = 1.0;
-	x2.m128_f32[0] = 0.0314; x2.m128_f32[1] = 0.4314; x2.m128_f32[2] = 0.5294; x2.m128_f32[3] = 1.0;
 	checkerMaterial = new CheckerMaterial(0.25);
-	phongMaterial = new PhongMaterial(x1, x2, 0.35, 0.25);
-	x1.m128_f32[0] = 2.0; x1.m128_f32[1] = 2.0; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
-	sphere1 = new Sphere(x1, 1, phongMaterial);
-	x1.m128_f32[0] = -1.0; x1.m128_f32[1] = 2.0; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
-	sphere2 = new Sphere(x1, 1, phongMaterial);
-	x1.m128_f32[0] = 0.0; x1.m128_f32[1] = 1.0; x1.m128_f32[2] = -5.0; x1.m128_f32[3] = 1.0;
+	x1.m128_f32[0] = 0.3961; x1.m128_f32[1] = 0.0; x1.m128_f32[2] = 0.6235; x1.m128_f32[3] = 1.0;
+	phongMaterial1 = new PhongMaterial(x1, x1, 0.35, 0.25);
+	x1.m128_f32[0] = 1.0000; x1.m128_f32[1] = 0.0078; x1.m128_f32[2] = 0.0078; x1.m128_f32[3] = 1.0;
+	phongMaterial2 = new PhongMaterial(x1, x1, 0.35, 0.25);
+	x1.m128_f32[0] = -1.5; x1.m128_f32[1] = 1; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
+	sphere1 = new Sphere(x1, 1, phongMaterial1);
+	x1.m128_f32[0] = 1.5; x1.m128_f32[1] = 1; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
+	sphere2 = new Sphere(x1, 1, phongMaterial2);
+	x1.m128_f32[0] = 0.0; x1.m128_f32[1] = 1; x1.m128_f32[2] = -6; x1.m128_f32[3] = 1.0;
+	//x1.m128_f32[0] = 3.0; x1.m128_f32[1] = 2.0; x1.m128_f32[2] = -0.5; x1.m128_f32[3] = 1.0;
 	x2.m128_f32[0] = 0.0; x2.m128_f32[1] = 0.0; x2.m128_f32[2] = 1.0; x2.m128_f32[3] = 1.0;
 	x3.m128_f32[0] = 0.0; x3.m128_f32[1] = 1.0; x3.m128_f32[2] = 0.0; x3.m128_f32[3] = 1.0;
 	camera = new Camera(x1, x2, x3, 60);
 	x1.m128_f32[0] = 0.0; x1.m128_f32[1] = 0.0; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
 	x2.m128_f32[0] = 0.0; x2.m128_f32[1] = 1.0; x2.m128_f32[2] = 0.0; x2.m128_f32[3] = 1.0;
 	plane = new Plane(x1, x2, 0, checkerMaterial);
+
+	// for debug
+	x1.m128_f32[0] = 0.0; x1.m128_f32[1] = 0.0; x1.m128_f32[2] = 0.0; x1.m128_f32[3] = 1.0;
+	test = new Sphere(x1, 1, phongMaterial1);
+	x1.m128_f32[0] = 0.0; x1.m128_f32[1] = 1.0; x1.m128_f32[2] = -5.0; x1.m128_f32[3] = 1.0;
+	x2.m128_f32[0] = 0.0; x2.m128_f32[1] = 0.0; x2.m128_f32[2] = 1.0; x2.m128_f32[3] = 1.0;
+	x3.m128_f32[0] = 0.0; x3.m128_f32[1] = 1.0; x3.m128_f32[2] = 0.0; x3.m128_f32[3] = 1.0;
+	testCamera = new Camera(x1, x2, x3, 60);
 
 	geometry[0] = sphere1;
 	geometry[1] = sphere2;
@@ -90,32 +105,22 @@ void RayTracingWidget::paintEvent(QPaintEvent* pEvent)
 		up = (0, 1, 0);[camera but not world]
 		FOV = 90;
 	*/
-
-
+	qDebug() << "In Paint Event";
+	
 	for (int i = 0; i < m_width; i++)
 	{
 		float x = (i - 300) / 300.0;
 		for (int j = 0; j < m_height; j++)
 		{
-			float y = (j - 300) / 300.0;
+			float y = -(j - 300) / 300.0;
 			
-			float tanResult = tanf(camera->FOV * 0.5 / 180 * XM_PI);
+			float tanResult = tanf(camera->FOV * 0.5 / 180 * XM_PI); // half of the width/height, s
 			XMVECTOR right = camera->right * (x * tanResult); 
 			XMVECTOR up = camera->up * (y * tanResult);
-			Ray ray(camera->pos, camera->front + right + up);
+			Ray ray(camera->pos, XMVector3Normalize(camera->front + right + up));
 
 			Color color = EmitRay(ray, 0);
-			//for (int k = 0; k < 3; k++)
-			//{
-			//	IntersectResult result;
-			//	if (geometry[k]->IntersectPoint(ray, result))
-			//	{
-			//		Ray reflectRay(result.pos, ray.dir - result.normal * 2 * (XMVector3Dot(ray.dir, result.normal).m128_f32[0]));
-			//		color = EmitRay(ray);
-			//	}
-			//	else
-			//		color.color.m128_f32[0] = color.color.m128_f32[1] = color.color.m128_f32[2] = 0.0f;
-			//}
+			color.SetValid();
 			QPainter painter(this);
 			QColor qColor(color.color.m128_f32[0] * 255, color.color.m128_f32[1] * 255, color.color.m128_f32[2] * 255);
 			painter.setPen(qColor);
@@ -123,6 +128,42 @@ void RayTracingWidget::paintEvent(QPaintEvent* pEvent)
 			painter.drawPoint(point);
 		}
 	}
+	//for (int i = 0; i < m_width; i++)
+	//{
+	//	float x = (i - 300) / 300.0;
+	//	for (int j = 0; j < m_height; j++)
+	//	{
+	//		float y = -(j - 300) / 300.0;
+	//		
+	//		float tanResult = tanf(testCamera->FOV * 0.5 / 180 * XM_PI); // half of the width/height, s
+	//		XMVECTOR right = testCamera->right * (x * tanResult); 
+	//		XMVECTOR up = testCamera->up * (y * tanResult);
+	//		Ray ray(testCamera->pos, XMVector3Normalize(testCamera->front + right + up));
+
+	//		Color color = TestEmitRay(ray);
+	//		QPainter painter(this);
+	//		QColor qColor(color.color.m128_f32[0] * 255, color.color.m128_f32[1] * 255, color.color.m128_f32[2] * 255);
+	//		painter.setPen(qColor);
+	//		QPoint point(i, j);
+	//		painter.drawPoint(point);
+	//	}
+	//}
+}
+
+Color RayTracingWidget::TestEmitRay(Ray& ray)
+{
+	IntersectResult result;
+	if (plane->IntersectPoint(ray, result))
+	{
+		//qDebug() << "WHITE";
+		return WHITE;
+	}
+	else
+	{
+		//qDebug() << "BLACK";
+		return BLACK;
+	}
+
 	
 }
 
@@ -134,6 +175,7 @@ Color RayTracingWidget::EmitRay(Ray& ray, int depth)
 		
 		if (geometry[i]->IntersectPoint(ray, result))
 		{
+			//return WHITE;
 			Color color = geometry[i]->pMaterial->sample(ray, result.pos, result.normal);
 			float reflectiveness = geometry[i]->pMaterial->reflectiveness;
 			Ray reflectRay(result.pos, ray.dir - result.normal * 2 * (XMVector3Dot(ray.dir, result.normal).m128_f32[0]));
@@ -142,12 +184,6 @@ Color RayTracingWidget::EmitRay(Ray& ray, int depth)
 			else
 				return color;
 		}
-		else
-		{
-			Color black;
-			black.color.m128_f32[0] = black.color.m128_f32[1] = black.color.m128_f32[2] = 0.0f;
-			return black;
-		}
-
 	}
+	return BLACK;
 }
