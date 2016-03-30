@@ -22,6 +22,8 @@
 #include <QPoint>
 #include <QColor>
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 class Camera
 {
@@ -47,7 +49,13 @@ class Ray
 public:
 	XMVECTOR pos;
 	XMVECTOR dir;
+	Ray(){}
 	Ray(XMVECTOR tPos, XMVECTOR tDir)
+	{
+		pos = tPos;
+		dir = tDir;
+	}
+	void SetRay(XMVECTOR tPos, XMVECTOR tDir)
 	{
 		pos = tPos;
 		dir = tDir;
@@ -58,6 +66,13 @@ class Color
 {
 public:
 	XMVECTOR color;
+	Color()
+	{
+		color.m128_f32[0] = 0.0f;
+		color.m128_f32[1] = 0.0f;
+		color.m128_f32[2] = 0.0f;
+		color.m128_f32[3] = 0.0f;
+	}
 	Color operator*(float t)
 	{
 		Color result;
@@ -68,6 +83,12 @@ public:
 	{
 		Color result;
 		result.color = color + c.color;
+		return result;
+	}
+	Color operator/(float divider)
+	{
+		Color result;
+		result.color = color / divider;
 		return result;
 	}
 	void SetValid()
@@ -101,10 +122,11 @@ public:
 
 class CheckerMaterial : public Material
 {
+	float scale;
 public:
-	CheckerMaterial(float tReflectiveness) : Material(tReflectiveness)
+	CheckerMaterial(float tScale, float tReflectiveness) : Material(tReflectiveness)
 	{
-
+		scale = tScale;
 	}
 
 	Color sample(Ray& ray, XMVECTOR& pos, XMVECTOR& normal)
@@ -112,7 +134,7 @@ public:
 		Color black, white;
 		black.color.m128_f32[0] = black.color.m128_f32[1] = black.color.m128_f32[2] = 0.0f;
 		white.color.m128_f32[0] = white.color.m128_f32[1] = white.color.m128_f32[2] = 1.0f;
-		return abs((int)floor(pos.m128_f32[0] + 0.5) + (int)floor(pos.m128_f32[2] + 0.5)) % 2 == 0 ? black : white;
+		return abs((int)floor(pos.m128_f32[0] * scale + 0.5) + (int)floor(pos.m128_f32[2] * scale + 0.5)) % 2 == 0 ? black : white;
 	}
 
 };
@@ -131,8 +153,8 @@ public:
 		specular = tSpecular;
 		shininess = tShininess;
 
-		light.dir.m128_f32[0] = 0.0f;
-		light.dir.m128_f32[1] = 0.0f;
+		light.dir.m128_f32[0] = 1.0f;
+		light.dir.m128_f32[1] = 1.0f;
 		light.dir.m128_f32[2] = -1.0f;
 		light.dir.m128_f32[3] = 1.0f;
 		light.dir = XMVector3Normalize(light.dir);
@@ -263,6 +285,7 @@ public:
 	RayTracingWidget(QWidget* pParent = NULL);
 	Color EmitRay(Ray& ray, int depth);
 	Color TestEmitRay(Ray& ray);
+	XMVECTOR RandomDirOnHemisphere(XMVECTOR& normal);
 	HRESULT Init();
 	HRESULT UnInit();
 };
