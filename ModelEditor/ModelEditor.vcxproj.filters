@@ -215,5 +215,6 @@
     <None Include="Tutorial02.fx">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

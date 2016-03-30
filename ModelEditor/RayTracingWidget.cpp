@@ -35,9 +35,9 @@ HRESULT RayTracingWidget::Init()
 	x2.m128_f32[0] = 1; x2.m128_f32[1] = 1; x2.m128_f32[2] = 1; x2.m128_f32[3] = 1.0;
 	phongMaterial2 = new PhongMaterial(x1, x2, 16, 0.25);
 	x1.m128_f32[0] = -10; x1.m128_f32[1] = 10; x1.m128_f32[2] = 10; x1.m128_f32[3] = 1.0;
-	sphere1 = new Sphere(x1, 10, phongMaterial2);
+	sphere1 = new Sphere(x1, 10, phongMaterial1);
 	x1.m128_f32[0] = 10; x1.m128_f32[1] = 10; x1.m128_f32[2] = 10; x1.m128_f32[3] = 1.0;
-	sphere2 = new Sphere(x1, 10, phongMaterial1);
+	sphere2 = new Sphere(x1, 10, phongMaterial2);
 	x1.m128_f32[0] = 0; x1.m128_f32[1] = 5; x1.m128_f32[2] = -15; x1.m128_f32[3] = 1.0;
 	//x1.m128_f32[0] = 3.0; x1.m128_f32[1] = 2.0; x1.m128_f32[2] = -0.5; x1.m128_f32[3] = 1.0;
 	x2.m128_f32[0] = 0.0; x2.m128_f32[1] = 0.0; x2.m128_f32[2] = 1.0; x2.m128_f32[3] = 1.0;
@@ -193,7 +193,7 @@ Color RayTracingWidget::EmitRay(Ray& ray, int depth)
 			{
 				Ray reflectRay;
 				XMVECTOR randomDir = RandomDirOnHemisphere(result.normal);
-				if (randomNum < 90)
+				if (randomNum < 100)
 					reflectRay.SetRay(result.pos, randomDir);
 				else
 					reflectRay.SetRay(result.pos, ray.dir - result.normal * 2 * (XMVector3Dot(ray.dir, result.normal).m128_f32[0]));

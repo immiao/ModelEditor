@@ -324,6 +324,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="modeleditor.fx">
       <FileType>Document</FileType>
     </None>
